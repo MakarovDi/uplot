@@ -1,12 +1,29 @@
 from typing import Protocol
+
 from numpy.typing import ArrayLike
 from numpy import ndarray
 
 from uplot.LineStyle import LineStyle
 from uplot.MarkerStyle import MarkerStyle
 
+# TODO: documentation
 
 class IFigure(Protocol):
+    """
+    Matplotlib-like interface for plotting.
+
+    Note
+    ----
+    Probably it's not the best choice of the interface
+    but very common and familiar for MATLAB users.
+    """
+    @property
+    def engine(self) -> IPlotEngine:
+        pass
+
+    @property
+    def internal(self) -> object: # TODO: type?
+        pass
 
     def plot(self, x          : ArrayLike,
                    y          : ArrayLike | None = None,
@@ -62,7 +79,7 @@ class IFigure(Protocol):
     def reset_color(self):
         pass
 
-    def sync_axix_scale():
+    def sync_axis_scale():
         pass
 
     def as_image(self) -> ndarray:
@@ -75,4 +92,17 @@ class IFigure(Protocol):
         pass
 
     def show(self):
+        pass
+
+
+class IPlotEngine(Protocol):
+
+    @classmethod
+    def is_available(cls) -> bool:
+        pass
+
+    def init(self):
+        pass
+
+    def new_figure(self) -> IFigure:
         pass
