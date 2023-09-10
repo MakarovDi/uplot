@@ -13,7 +13,6 @@ default_colors = OrderedDict[str, str]([
     ('cyan'   , '#17becf'),
 ])
 
-
 color_short_name = {
     'b': default_colors['blue'],
     'g': default_colors['gren'],
@@ -24,3 +23,20 @@ color_short_name = {
     'k': '#000000',
     'w': '#ffffff'
 }
+
+def decode_color(name: str | None):
+    if name is None:
+        return None
+
+    if len(name) == 1:
+        if name not in color_short_name:
+            raise LookupError(f'{name} is not valid color name, use: {color_short_name.keys()}')
+        return color_short_name[name]
+
+    if name[0] == '#':
+        return name
+
+    if name not in default_colors:
+        raise LookupError(f'{name} is not valid color name, use: {default_colors.keys()}')
+
+    return default_colors[name]
