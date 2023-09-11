@@ -98,12 +98,12 @@ class IFigure(Protocol):
 
 class IPlotEngine(Protocol):
 
-    @property
-    def fig_type(self) -> type:
-        ...
-
     @classmethod
     def is_available(cls) -> bool:
+        ...
+
+    @property
+    def fig_type(self) -> type:
         ...
 
     def init(self):

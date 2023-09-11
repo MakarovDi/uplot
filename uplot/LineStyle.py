@@ -6,4 +6,5 @@ LineStyle = Literal[
     '--', # dashed line
      ':', # dotted line
     '-.', # dash-dot line
+     ' ', # no line
 ]
