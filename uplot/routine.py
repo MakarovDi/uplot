@@ -1,7 +1,12 @@
 from numpy import ndarray
+from typing import Sequence
+from typing import TypeVar
 
 
-def unpack_param(param: str | ndarray | list, idx: int):
+# generic type
+T = TypeVar('T')
+
+def unpack_param(param: T | list[T] | None, idx: int) -> T | None:
     # default
     if param is None:
         return None
@@ -11,6 +16,7 @@ def unpack_param(param: str | ndarray | list, idx: int):
         return param
 
     # multiple parameters, return one by index
+    assert isinstance(param, Sequence)
     if idx < len(param):
         return param[idx]
 
