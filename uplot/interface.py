@@ -22,7 +22,7 @@ class IFigure(Protocol):
         pass
 
     @property
-    def internal(self) -> object: # TODO: type?
+    def internal(self): # TODO: type?
         pass
 
     def plot(self, x          : ArrayLike,
@@ -62,12 +62,12 @@ class IFigure(Protocol):
     def ylabel(self, text: str):
         pass
 
-    def xlim(max_value: float | None = None,
-             min_value: float | None = None):
+    def xlim(self, max_value: float | None = None,
+                   min_value: float | None = None):
         pass
 
-    def ylim(max_value: float | None = None,
-             min_value: float | None = None):
+    def ylim(self, max_value: float | None = None,
+                   min_value: float | None = None):
         pass
 
     def current_color(self) -> str:
@@ -79,7 +79,7 @@ class IFigure(Protocol):
     def reset_color(self):
         pass
 
-    def sync_axis_scale():
+    def sync_axis_scale(self):
         pass
 
     def as_image(self) -> ndarray:
