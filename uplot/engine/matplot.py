@@ -24,7 +24,7 @@ class MatplotEngine(IPlotEngine):
 
     @property
     def fig_type(self) -> type:
-        return self._fig_type
+        return self.plt.Figure
 
     @property
     def plt(self):
@@ -39,11 +39,9 @@ class MatplotEngine(IPlotEngine):
     def __init__(self, backend: str | None = None):
         import matplotlib as mpl
         from matplotlib import pyplot as plt
-        from matplotlib.figure import Figure
 
         self._mpl = mpl
         self._plt = plt
-        self._fig_type = Figure
         self._backend = backend
 
 
@@ -71,7 +69,7 @@ class MatplotFigure(IFigure):
     def __init__(self, engine: MatplotEngine):
         self._engine = engine
 
-        self._fig: engine.fig_type = engine.plt.figure()
+        self._fig: engine.plt.Figure = engine.plt.figure()
         self._axis: engine.plt.Axes = self._fig.gca()
 
         self._legend_visible = False
