@@ -90,7 +90,7 @@ class MatplotFigure(IFigure):
         x = np.atleast_1d(np.asarray(x))
 
         if y is not None:
-            y = np.atleast_1d(np.asarray(y))
+            y = np.asarray(y)
         else:
             y = x
             x = np.arange(len(y))
@@ -98,7 +98,9 @@ class MatplotFigure(IFigure):
         if marker_size is None:
             marker_size = self.DEFAULT_MARKER_SIZE
 
-        for i, y_i in enumerate(y.T):
+        y = np.atleast_2d(y)
+
+        for i, y_i in enumerate(y):
             color_i = decode_color(unpack_param(color, i))
             name_i = unpack_param(name, i)
             marker_i: MarkerStyle | None = unpack_param(marker, i)
