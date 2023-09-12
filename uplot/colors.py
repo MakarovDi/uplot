@@ -13,9 +13,12 @@ default_colors = OrderedDict[str, str]([
     ('cyan'   , '#17becf'),
 ])
 
+default_colors_list = list(default_colors.keys())
+
+
 color_short_name = {
     'b': default_colors['blue'],
-    'g': default_colors['gren'],
+    'g': default_colors['green'],
     'r': default_colors['red'],
     'c': default_colors['cyan'],
     'm': default_colors['magenta'],
