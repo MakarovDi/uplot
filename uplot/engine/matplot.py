@@ -207,5 +207,7 @@ class MatplotFigure(IFigure):
         self._fig.close()
         self._fig = None
 
-    def show(self):
+    def show(self, block: bool = False):
         self._fig.show()
+        if block:
+            self._fig.waitforbuttonpress()

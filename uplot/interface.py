@@ -92,7 +92,7 @@ class IFigure(Protocol):
     def close(self):
         ...
 
-    def show(self):
+    def show(self, block: bool=False):
         ...
 
 
