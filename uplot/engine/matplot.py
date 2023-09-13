@@ -48,6 +48,7 @@ class MatplotEngine(IPlotEngine):
     def init(self):
         if self._backend is not None:
             self._mpl.use(backend=self._backend)
+        self.plt.style.use('bmh')
 
     def new_figure(self) -> IFigure:
         self.init()
@@ -55,7 +56,7 @@ class MatplotEngine(IPlotEngine):
 
 
 class MatplotFigure(IFigure):
-    DEFAULT_MARKER_SIZE = 8
+    DEFAULT_MARKER_SIZE = 6
 
     @property
     def engine(self) -> MatplotEngine:
@@ -76,7 +77,7 @@ class MatplotFigure(IFigure):
         self._color_index = 0
 
         # default style
-        self._fig.tight_layout(pad=0.2)
+        self._fig.tight_layout(pad=1.0)
         self._axis.grid(visible=True)
 
     def plot(self, x          : ArrayLike,
@@ -103,7 +104,7 @@ class MatplotFigure(IFigure):
         for i, y_i in enumerate(y):
             color_i = decode_color(unpack_param(color, i))
             name_i = unpack_param(name, i)
-            marker_i: MarkerStyle | None = unpack_param(marker, i)
+            marker_i = unpack_param(marker, i)
             line_i = unpack_param(line, i)
 
             if color_i is None:
