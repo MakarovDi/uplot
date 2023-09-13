@@ -8,7 +8,7 @@ import uplot.imtool as imtool
 
 from uplot.interface import IFigure, IPlotEngine, LineStyle, MarkerStyle
 from uplot.interface import IPlotEngine
-from uplot.colors import default_colors_list, decode_color
+from uplot.colors import default_colors_list, decode_color, default_colors
 from uplot.routine import unpack_param
 
 
@@ -177,7 +177,8 @@ class MatplotFigure(IFigure):
         self._axis.set_ylim(bottom=min_value, top=max_value) # type: ignore # matplotlib incomplete annotation
 
     def current_color(self) -> str:
-        return default_colors_list[self._color_index]
+        color_name = default_colors_list[self._color_index]
+        return default_colors[color_name]
 
     def scroll_color(self, count: int=1):
         self._color_index += count
