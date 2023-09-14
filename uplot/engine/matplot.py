@@ -101,9 +101,9 @@ class MatplotFigure(IFigure):
         if marker_size is None:
             marker_size = self.DEFAULT_MARKER_SIZE
 
-        y = np.atleast_2d(y)
+        y = y.reshape([len(x), -1])
 
-        for i, y_i in enumerate(y):
+        for i, y_i in enumerate(y.T):
             color_i = decode_color(unpack_param(color, i))
             name_i = unpack_param(name, i)
             marker_i = unpack_param(marker, i)
