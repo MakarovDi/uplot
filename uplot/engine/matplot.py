@@ -57,6 +57,8 @@ class MatplotEngine(IPlotEngine):
 
 class MatplotFigure(IFigure):
     DEFAULT_MARKER_SIZE = 6
+    DEFAULT_SHOWING_DPI = 150
+    DEFAULT_SAVING_DPI = 300
 
     @property
     def engine(self) -> MatplotEngine:
@@ -70,14 +72,14 @@ class MatplotFigure(IFigure):
     def __init__(self, engine: MatplotEngine):
         self._engine = engine
 
-        self._fig: engine.plt.Figure = engine.plt.figure()
+        self._fig: engine.plt.Figure = engine.plt.figure(dpi=self.DEFAULT_SHOWING_DPI)
         self._axis: engine.plt.Axes = self._fig.gca()
 
         self._legend_visible = False
         self._color_index = 0
 
         # default style
-        self._fig.tight_layout(pad=1.0)
+        self._fig.tight_layout(pad=2.8)
         self._axis.grid(visible=True)
 
     def plot(self, x          : ArrayLike,
@@ -195,6 +197,7 @@ class MatplotFigure(IFigure):
 
     def as_image(self) -> ndarray:
         fig = self._fig
+        fig.set_dpi(self.DEFAULT_SAVING_DPI)
 
         fig.canvas.draw()
         image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
@@ -203,7 +206,7 @@ class MatplotFigure(IFigure):
         return image.reshape([h, w, 3])
 
     def save(self, fname: str):
-        self._fig.savefig(fname)
+        self._fig.savefig(fname, dpi=self.DEFAULT_SAVING_DPI)
 
     def close(self):
         self._fig.close()
