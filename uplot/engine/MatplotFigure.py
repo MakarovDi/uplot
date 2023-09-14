@@ -6,53 +6,10 @@ from numpy.typing import ArrayLike
 
 import uplot.imtool as imtool
 
-from uplot.interface import IFigure, IPlotEngine, LineStyle, MarkerStyle
-from uplot.interface import IPlotEngine
+from uplot.interface import IFigure, LineStyle, MarkerStyle
+from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.colors import default_colors_list, decode_color, default_colors
 from uplot.routine import unpack_param
-
-
-class MatplotEngine(IPlotEngine):
-
-    @classmethod
-    def is_available(cls) -> bool:
-        try:
-            import matplotlib
-            return True
-        except ImportError:
-            return False
-
-    @property
-    def fig_type(self) -> type:
-        return self.plt.Figure
-
-    @property
-    def plt(self):
-        return self._plt
-
-    @property
-    def mpl(self):
-        return self._mpl
-
-
-    # noinspection PyPackageRequirements
-    def __init__(self, backend: str | None = None):
-        import matplotlib as mpl
-        from matplotlib import pyplot as plt
-
-        self._mpl = mpl
-        self._plt = plt
-        self._backend = backend
-
-
-    def init(self):
-        if self._backend is not None:
-            self._mpl.use(backend=self._backend)
-        self.plt.style.use('bmh')
-
-    def new_figure(self) -> IFigure:
-        self.init()
-        return MatplotFigure(self)
 
 
 class MatplotFigure(IFigure):

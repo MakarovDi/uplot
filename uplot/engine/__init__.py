@@ -1,1 +1,1 @@
-from uplot.engine.matplot import MatplotEngine, MatplotFigure
+from uplot.engine.MatplotEngine import MatplotEngine

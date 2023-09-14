@@ -110,4 +110,7 @@ class IPlotEngine(Protocol):
         ...
 
     def new_figure(self) -> IFigure:
+        """
+        Factory method for a figure creation
+        """
         ...
