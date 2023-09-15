@@ -1,5 +1,5 @@
 from uplot.engine.MatplotEngine import MatplotEngine
-from uplot.engine.manage import available, register
+from uplot.engine.manage import available, register, get
 
 
 # init default engines

@@ -1,7 +1,8 @@
 from uplot.interface import IPlotEngine
+from typing import OrderedDict
 
 
-DEFAULT_ENGINES: dict[str, IPlotEngine] = { }
+DEFAULT_ENGINES: dict[str, IPlotEngine] = OrderedDict[str, IPlotEngine]()
 DEFAULT_ENGINES_SHORT_NAME: dict[str, str] = { }
 
 
@@ -25,3 +26,17 @@ def register(e: IPlotEngine, name: str, short_name: str = '') -> bool:
         DEFAULT_ENGINES_SHORT_NAME[short_name] = name
 
     return True
+
+def get(name: str | None = None) -> IPlotEngine:
+    if len(DEFAULT_ENGINES) == 0:
+        raise RuntimeError('no plotting engines')
+
+    if name is None:
+        return list(DEFAULT_ENGINES.values())[0]
+
+    engine = DEFAULT_ENGINES_SHORT_NAME.get(name, name)
+    engine = DEFAULT_ENGINES.get(engine)
+    if engine is None:
+        raise LookupError(f'no engine "{name}"')
+
+    return engine

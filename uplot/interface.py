@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from numpy import ndarray
-from typing import Protocol
+from typing import Protocol, runtime_checkable
 from numpy.typing import ArrayLike
 
 from uplot.LineStyle import LineStyle
@@ -95,7 +95,7 @@ class IFigure(Protocol):
     def show(self, block: bool=False):
         ...
 
-
+@runtime_checkable
 class IPlotEngine(Protocol):
 
     @classmethod
