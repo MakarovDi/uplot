@@ -1,6 +1,8 @@
 from uplot.interface import IPlotEngine, IFigure
 
+
 class MatplotEngine(IPlotEngine):
+    AUTOMATIC_MPL_BACKEND: str | None = None # automatically chosen matplotlib backend
 
     @classmethod
     def is_available(cls) -> bool:
@@ -30,11 +32,18 @@ class MatplotEngine(IPlotEngine):
 
         self._mpl = mpl
         self._plt = plt
+
+        if self.AUTOMATIC_MPL_BACKEND is None:
+            # save default matplotlib backend for future use
+            self.AUTOMATIC_MPL_BACKEND = mpl.get_backend()
+
+        if backend is None:
+            backend = self.AUTOMATIC_MPL_BACKEND
+
         self._backend = backend
 
     def init(self):
-        if self._backend is not None:
-            self._mpl.use(backend=self._backend)
+        self._mpl.use(backend=self._backend)
         self.plt.style.use('bmh')
 
     def figure(self) -> IFigure:
