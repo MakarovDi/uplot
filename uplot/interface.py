@@ -20,11 +20,11 @@ class IFigure(Protocol):
     """
     @property
     def engine(self) -> IPlotEngine:
-        ...
+        return ...
 
     @property
     def internal(self):
-        ...
+        return ...
 
     def plot(self, x          : ArrayLike,
                    y          : ArrayLike | None = None,
@@ -104,9 +104,9 @@ class IPlotEngine(Protocol):
 
     @property
     def figure_type(self) -> type:
-        ...
+        return ...
 
-    def init(self):
+    def init_style(self):
         ...
 
     def figure(self) -> IFigure:

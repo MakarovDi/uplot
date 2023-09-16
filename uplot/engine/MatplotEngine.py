@@ -52,11 +52,11 @@ class MatplotEngine(IPlotEngine):
 
         self._backend = backend
 
-    def init(self):
+    def init_style(self):
         self._mpl.use(backend=self._backend)
         self.plt.style.use('bmh')
 
     def figure(self) -> IFigure:
         from uplot.engine.MatplotFigure import MatplotFigure
-        self.init()
+        self.init_style()
         return MatplotFigure(self)
