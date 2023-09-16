@@ -11,7 +11,7 @@ class MatplotEngine(IPlotEngine):
             return False
 
     @property
-    def fig_type(self) -> type:
+    def figure_type(self) -> type:
         return self.plt.Figure
 
     @property
@@ -37,7 +37,7 @@ class MatplotEngine(IPlotEngine):
             self._mpl.use(backend=self._backend)
         self.plt.style.use('bmh')
 
-    def new_figure(self) -> IFigure:
+    def figure(self) -> IFigure:
         from uplot.engine.MatplotFigure import MatplotFigure
         self.init()
         return MatplotFigure(self)

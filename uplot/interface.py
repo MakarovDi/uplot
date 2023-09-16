@@ -23,7 +23,7 @@ class IFigure(Protocol):
         ...
 
     @property
-    def internal(self): # TODO: type?
+    def internal(self):
         ...
 
     def plot(self, x          : ArrayLike,
@@ -103,13 +103,13 @@ class IPlotEngine(Protocol):
         ...
 
     @property
-    def fig_type(self) -> type:
+    def figure_type(self) -> type:
         ...
 
     def init(self):
         ...
 
-    def new_figure(self) -> IFigure:
+    def figure(self) -> IFigure:
         """
         Factory method for a figure creation
         """
