@@ -4,6 +4,12 @@ from uplot.interface import IPlotEngine, IFigure
 class MatplotEngine(IPlotEngine):
     AUTOMATIC_MPL_BACKEND: str | None = None # automatically chosen matplotlib backend
 
+    NON_GUI_BACKEND: set = {
+         'agg',    # standard built-in
+         'ipympl', # jupyter
+        r'module://matplotlib_inline.backend_inline' # jupyter
+    }
+
     @classmethod
     def is_available(cls) -> bool:
         try:
@@ -23,6 +29,10 @@ class MatplotEngine(IPlotEngine):
     @property
     def mpl(self):
         return self._mpl
+
+    @property
+    def is_gui_backend(self) -> bool:
+        return not self.mpl.get_backend() in self.NON_GUI_BACKEND
 
 
     # noinspection PyPackageRequirements

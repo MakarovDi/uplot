@@ -170,6 +170,10 @@ class MatplotFigure(IFigure):
         self._fig = None
 
     def show(self, block: bool = False):
+        if not self.engine.is_gui_backend:
+            # not possible to show
+            return
+
         self._fig.show()
         if block:
             self._fig.waitforbuttonpress()
