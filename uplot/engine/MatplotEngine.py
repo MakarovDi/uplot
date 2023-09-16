@@ -5,8 +5,8 @@ class MatplotEngine(IPlotEngine):
     AUTOMATIC_MPL_BACKEND: str | None = None # automatically chosen matplotlib backend
 
     NON_GUI_BACKEND: set = {
-         'agg',    # standard built-in
-         'ipympl', # jupyter
+        r'agg', # standard built-in
+        r'module://ipympl.backend_nbagg', # jupyter
         r'module://matplotlib_inline.backend_inline' # jupyter
     }
 

@@ -28,9 +28,9 @@ pip install git+https://github.com/makarovdi/uplot.git
 
 ## Tested
 
-|                     | GUI                             | JupyterLab<br>`4.0.6`                      | Jupyter Notebook<br>`4.0`                | IPython<br>`x.x` | VSCode<br> |
-|:-------------------:|:--------------------------------|:-------------------------------------------|:-----------------------------------------|:-----------------|:-----------|
-| matplotlib<br>`3.7` | `windows` &#10004;<br>          | `inline` &#10004;<br>`ipympl` &quest;<br>  | `inline` &quest;<br>`ipympl` &quest;<br> | &quest;          | &quest;          |
+|                     | GUI                             | JupyterLab<br>`4.0.6`                      | Jupyter<br>Notebook<br>`7.0`               | IPython<br>`x.x` | VSCode<br> |
+|:-------------------:|:--------------------------------|:-------------------------------------------|:-------------------------------------------|:-----------------|:-----------|
+| matplotlib<br>`3.7` | `windows` &#10004;<br>          | `inline` &#10004;<br>`ipympl` &#10004;<br>  | `inline` &#10004;<br>`ipympl` &#10004;<br> | &quest;          | &quest;          |
 
 
 ## Dependencies
