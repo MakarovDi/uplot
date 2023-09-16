@@ -2,8 +2,9 @@ from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.engine.manage import available, register, get
 
 
-# init default engines
+# register available engines
 
 if MatplotEngine.is_available():
+    # the first registered engine is the default
     register(MatplotEngine(),              name='matplot',      short_name='mpl')
-    register(MatplotEngine(backend='agg'), name='matplot-file', short_name='mpl-file')
+    register(MatplotEngine(backend='agg'), name='matplot-nogui', short_name='mpl-nogui')
