@@ -88,7 +88,6 @@ class PlotlyFigure5(IFigure):
                                   opacity=opacity,
                                   showlegend=show_legend)
 
-
     def scatter(self, x          : ArrayLike,
                       y          : ArrayLike | None = None,
                       name       : str | list[str] | None = None,
@@ -163,8 +162,9 @@ class PlotlyFigure5(IFigure):
 
         fig_bytes = io.BytesIO(self._fig.to_image(format='png'))
         image = Image.open(fig_bytes)
-
-        return np.asarray(image)
+        image = np.asarray(image)
+        image = image[..., :3] # RGBA -> RGB
+        return image
 
     def save(self, fname: str):
         import imageio.v3 as iio
@@ -176,7 +176,6 @@ class PlotlyFigure5(IFigure):
 
     def show(self, block: bool = False):
         self.engine.pio.show(self._fig)
-
 
 
 def update_axis_limit(figure, axis: Literal['x', 'y'],
