@@ -54,5 +54,16 @@ class MatplotEngine(IPlotEngine):
 
     def figure(self) -> IFigure:
         from uplot.engine.MatplotFigure import MatplotFigure
-        self.init_style()
-        return MatplotFigure(self)
+
+        # use style and backend for our figure only
+        # avoid to change global state of matplotlib
+        current_backend = self._mpl.get_backend()
+        self._mpl.use(backend=self._backend)
+
+        # temporary styling:
+        # https://matplotlib.org/stable/users/explain/customizing.html
+        with self._plt.style.context('bmh'):
+            fig = MatplotFigure(self)
+
+        self._mpl.use(backend=current_backend)
+        return fig
