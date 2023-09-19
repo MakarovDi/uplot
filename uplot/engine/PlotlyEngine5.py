@@ -31,10 +31,6 @@ class PlotlyEngine5(IPlotEngine):
         self._pio = pio
         self._go = go
 
-    def init_style(self):
-        pass
-
     def figure(self) -> IFigure:
         from uplot.engine.PlotlyFigure5 import PlotlyFigure5
-        self.init_style()
         return PlotlyFigure5(self)

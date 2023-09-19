@@ -106,9 +106,6 @@ class IPlotEngine(Protocol):
     def figure_type(self) -> type:
         return ...
 
-    def init_style(self):
-        ...
-
     def figure(self) -> IFigure:
         """
         Factory method for a figure creation
