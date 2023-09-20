@@ -35,7 +35,18 @@ class PlotlyEngine5(IPlotEngine):
         import plotly.io as pio
         self._pio = pio
         self._go = go
+        # load style
+        from uplot.engine.style.plotly import bmh
+        self._layout_style = bmh
 
     def figure(self) -> IFigure:
         from uplot.engine.PlotlyFigure5 import PlotlyFigure5
-        return PlotlyFigure5(self)
+
+        fig = PlotlyFigure5(self)
+
+        # adjust style layout
+        fig.internal.update_layout(template=self._layout_style,
+                                   width=self.PLOT_WIDTH,
+                                   height=self.PLOT_HEIGHT)
+
+        return fig
