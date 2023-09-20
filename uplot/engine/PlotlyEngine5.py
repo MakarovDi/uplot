@@ -2,8 +2,11 @@ from uplot.interface import IPlotEngine, IFigure
 
 
 class PlotlyEngine5(IPlotEngine):
-    DEFAULT_MARKER_SIZE = 8
-    DEFAULT_LINE_WIDTH = 2
+    PLOT_WIDTH = 1000
+    PLOT_HEIGHT = 800
+    FILE_RESOLUTION_SCALE = 2
+    MARKER_SIZE = 8
+    LINE_WIDTH = 2
     RANGE_EXTRA_SPACE_PERCENT = 2 # adding extra space to min/max ranges
 
     @classmethod
@@ -27,7 +30,6 @@ class PlotlyEngine5(IPlotEngine):
         return self._pio
 
 
-    # noinspection PyPackageRequirements
     def __init__(self):
         import plotly.graph_objs as go
         import plotly.io as pio

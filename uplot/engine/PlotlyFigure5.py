@@ -50,7 +50,7 @@ class PlotlyFigure5(IFigure):
         y = y.reshape([len(x), -1])
 
         if marker_size is None:
-            marker_size = self.engine.DEFAULT_MARKER_SIZE
+            marker_size = self.engine.MARKER_SIZE
 
         for i, y_i in enumerate(y.T):
             name_i = unpack_param(name, i)
@@ -80,7 +80,7 @@ class PlotlyFigure5(IFigure):
                                   line=self.engine.go.scatter.Line(dash=line_i),
                                   marker=self.engine.go.scatter.Marker(symbol=marker_i,
                                                                        line_color=color_i,
-                                                                       line_width=self.engine.DEFAULT_LINE_WIDTH,
+                                                                       line_width=self.engine.LINE_WIDTH,
                                                                        size=marker_size),
                                   opacity=opacity,
                                   showlegend=show_legend)
@@ -161,7 +161,8 @@ class PlotlyFigure5(IFigure):
         import io
         from PIL import Image
 
-        fig_bytes = io.BytesIO(self._fig.to_image(format='png'))
+        fig_bytes = io.BytesIO(self._fig.to_image(format='png',
+                                                  scale=self.engine.FILE_RESOLUTION_SCALE))
         image = Image.open(fig_bytes)
         image = np.asarray(image)
         image = image[..., :3] # RGBA -> RGB
