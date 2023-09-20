@@ -63,12 +63,12 @@ class IFigure(Protocol):
     def ylabel(self, text: str):
         ...
 
-    def xlim(self, max_value: float | None = None,
-                   min_value: float | None = None):
+    def xlim(self, min_value: float | None = None,
+                   max_value: float | None = None):
         ...
 
-    def ylim(self, max_value: float | None = None,
-                   min_value: float | None = None):
+    def ylim(self, min_value: float | None = None,
+                   max_value: float | None = None):
         ...
 
     def current_color(self) -> str:

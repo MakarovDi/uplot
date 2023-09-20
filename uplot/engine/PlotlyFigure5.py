@@ -134,12 +134,12 @@ class PlotlyFigure5(IFigure):
     def ylabel(self, text: str):
         self._fig.update_yaxes(title=text)
 
-    def xlim(self, max_value: float | None = None,
-                   min_value: float | None = None):
+    def xlim(self, min_value: float | None = None,
+                   max_value: float | None = None):
         update_axis_limit(figure=self._fig, axis='x', range_min=min_value, range_max=max_value)
 
-    def ylim(self, max_value: float | None = None,
-                   min_value: float | None = None):
+    def ylim(self, min_value: float | None = None,
+                   max_value: float | None = None):
         update_axis_limit(figure=self._fig, axis='y', range_min=min_value, range_max=max_value)
 
     def current_color(self) -> str:

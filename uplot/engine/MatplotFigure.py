@@ -128,12 +128,12 @@ class MatplotFigure(IFigure):
     def ylabel(self, text: str):
         self._axis.set_ylabel(ylabel=text)
 
-    def xlim(self, max_value: float | None = None,
-                   min_value: float | None = None):
+    def xlim(self, min_value: float | None = None,
+                   max_value: float | None = None):
         self._axis.set_xlim(left=min_value, right=max_value) # type: ignore # matplotlib incomplete annotation
 
-    def ylim(self, max_value: float | None = None,
-                   min_value: float | None = None):
+    def ylim(self, min_value: float | None = None,
+                   max_value: float | None = None):
         self._axis.set_ylim(bottom=min_value, top=max_value) # type: ignore # matplotlib incomplete annotation
 
     def current_color(self) -> str:
