@@ -55,10 +55,10 @@ class MatplotFigure(IFigure):
             y = x
             x = np.arange(len(y))
 
+        y = y.reshape([len(x), -1])
+
         if marker_size is None:
             marker_size = self.DEFAULT_MARKER_SIZE
-
-        y = y.reshape([len(x), -1])
 
         for i, y_i in enumerate(y.T):
             color_i = decode_color(unpack_param(color, i))

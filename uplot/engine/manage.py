@@ -6,6 +6,9 @@ DEFAULT_ENGINES: dict[str, IPlotEngine] = OrderedDict[str, IPlotEngine]()
 DEFAULT_ENGINES_SHORT_NAME: dict[str, str] = { }
 
 
+# TODO: docs
+
+
 def available(short_names: bool = False) -> tuple[str, ...]:
     if short_names:
         return tuple(DEFAULT_ENGINES_SHORT_NAME.keys())
@@ -26,6 +29,7 @@ def register(e: IPlotEngine, name: str, short_name: str = '') -> bool:
         DEFAULT_ENGINES_SHORT_NAME[short_name] = name
 
     return True
+
 
 def get(name: str | None = None) -> IPlotEngine:
     if len(DEFAULT_ENGINES) == 0:

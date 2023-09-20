@@ -1,5 +1,7 @@
 from typing import OrderedDict
 
+# TODO: ColorScroller class
+
 default_colors = OrderedDict[str, str]([
     ('blue'   , '#1f77b4'),
     ('orange' , '#ff7f0e'),
