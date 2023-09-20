@@ -213,7 +213,7 @@ def update_axis_limit(figure, axis: Literal['x', 'y'],
         range_max = np.max(range_max)
 
     range_min *= 1 - np.sign(range_min) * PlotlyFigure5.RANGE_EXTRA_SPACE_PERCENT / 100
-    range_max *= 1 - np.sign(range_max) * PlotlyFigure5.RANGE_EXTRA_SPACE_PERCENT / 100
+    range_max *= 1 + np.sign(range_max) * PlotlyFigure5.RANGE_EXTRA_SPACE_PERCENT / 100
     update_axis(range=[range_min, range_max])
 
 
