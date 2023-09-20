@@ -2,6 +2,9 @@ from uplot.interface import IPlotEngine, IFigure
 
 
 class PlotlyEngine5(IPlotEngine):
+    DEFAULT_MARKER_SIZE = 8
+    DEFAULT_LINE_WIDTH = 2
+    RANGE_EXTRA_SPACE_PERCENT = 2 # adding extra space to min/max ranges
 
     @classmethod
     def is_available(cls) -> bool:

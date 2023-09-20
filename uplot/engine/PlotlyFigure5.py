@@ -14,9 +14,6 @@ from uplot.routine import unpack_param
 
 
 class PlotlyFigure5(IFigure):
-    DEFAULT_MARKER_SIZE = 8
-    DEFAULT_LINE_WIDTH = 2
-    RANGE_EXTRA_SPACE_PERCENT = 2 # adding extra space to min/max ranges
 
     @property
     def engine(self) -> PlotlyEngine5:
@@ -53,7 +50,7 @@ class PlotlyFigure5(IFigure):
         y = y.reshape([len(x), -1])
 
         if marker_size is None:
-            marker_size = self.DEFAULT_MARKER_SIZE
+            marker_size = self.engine.DEFAULT_MARKER_SIZE
 
         for i, y_i in enumerate(y.T):
             name_i = unpack_param(name, i)
@@ -83,7 +80,7 @@ class PlotlyFigure5(IFigure):
                                   line=self.engine.go.scatter.Line(dash=line_i),
                                   marker=self.engine.go.scatter.Marker(symbol=marker_i,
                                                                        line_color=color_i,
-                                                                       line_width=self.DEFAULT_LINE_WIDTH,
+                                                                       line_width=self.engine.DEFAULT_LINE_WIDTH,
                                                                        size=marker_size),
                                   opacity=opacity,
                                   showlegend=show_legend)
@@ -136,11 +133,15 @@ class PlotlyFigure5(IFigure):
 
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None):
-        update_axis_limit(figure=self._fig, axis='x', range_min=min_value, range_max=max_value)
+        update_axis_limit(figure=self._fig, axis='x',
+                          range_min=min_value, range_max=max_value,
+                          extra_space_percent=self.engine.RANGE_EXTRA_SPACE_PERCENT)
 
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None):
-        update_axis_limit(figure=self._fig, axis='y', range_min=min_value, range_max=max_value)
+        update_axis_limit(figure=self._fig, axis='y',
+                          range_min=min_value, range_max=max_value,
+                          extra_space_percent=self.engine.RANGE_EXTRA_SPACE_PERCENT)
 
     def current_color(self) -> str:
         color_name = default_colors_list[self._color_index]
@@ -180,7 +181,8 @@ class PlotlyFigure5(IFigure):
 
 def update_axis_limit(figure, axis: Literal['x', 'y'],
                       range_min: float | None = None,
-                      range_max: float | None = None):
+                      range_max: float | None = None,
+                      extra_space_percent: int=2):
     # setting only min or only max is not implemented in plotly
     # https://github.com/plotly/plotly.js/issues/400
     # so manual estimation of min/max is required
@@ -212,8 +214,8 @@ def update_axis_limit(figure, axis: Literal['x', 'y'],
             range_max.append(np.max(get_axis_data(trace_data)))
         range_max = np.max(range_max)
 
-    range_min *= 1 - np.sign(range_min) * PlotlyFigure5.RANGE_EXTRA_SPACE_PERCENT / 100
-    range_max *= 1 + np.sign(range_max) * PlotlyFigure5.RANGE_EXTRA_SPACE_PERCENT / 100
+    range_min *= 1 - np.sign(range_min) * extra_space_percent / 100
+    range_max *= 1 + np.sign(range_max) * extra_space_percent / 100
     update_axis(range=[range_min, range_max])
 
 
