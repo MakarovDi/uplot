@@ -151,7 +151,9 @@ class MatplotFigure(IFigure):
 
     def as_image(self) -> ndarray:
         fig = self._fig
+
         fig.set_dpi(self.engine.SAVING_DPI)
+        fig.tight_layout()
 
         fig.canvas.draw()
         image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
@@ -160,6 +162,7 @@ class MatplotFigure(IFigure):
         return image.reshape([h, w, 3])
 
     def save(self, fname: str):
+        self._fig.tight_layout()
         self._fig.savefig(fname, dpi=self.engine.SAVING_DPI)
 
     def close(self):
@@ -171,6 +174,7 @@ class MatplotFigure(IFigure):
             # not possible to show
             return
 
+        self._fig.tight_layout()
         self._fig.show()
         if block:
             self._fig.waitforbuttonpress()
