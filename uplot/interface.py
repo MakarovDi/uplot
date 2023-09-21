@@ -74,7 +74,7 @@ class IFigure(Protocol):
     def current_color(self) -> str:
         ...
 
-    def scroll_color(self, count: int=1):
+    def scroll_color(self, count: int = 1):
         ...
 
     def reset_color(self):
@@ -92,7 +92,7 @@ class IFigure(Protocol):
     def close(self):
         ...
 
-    def show(self, block: bool=False):
+    def show(self, block: bool = False):
         ...
 
 @runtime_checkable
@@ -106,7 +106,7 @@ class IPlotEngine(Protocol):
     def figure_type(self) -> type:
         return ...
 
-    def figure(self) -> IFigure:
+    def figure(self, aspect_ratio: float) -> IFigure:
         """
         Factory method for a figure creation
         """

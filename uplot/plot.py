@@ -5,7 +5,8 @@ from uplot import engine as e
 CURRENT_ENGINE: IPlotEngine | None = None
 
 
-def figure(engine: str | IPlotEngine | None = None) -> IFigure:
+def figure(engine: str | IPlotEngine | None = None,
+           aspect_ratio: float = 0.8) -> IFigure:
     """
     Creates figure via specified or default engine.
 
@@ -25,7 +26,7 @@ def figure(engine: str | IPlotEngine | None = None) -> IFigure:
         engine = CURRENT_ENGINE
 
     if isinstance(engine, IPlotEngine):
-        return engine.figure()
+        return engine.figure(aspect_ratio=aspect_ratio)
 
     CURRENT_ENGINE = e.get(engine)
-    return CURRENT_ENGINE.figure()
+    return CURRENT_ENGINE.figure(aspect_ratio=aspect_ratio)
