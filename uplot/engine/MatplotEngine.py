@@ -2,6 +2,11 @@ from uplot.interface import IPlotEngine, IFigure
 
 
 class MatplotEngine(IPlotEngine):
+    PLOT_WIDTH = 8
+    MARKER_SIZE = 6
+    SHOWING_DPI = 100
+    SAVING_DPI = SHOWING_DPI * 2
+
     AUTOMATIC_MPL_BACKEND: str | None = None # automatically chosen matplotlib backend
 
     NON_GUI_BACKEND: set = {
@@ -52,7 +57,7 @@ class MatplotEngine(IPlotEngine):
 
         self._backend = backend
 
-    def figure(self) -> IFigure:
+    def figure(self, aspect_ratio: float) -> IFigure:
         from uplot.engine.MatplotFigure import MatplotFigure
 
         # use style and backend for our figure only
@@ -64,6 +69,8 @@ class MatplotEngine(IPlotEngine):
         # https://matplotlib.org/stable/users/explain/customizing.html
         with self._plt.style.context('bmh'):
             fig = MatplotFigure(self)
+            fig.internal.set_figwidth(self.PLOT_WIDTH)
+            fig.internal.set_figheight(aspect_ratio*self.PLOT_WIDTH)
 
         self._mpl.use(backend=current_backend)
         return fig
