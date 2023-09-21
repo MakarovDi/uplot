@@ -1,3 +1,6 @@
+__version__ = '0.1.0'
+__author__ = 'Dmitry Makarov'
+
 import uplot.engine as engine
 
 from uplot.LineStyle import LineStyle
