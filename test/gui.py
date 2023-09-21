@@ -5,8 +5,8 @@ import imageio.v3 as iio
 
 ## Run Mode
 
-save_to_file = True
-engine = 'pl5'
+save_to_file = False
+engine = 'mpl'
 
 ## Data
 
@@ -34,7 +34,7 @@ else:
 
 ## Fig 2
 
-f2 = uplot.figure()
+f2 = uplot.figure(aspect_ratio=0.4)
 f2.plot(d2.T)
 f2.title('Test')
 f2.legend(True)
