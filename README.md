@@ -1,7 +1,7 @@
 # uplot
 
 [![python](https://img.shields.io/badge/Python-3.10-blue?logo=python&logoColor=white)](https://docs.python.org/3/whatsnew/3.10.html)
-[![python](https://img.shields.io/badge/License-BSD%203--Clause-green)](https://choosealicense.com/licenses/mit/)
+[![license](https://img.shields.io/badge/License-BSD%203--Clause-green)](https://choosealicense.com/licenses/mit/)
 [![jupyter](https://img.shields.io/badge/Jupyter-Lab-F37626.svg?style=flat&logo=Jupyter)](https://jupyterlab.readthedocs.io/en/stable)
 
 Unified API and style for Python plotting libraries.
@@ -11,7 +11,7 @@ Unified API and style for Python plotting libraries.
 ```python
 import uplot
 
-f = uplot.figure(engine='matplot')
+f = uplot.figure(engine='matplotlib')
 f.plot([1, 2, 3], [1, 2, 3], name='Line 45')
 f.legend(show=True)
 f.title('Test')
@@ -22,8 +22,24 @@ f.show(block=True)
 
 ## Install
 
+The recent stable version (dependencies should be installed manually):
 ```bash
-pip install git+https://github.com/makarovdi/uplot.git
+pip install git+https://github.com/makarovdi/uplot.git@main
+```
+
+With `matplotlib` package:
+```bash
+pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
+```
+
+With `plotly` package:
+```bash
+pip install git+https://github.com/makarovdi/uplot.git@main[plotly5]
+```
+
+With all supported plotting libs:
+```bash
+pip install git+https://github.com/makarovdi/uplot.git@main[all]
 ```
 
 ## Tested
@@ -56,6 +72,7 @@ See the [LICENSE](LICENSE) file for details.
 - [ ] Changelog
 - [x] **API**: aspect ratio param: `uplot.figure(..., aspect_ratio: float)`
 - [ ] **API**: `fig.plot3d(...)` and `fig.scatter3d(...)`
+- [ ] **API**: `fig.surface3d(...)`
 - [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
 - [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
 - [ ] **API**: `fig.bar(...)` 
