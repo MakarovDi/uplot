@@ -106,7 +106,8 @@ class IPlotEngine(Protocol):
     def figure_type(self) -> type:
         return ...
 
-    def figure(self, aspect_ratio: float) -> IFigure:
+    def figure(self, width: int,
+                     aspect_ratio: float) -> IFigure:
         """
         Factory method for a figure creation
         """

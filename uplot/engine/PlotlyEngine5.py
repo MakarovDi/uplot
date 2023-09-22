@@ -2,7 +2,6 @@ from uplot.interface import IPlotEngine, IFigure
 
 
 class PlotlyEngine5(IPlotEngine):
-    PLOT_WIDTH = 800 # pixels
     FILE_RESOLUTION_SCALE = 2
     MARKER_SIZE = 8
     LINE_WIDTH = 2
@@ -38,14 +37,14 @@ class PlotlyEngine5(IPlotEngine):
         from uplot.engine.style.plotly import bmh
         self._layout_style = bmh
 
-    def figure(self, aspect_ratio: float) -> IFigure:
+    def figure(self, width: int, aspect_ratio: float) -> IFigure:
         from uplot.engine.PlotlyFigure5 import PlotlyFigure5
 
         fig = PlotlyFigure5(self)
 
         # adjust style layout
         fig.internal.update_layout(template=self._layout_style,
-                                   width=self.PLOT_WIDTH,
-                                   height=aspect_ratio*self.PLOT_WIDTH)
+                                   width=width,
+                                   height=aspect_ratio*width)
 
         return fig

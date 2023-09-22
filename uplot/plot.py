@@ -6,6 +6,7 @@ CURRENT_ENGINE: IPlotEngine | None = None
 
 
 def figure(engine: str | IPlotEngine | None = None,
+           width: int | None = 800,
            aspect_ratio: float = 0.8) -> IFigure:
     """
     Creates figure via specified or default engine.
@@ -14,6 +15,12 @@ def figure(engine: str | IPlotEngine | None = None,
     ----------
     engine :
         plotting engine object or name, if None then return previous or default engine
+
+    width :
+        the figure width in pixels
+
+    aspect_ratio :
+        aspect ratio for the new figure
 
     Returns
     -------
@@ -26,7 +33,7 @@ def figure(engine: str | IPlotEngine | None = None,
         engine = CURRENT_ENGINE
 
     if isinstance(engine, IPlotEngine):
-        return engine.figure(aspect_ratio=aspect_ratio)
+        return engine.figure(width=width, aspect_ratio=aspect_ratio)
 
     CURRENT_ENGINE = e.get(engine)
-    return CURRENT_ENGINE.figure(aspect_ratio=aspect_ratio)
+    return CURRENT_ENGINE.figure(width=width, aspect_ratio=aspect_ratio)
