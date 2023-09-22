@@ -1,5 +1,4 @@
-__version__ = '0.1.0'
-__author__ = 'Dmitry Makarov'
+from uplot.info import __version__, __author__, __email__
 
 import uplot.engine as engine
 
