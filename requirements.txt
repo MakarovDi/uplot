@@ -1,3 +1,2 @@
 numpy   >= 1.21, <= 2.0  # ArrayLike and extended annotations: https://numpy.org/devdocs/reference/typing.html
 pillow  >= 8.3,  <= 11.0
-imageio >= 2.31, <= 3.0

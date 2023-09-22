@@ -169,9 +169,10 @@ class PlotlyFigure5(IFigure):
         return image
 
     def save(self, fname: str):
-        import imageio.v3 as iio
-        image = self.as_image()
-        iio.imwrite(fname, image)
+        if '.html' in fname:
+            self._fig.write_html(fname)
+        else:
+            self._fig.write_image(fname)
 
     def close(self):
         self._fig = None
