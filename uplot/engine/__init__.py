@@ -6,8 +6,8 @@ from uplot.engine.manage import available, register, get
 # register available engines
 
 if MatplotEngine.is_available():
-    register(MatplotEngine(),              name='matplot',       short_name='mpl') # default
-    register(MatplotEngine(backend='agg'), name='matplot-nogui', short_name='mpl-nogui')
+    register(MatplotEngine(),              name='matplotlib',       short_name='mpl') # the first is default
+    register(MatplotEngine(backend='agg'), name='matplotlib-nogui', short_name='mpl-nogui')
 
 if PlotlyEngine5.is_available():
-    register(PlotlyEngine5(),              name='plotly5',       short_name='pl5')
+    register(PlotlyEngine5(),              name='plotly5',          short_name='pl5')
