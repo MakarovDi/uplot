@@ -170,11 +170,22 @@ class MatplotFigure(IFigure):
         self._fig = None
 
     def show(self, block: bool = False):
-        if not self.engine.is_gui_backend:
-            # not possible to show
+        self._fig.tight_layout()
+
+        if self.engine.is_ipython_backend:
+            # There are two ways for consistent figure visualization in jupyter
+            #    1. call `%matplotlib ...` at the notebook start.
+            #    2. always use `plt.show()`.
+            # It's easy to forget about (1) so `plt.show()` is more reliable
+            # but not the best, probably (because it'll show all figures).
+            self.engine.plt.show()
             return
 
-        self._fig.tight_layout()
+        if not self.engine.is_gui_backend:
+            # no need to show, bypass
+            return
+
+        # show only this figure
         self._fig.show()
         if block:
             self._fig.waitforbuttonpress()
