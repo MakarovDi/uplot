@@ -8,12 +8,6 @@ class MatplotEngine(IPlotEngine):
 
     AUTOMATIC_MPL_BACKEND: str | None = None # automatically chosen matplotlib backend
 
-    NON_GUI_BACKEND: set = {
-        r'agg', # standard built-in
-        r'module://ipympl.backend_nbagg', # jupyter
-        r'module://matplotlib_inline.backend_inline' # jupyter
-    }
-
     @classmethod
     def is_available(cls) -> bool:
         try:
@@ -35,8 +29,13 @@ class MatplotEngine(IPlotEngine):
         return self._mpl
 
     @property
+    def is_ipython_backend(self) -> bool:
+       return ('inline' in self.mpl.get_backend() or
+               'ipympl' in self.mpl.get_backend())
+
+    @property
     def is_gui_backend(self) -> bool:
-        return not self.mpl.get_backend() in self.NON_GUI_BACKEND
+        return not self.is_ipython_backend and self.mpl.get_backend() != 'agg'
 
 
     # noinspection PyPackageRequirements
@@ -64,7 +63,7 @@ class MatplotEngine(IPlotEngine):
         current_backend = self._mpl.get_backend()
         self._mpl.use(backend=self._backend)
 
-        # temporary styling:
+        # temporary styling (no global effect):
         # https://matplotlib.org/stable/users/explain/customizing.html
         with self._plt.style.context('bmh'):
             fig = MatplotFigure(self)
