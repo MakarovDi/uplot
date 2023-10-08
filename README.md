@@ -26,7 +26,7 @@ The recent stable version (without any plotting library):
 ```bash
 pip install git+https://github.com/makarovdi/uplot.git@main
 ```
-to automatically install all dependencies run
+to automatically install all dependencies
 ```bash
 pip install git+https://github.com/makarovdi/uplot.git@main[all]
 ```
@@ -40,10 +40,10 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 
 ## Verified Versions
 
-|                      |                      Standalone |          JupyterLab<br>`4.0.6` | Jupyter<br/>Notebook<br/>`7.0` |         IDE |
-|:--------------------:|--------------------------------:|-------------------------------:|-------------------------------:|------------:|
-| matplotlib<br/>`3.7` |      `gui` ✔<br/>`save image` ✔ | `inline` ✔<br/>`ipympl` ✔<br/> | `inline` ✔<br/>`ipympl` ✔<br/> |  `vscode` ✔ |
-|  plotly<br/>`5.17`   | `chromium` ✔<br/>`save image` ✔ |                              ✔ |                              ✔ |  `vscode` ✔ |
+|                      |                                                Standalone |                                    JupyterLab<br>`4.0.6` |                           Jupyter<br/>Notebook<br/>`7.0` |                     IDE |
+|:--------------------:|----------------------------------------------------------:|---------------------------------------------------------:|---------------------------------------------------------:|------------------------:|
+| matplotlib<br/>`3.7` |      `gui` :green_circle:<br/>`save image` :green_circle: | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `vscode` :green_circle: |
+|  plotly<br/>`5.17`   | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: | `vscode` :green_circle: |
 
 
 ## Dependencies
