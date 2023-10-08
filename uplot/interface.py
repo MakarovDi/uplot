@@ -51,7 +51,7 @@ class IFigure(Protocol):
     def title(self, text: str):
         ...
 
-    def legend(self, show: bool = True):
+    def legend(self, show: bool = True, **kwargs):
         ...
 
     def grid(self, show: bool = True):

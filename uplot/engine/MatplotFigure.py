@@ -9,7 +9,7 @@ import uplot.imtool as imtool
 from uplot.interface import IFigure, LineStyle, MarkerStyle
 from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.colors import default_colors_list, decode_color, default_colors
-from uplot.routine import unpack_param
+from uplot.routine import unpack_param, kwargs_extract
 
 
 class MatplotFigure(IFigure):
@@ -33,7 +33,6 @@ class MatplotFigure(IFigure):
         # Constrained layout is similar to Tight layout, but is substantially more flexible.
         # https://matplotlib.org/stable/users/explain/axes/constrainedlayout_guide.html
 
-        self._legend_visible = False
         self._color_index = 0
 
         # default style
@@ -113,11 +112,17 @@ class MatplotFigure(IFigure):
     def title(self, text: str):
         self._axis.set_title(label=text)
 
-    def legend(self, show: bool = True):
+    def legend(self, show: bool = True, **kwargs):
         handles, labels = self._axis.get_legend_handles_labels()
         if len(handles) > 0:
-            self._axis.legend(handles, labels).set_visible(show)
-            self._legend_visible = show
+            loc = kwargs_extract(kwargs, name='loc', default='outside right upper')
+            if 'outside' in loc:
+                # outside works only for the figure
+                # "outside right upper" works correctly with "constrained" or "compressed" layout only
+                self._fig.legend().set(visible=show, loc=loc, **kwargs)
+            else:
+                # axes.legend() is better for an other options becuase legend will be inside graph
+                self._fig.gca().legend().set(visible=show, loc=loc, **kwargs)
 
     def grid(self, show: bool = True):
         self._axis.grid(visible=show)
@@ -130,11 +135,11 @@ class MatplotFigure(IFigure):
 
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None):
-        self._axis.set_xlim(left=min_value, right=max_value) # type: ignore # matplotlib incomplete annotation
+        self._axis.set_xlim(left=min_value, right=max_value)
 
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None):
-        self._axis.set_ylim(bottom=min_value, top=max_value) # type: ignore # matplotlib incomplete annotation
+        self._axis.set_ylim(bottom=min_value, top=max_value)
 
     def current_color(self) -> str:
         color_name = default_colors_list[self._color_index]

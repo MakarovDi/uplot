@@ -118,8 +118,8 @@ class PlotlyFigure5(IFigure):
     def title(self, text: str):
         self._fig.update_layout(title=text)
 
-    def legend(self, show: bool = True):
-        self._fig.update_layout(showlegend=show)
+    def legend(self, show: bool = True, **kwargs):
+        self._fig.update_layout(legend=dict(visible=show, **kwargs))
 
     def grid(self, show: bool = True):
         self._fig.update_xaxes(showgrid=show)
