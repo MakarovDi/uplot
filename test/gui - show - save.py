@@ -19,7 +19,7 @@ d2 = np.array([[1, 2, 3],
 
 f1 = uplot.figure(engine=engine)
 f1.plot(d1, d2)
-f1.scatter(3, 5, name='L2')
+f1.scatter(3, 5, name='The lonely dot')
 f1.title('Test')
 f1.legend(True)
 f1.sync_axis_scale()
