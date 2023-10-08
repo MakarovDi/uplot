@@ -26,14 +26,17 @@ class MatplotFigure(IFigure):
     def __init__(self, engine: MatplotEngine):
         self._engine = engine
 
-        self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI)
+        self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
         self._axis: engine.plt.Axes = self._fig.gca()
+        # Constrained layout automatically adjusts subplots so that decorations like tick labels,
+        # legends, and colorbars do not overlap, while still preserving the logical layout requested by the user.
+        # Constrained layout is similar to Tight layout, but is substantially more flexible.
+        # https://matplotlib.org/stable/users/explain/axes/constrainedlayout_guide.html
 
         self._legend_visible = False
         self._color_index = 0
 
         # default style
-        self._fig.tight_layout(pad=2.8)
         self._axis.grid(visible=True)
 
     def plot(self, x          : ArrayLike,
@@ -153,7 +156,6 @@ class MatplotFigure(IFigure):
         fig = self._fig
 
         fig.set_dpi(self.engine.SAVING_DPI)
-        fig.tight_layout()
 
         fig.canvas.draw()
         image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
@@ -162,7 +164,6 @@ class MatplotFigure(IFigure):
         return image.reshape([h, w, 3])
 
     def save(self, fname: str):
-        self._fig.tight_layout()
         self._fig.savefig(fname, dpi=self.engine.SAVING_DPI)
 
     def close(self):
@@ -170,8 +171,6 @@ class MatplotFigure(IFigure):
         self._fig = None
 
     def show(self, block: bool = False):
-        self._fig.tight_layout()
-
         if self.engine.is_ipython_backend:
             # There are two ways for consistent figure visualization in jupyter
             #    1. call `%matplotlib ...` at the notebook start.
