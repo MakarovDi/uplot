@@ -3,7 +3,6 @@ from uplot.interface import IPlotEngine, IFigure
 
 class MatplotEngine(IPlotEngine):
     MARKER_SIZE = 6
-    WIDTH_SCALING = 0.9 # for consistent size across engines
     SHOWING_DPI = 100
     SAVING_DPI = SHOWING_DPI * 2
 
@@ -68,7 +67,6 @@ class MatplotEngine(IPlotEngine):
         # https://matplotlib.org/stable/users/explain/customizing.html
         with self._plt.style.context('bmh'):
             fig = MatplotFigure(self)
-            width *= self.WIDTH_SCALING
             fig.internal.set_figwidth(width / self.SHOWING_DPI)
             fig.internal.set_figheight(aspect_ratio*(width / self.SHOWING_DPI))
 
