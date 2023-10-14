@@ -10,7 +10,7 @@ import uplot.imtool as imtool
 from uplot.interface import IFigure, LineStyle, MarkerStyle
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
 from uplot.colors import default_colors_list, decode_color, default_colors
-from uplot.routine import unpack_param
+from uplot.routine import unpack_param, kwargs_extract
 
 
 class PlotlyFigure5(IFigure):
@@ -119,7 +119,11 @@ class PlotlyFigure5(IFigure):
         self._fig.update_layout(title=text)
 
     def legend(self, show: bool = True, **kwargs):
-        self._fig.update_layout(legend=dict(visible=show, **kwargs))
+        self._fig.update_layout(legend=self.engine.go.layout.Legend(
+            visible=show,
+            bgcolor=kwargs_extract(kwargs, name='bgcolor', default='rgba(255,255,255,0.8)'),
+            **kwargs
+        ))
 
     def grid(self, show: bool = True):
         self._fig.update_xaxes(showgrid=show)
