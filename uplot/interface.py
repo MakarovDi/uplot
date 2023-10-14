@@ -45,7 +45,7 @@ class IFigure(Protocol):
                       opacity    : float = 1.0):
         ...
 
-    def imshow(self, image: ArrayLike):
+    def imshow(self, image: ArrayLike, **kwargs):
         ...
 
     def title(self, text: str):
