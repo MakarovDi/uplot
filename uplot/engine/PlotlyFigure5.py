@@ -83,7 +83,8 @@ class PlotlyFigure5(IFigure):
                                                                        line_width=self.engine.LINE_WIDTH,
                                                                        size=marker_size),
                                   opacity=opacity,
-                                  showlegend=show_legend)
+                                  showlegend=show_legend,
+                                  hoverlabel=dict(namelength=-1))
 
     def scatter(self, x          : ArrayLike,
                       y          : ArrayLike | None = None,
