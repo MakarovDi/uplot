@@ -103,11 +103,17 @@ class MatplotFigure(IFigure):
     def imshow(self, image: ArrayLike):
         image = np.asarray(image)
         value_range = imtool.estimate_range(image)
-        self._axis.grid(visible=False)
+
         self._axis.imshow(image / value_range,
                           cmap=self.engine.plt.get_cmap('gray'),
                           vmin=0, vmax=1.0,
                           interpolation='none')
+
+        # hide grid, frame, ticks and labels
+        self._axis.grid(visible=False)
+        self._axis.get_xaxis().set_visible(False)
+        self._axis.get_yaxis().set_visible(False)
+        self._axis.set_frame_on(False)
 
     def title(self, text: str):
         self._axis.set_title(label=text)
