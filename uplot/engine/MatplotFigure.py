@@ -100,14 +100,16 @@ class MatplotFigure(IFigure):
                   marker_size=marker_size,
                   opacity=opacity)
 
-    def imshow(self, image: ArrayLike):
+    def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
         value_range = imtool.estimate_range(image)
 
         self._axis.imshow(image / value_range,
-                          cmap=self.engine.plt.get_cmap('gray'),
-                          vmin=0, vmax=1.0,
-                          interpolation='none')
+                          cmap=kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
+                          vmin=kwargs_extract(kwargs, name='vmin', default=0),
+                          vmax=kwargs_extract(kwargs, name='vmax', default=1.0),
+                          interpolation=kwargs_extract(kwargs, name='interpolation', default='none')
+        )
 
         # hide grid, frame, ticks and labels
         self._axis.grid(visible=False)
