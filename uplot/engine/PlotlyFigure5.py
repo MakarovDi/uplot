@@ -101,20 +101,22 @@ class PlotlyFigure5(IFigure):
                   marker_size=marker_size,
                   opacity=opacity)
 
-    def imshow(self, image: ArrayLike):
+    def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
+        value_range = imtool.estimate_range(image)
+
+        self._fig.add_trace(self.engine.go.Image(
+            z=image,
+            zmax=kwargs_extract(kwargs, name='zmax', default=[value_range]*4),
+            zmin=kwargs_extract(kwargs, name='zmin', default=[0]*4),
+            **kwargs,
+        ))
 
         # configure layout
         self._fig.update_layout(margin=self.engine.go.layout.Margin(b=30, t=30))
         self._fig.update_layout(hovermode='closest')
         self._fig.update_xaxes(visible=False)
         self._fig.update_yaxes(visible=False)
-
-        value_range = imtool.estimate_range(image)
-        image_base64 = imtool.image_encode_base64(image, value_range=value_range)
-
-        self._fig.add_image(source=image_base64,
-                            zmax=[value_range, value_range, value_range, value_range])
 
     def title(self, text: str):
         self._fig.update_layout(title=text)
