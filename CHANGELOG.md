@@ -7,9 +7,11 @@
 #### Changed
 * `[engine.matplot]` legend outside the plot (same as plotly legend).
 * `[engine.matplot]` change from `tight_layout` to `constrained` for more predictable behavior.
+* `[engine.matplot]` axis and frame disabled for `imshow()`.
 
 #### Fixed
-* `[engine.matplot]` problem with figure no-show / double-show in jupyter. 
+* `[engine.matplot]` problem with figure no-show / double-show in jupyter.
+* `[engine.plotly5]` prevent name truncation (ellipsis) of a trace when hovering over.
 
 ## `[v0.1.0]` - 22.09.2023
 
