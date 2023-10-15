@@ -26,25 +26,27 @@ class IFigure(Protocol):
     def internal(self):
         return ...
 
-    def plot(self, x          : ArrayLike,
-                   y          : ArrayLike | None = None,
-                   name       : str | list[str] | None = None,
-                   color      : str | list[str] | None = None,
-                   line       : LineStyle | list[LineStyle] | None = None,
-                   marker     : MarkerStyle | list[MarkerStyle] | None = None,
-                   marker_size: int | None = None,
-                   opacity    : float = 1.0,
-                   **kwargs):
+    def plot(self,
+             x           : ArrayLike,
+             y           : ArrayLike | None = None,
+             name        : str | list[str] | None = None,
+             color       : str | list[str] | None = None,
+             line_style  : LineStyle | list[LineStyle] | None = None,
+             marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+             marker_size : int | None = None,
+             opacity     : float = 1.0,
+             **kwargs):
         ...
 
-    def scatter(self, x          : ArrayLike,
-                      y          : ArrayLike | None = None,
-                      name       : str | list[str] | None = None,
-                      color      : str | list[str] | None = None,
-                      marker     : MarkerStyle | list[MarkerStyle] | None = None,
-                      marker_size: int | None = None,
-                      opacity    : float = 1.0,
-                      **kwargs):
+    def scatter(self,
+                x           : ArrayLike,
+                y           : ArrayLike | None = None,
+                name        : str | list[str] | None = None,
+                color       : str | list[str] | None = None,
+                marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                marker_size : int | None = None,
+                opacity     : float = 1.0,
+                **kwargs):
         ...
 
     def imshow(self, image: ArrayLike, **kwargs):

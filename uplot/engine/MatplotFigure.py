@@ -38,15 +38,16 @@ class MatplotFigure(IFigure):
         # default style
         self._axis.grid(visible=True)
 
-    def plot(self, x          : ArrayLike,
-                   y          : ArrayLike | None = None,
-                   name       : str | list[str] | None = None,
-                   color      : str | list[str] | None = None,
-                   line       : LineStyle | list[LineStyle] | None = None,
-                   marker     : MarkerStyle | list[MarkerStyle] | None = None,
-                   marker_size: int | None = None,
-                   opacity    : float = 1.0,
-                   **kwargs):
+    def plot(self,
+             x           : ArrayLike,
+             y           : ArrayLike | None = None,
+             name        : str | list[str] | None = None,
+             color       : str | list[str] | None = None,
+             line_style  : LineStyle | list[LineStyle] | None = None,
+             marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+             marker_size : int | None = None,
+             opacity     : float = 1.0,
+             **kwargs):
         x = np.atleast_1d(np.asarray(x))
 
         if y is not None:
@@ -63,8 +64,8 @@ class MatplotFigure(IFigure):
         for i, y_i in enumerate(y.T):
             color_i = decode_color(unpack_param(color, i))
             name_i = unpack_param(name, i)
-            marker_i = unpack_param(marker, i)
-            line_i = unpack_param(line, i)
+            marker_i = unpack_param(marker_style, i)
+            line_i = unpack_param(line_style, i)
 
             if color_i is None:
                 color_i = self.current_color()
@@ -88,19 +89,20 @@ class MatplotFigure(IFigure):
                                 alpha=opacity,
                                 **kwargs)
 
-    def scatter(self, x          : ArrayLike,
-                      y          : ArrayLike | None = None,
-                      name       : str | list[str] | None = None,
-                      color      : str | list[str] | None = None,
-                      marker     : MarkerStyle | list[MarkerStyle] | None = None,
-                      marker_size: int | None = None,
-                      opacity    : float = 1.0,
-                      **kwargs):
+    def scatter(self,
+                x           : ArrayLike,
+                y           : ArrayLike | None = None,
+                name        : str | list[str] | None = None,
+                color       : str | list[str] | None = None,
+                marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                marker_size : int | None = None,
+                opacity     : float = 1.0,
+                **kwargs):
         self.plot(x=x, y=y,
                   name=name,
-                  line=' ', # no line
+                  line_style=' ',  # no line
                   color=color,
-                  marker=marker,
+                  marker_style=marker_style,
                   marker_size=marker_size,
                   opacity=opacity,
                   **kwargs)
