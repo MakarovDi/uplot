@@ -45,7 +45,8 @@ class MatplotFigure(IFigure):
                    line       : LineStyle | list[LineStyle] | None = None,
                    marker     : MarkerStyle | list[MarkerStyle] | None = None,
                    marker_size: int | None = None,
-                   opacity    : float = 1.0):
+                   opacity    : float = 1.0,
+                   **kwargs):
         x = np.atleast_1d(np.asarray(x))
 
         if y is not None:
@@ -75,7 +76,8 @@ class MatplotFigure(IFigure):
                                    label=name_i,
                                    marker=marker_i,
                                    s=marker_size**2,
-                                   alpha=opacity)
+                                   alpha=opacity,
+                                   **kwargs)
             else:
                 self._axis.plot(x, y_i,
                                 color=color_i,
@@ -83,7 +85,8 @@ class MatplotFigure(IFigure):
                                 marker=marker_i,
                                 linestyle=line_i,
                                 markersize=marker_size,
-                                alpha=opacity)
+                                alpha=opacity,
+                                **kwargs)
 
     def scatter(self, x          : ArrayLike,
                       y          : ArrayLike | None = None,
@@ -91,14 +94,16 @@ class MatplotFigure(IFigure):
                       color      : str | list[str] | None = None,
                       marker     : MarkerStyle | list[MarkerStyle] | None = None,
                       marker_size: int | None = None,
-                      opacity    : float = 1.0):
+                      opacity    : float = 1.0,
+                      **kwargs):
         self.plot(x=x, y=y,
                   name=name,
                   line=' ', # no line
                   color=color,
                   marker=marker,
                   marker_size=marker_size,
-                  opacity=opacity)
+                  opacity=opacity,
+                  **kwargs)
 
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
@@ -129,7 +134,7 @@ class MatplotFigure(IFigure):
                 # "outside right upper" works correctly with "constrained" or "compressed" layout only
                 self._fig.legend().set(visible=show, loc=loc, **kwargs)
             else:
-                # axes.legend() is better for an other options becuase legend will be inside graph
+                # axes.legend() is better for an other options because legend will be inside graph
                 self._fig.gca().legend().set(visible=show, loc=loc, **kwargs)
 
     def grid(self, show: bool = True):
