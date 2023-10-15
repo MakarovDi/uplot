@@ -33,7 +33,8 @@ class IFigure(Protocol):
                    line       : LineStyle | list[LineStyle] | None = None,
                    marker     : MarkerStyle | list[MarkerStyle] | None = None,
                    marker_size: int | None = None,
-                   opacity    : float = 1.0):
+                   opacity    : float = 1.0,
+                   **kwargs):
         ...
 
     def scatter(self, x          : ArrayLike,
@@ -42,7 +43,8 @@ class IFigure(Protocol):
                       color      : str | list[str] | None = None,
                       marker     : MarkerStyle | list[MarkerStyle] | None = None,
                       marker_size: int | None = None,
-                      opacity    : float = 1.0):
+                      opacity    : float = 1.0,
+                      **kwargs):
         ...
 
     def imshow(self, image: ArrayLike, **kwargs):
@@ -106,8 +108,7 @@ class IPlotEngine(Protocol):
     def figure_type(self) -> type:
         return ...
 
-    def figure(self, width: int,
-                     aspect_ratio: float) -> IFigure:
+    def figure(self, width: int, aspect_ratio: float) -> IFigure:
         """
         Factory method for a figure creation
         """

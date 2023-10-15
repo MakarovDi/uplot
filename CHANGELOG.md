@@ -3,6 +3,7 @@
 ## `[v0.2.0]` - ??.10.2023
 
 #### Added
+* `[interface]` engine-specific parameters via `kwargs`: `plot()`, `scatter()`, `legend()`.
 
 #### Changed
 * `[engine.matplot]` legend outside the plot (same as plotly legend).
