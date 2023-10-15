@@ -8,6 +8,7 @@
 * `[engine.matplot]` legend outside the plot (same as plotly legend).
 * `[engine.matplot]` change from `tight_layout` to `constrained` for more predictable behavior.
 * `[engine.matplot]` axis and frame disabled for `imshow()`.
+* `[engine.plotly5]` fixed size of legend's markers.
 
 #### Fixed
 * `[engine.matplot]` problem with figure no-show / double-show in jupyter.

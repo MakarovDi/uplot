@@ -125,7 +125,8 @@ class PlotlyFigure5(IFigure):
         self._fig.update_layout(legend=self.engine.go.layout.Legend(
             visible=show,
             bgcolor=kwargs_extract(kwargs, name='bgcolor', default='rgba(255,255,255,0.8)'),
-            **kwargs
+            itemsizing=kwargs_extract(kwargs, name='itemsizing', default='constant'),
+            **kwargs,
         ))
 
     def grid(self, show: bool = True):
