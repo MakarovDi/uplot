@@ -14,7 +14,6 @@ import uplot
 f = uplot.figure(engine='matplotlib')
 f.plot([1, 2, 3], [1, 2, 3], name='Line 45')
 f.legend(show=True)
-f.title('Test')
 f.xlabel('X')
 f.ylabel('Y')
 f.show(block=True)
@@ -26,7 +25,7 @@ The recent stable version (without any plotting library):
 ```bash
 pip install git+https://github.com/makarovdi/uplot.git@main
 ```
-to automatically install all dependencies
+to automatically install all optional dependencies (`matplotlib`, `plotly`, ...) use
 ```bash
 pip install git+https://github.com/makarovdi/uplot.git@main[all]
 ```
@@ -35,7 +34,7 @@ If you need only `matplotlib` support:
 ```bash
 pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 ```
-> Replace `[matplotlib]` with `[plotly5]` for plotly only installation 
+> Replace `[matplotlib]` with `[plotly5]` for plotly-only installation 
 
 
 ## Verified Versions
@@ -46,33 +45,22 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 |  plotly<br/>`5.17`   | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: | `vscode` :green_circle: |
 
 
-## Dependencies
-
-- `Python` ≥ 3.10 
-- `numpy` ≥ 1.21
-- `pillow` ≥ 8.3
-
-### Optional
-- `matplotlib` ≥ 3.7
-- `plotly` ≥  5.17
-
 ## Plotting Libs - Pros & Cons
 
-### matplotlib
+### [Matplotlib](https://matplotlib.org/)
 
 :green_circle: Highly configurable.  
-:green_circle: Support multiple GUI-backends.  
 :green_circle: Good documentation and a lot of ready-to-use recipes (e.g. on StackOverflow).  
 :yellow_circle: Common API (MATLAB legacy). 
   
  
 :red_circle: Limited interactivity (especially for Jupyter).  
-:red_circle: Inconsistent API, behaviour and a function parameter names (e.g. plt.xlim and axis.set_xlim).  
+:red_circle: API, behavior and parameter names are inconsistent (e.g. plt.xlim and axis.set_xlim).  
 &emsp;`->` It's easy to spend an entire day setting up something simple (like a legend location).   
 :red_circle: Slow, cumbersome and inconsistent API for 3D graphs.   
 
 
-### plotly
+### [Plotly](https://plotly.com/python/)
 
 :green_circle: Very good interactively.  
 :green_circle: Native compatibility with Jupyter.  
@@ -112,6 +100,16 @@ fig.plot(...)
 fig.show()
 ```
 
+## Dependencies
+
+- `Python` ≥ 3.10 
+- `numpy` ≥ 1.21
+- `pillow` ≥ 8.3
+
+### Optional
+- `matplotlib` ≥ 3.7
+- `plotly` ≥  5.17
+
 
 ## License
 
@@ -131,7 +129,9 @@ See the [LICENSE](LICENSE) file for details.
 - [ ] **API**: `fig.click_event(...)`
 - [ ] **API**: `fig.legend_group(...)`
 - [ ] **API**: `fig.hover_text(...)`
-- [ ] **API**: `kwargs` to directly access underlying engine 
+- [x] **API**: `kwargs` to directly access underlying engine 
 - [ ] **API**: `fig.legend`: param for the legend location
+- [ ] Unified styling
+- [ ] TeX support
 - [ ] `DataFrame` support
 - [ ] `Bokeh` engine
