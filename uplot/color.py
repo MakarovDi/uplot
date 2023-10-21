@@ -1,3 +1,4 @@
+import numpy as np
 from typing import OrderedDict
 
 # TODO: ColorScroller class
@@ -45,3 +46,31 @@ def decode_color(name: str | None):
         raise LookupError(f'{name} is not valid color name, use: {default_colors.keys()}')
 
     return default_colors[name]
+
+
+def rgb_to_str(rgb: list | np.ndarray) -> str | list[str]:
+    """
+    Convert rgb value (or array of rgb values) to hex-string compatible with uplot API.
+
+    Parameters
+    ----------
+    rgb:
+        rgb value of [0, 1] range or array values (N x 3)
+
+    Returns
+    -------
+    list[str]
+        hex color string or array of strings
+    """
+    rgb = np.asarray(rgb)
+    rgb = np.atleast_2d(rgb)
+    assert rgb.shape[-1] == 3, 'input Nx3 array or list'
+    assert rgb.max() <= 1.0, 'rgb value range must be [0, 1]'
+
+    rgb255 = (rgb*255).astype(np.uint8)
+    rgb_str = [ f'#{rgb[0]:02x}{rgb[1]:02x}{rgb[2]:02x}' for rgb in rgb255 ]
+
+    if len(rgb) == 1:
+        return rgb_str[0] # single rgb value
+
+    return rgb_str # rgb array
