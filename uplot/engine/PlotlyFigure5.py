@@ -76,14 +76,15 @@ class PlotlyFigure5(IFigure):
                 line_i = None
 
             line = kwargs_extract(kwargs, name='line', default={})
+            line.setdefault('color', color_i)
             line['dash'] = line_i
 
             marker = kwargs_extract(kwargs, name='marker', default={})
+            marker.setdefault('color', color_i)
+            marker.setdefault('line_color', color_i)
+            marker.setdefault('line_width', self.engine.LINE_WIDTH)
             marker['symbol'] = marker_i
-            marker['line_color'] = color_i
             marker['size'] = marker_size
-            if 'line_width' not in marker:
-                marker['line_width'] = self.engine.LINE_WIDTH
 
             hoverlabel = kwargs_extract(kwargs, name='hoverlabel', default={})
             if 'namelength' not in hoverlabel:
@@ -93,7 +94,6 @@ class PlotlyFigure5(IFigure):
                 x=x, y=y_i,
                 name=name_i,
                 mode=mode,
-                line_color=color_i,
                 line=line,
                 marker=marker,
                 opacity=opacity,

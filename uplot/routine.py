@@ -29,7 +29,7 @@ def unpack_param(param: T | list[T] | None, idx: int) -> T | None:
     # few items parametrized but not all
     return None
 
-def kwargs_extract(kw: dict, name: str, default):
+def kwargs_extract(kw: dict, name: str, default: T) -> T:
     """
     Get and delete parameter "name" from kw dict.
     """
