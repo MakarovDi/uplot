@@ -1,0 +1,2 @@
+gallery/asset/plot.png filter=lfs diff=lfs merge=lfs -text
+gallery/asset/scatter.png filter=lfs diff=lfs merge=lfs -text
