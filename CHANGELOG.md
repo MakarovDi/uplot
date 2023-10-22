@@ -4,6 +4,7 @@
 
 #### Added
 * `[interface]` engine-specific parameters via `kwargs`: `plot()`, `scatter()`, `legend()`.
+* `[engine]` "color per point" support for scatter.
 
 #### Changed
 * `[engine.matplot]` legend outside the plot (same as plotly legend).

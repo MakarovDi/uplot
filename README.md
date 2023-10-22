@@ -118,7 +118,7 @@ See the [LICENSE](LICENSE) file for details.
 
 ## TODO
 
-- [ ] Gallery
+- [x] Gallery
 - [x] Changelog
 - [x] **API**: aspect ratio param: `uplot.figure(..., aspect_ratio: float)`
 - [ ] **API**: `fig.plot3d(...)` and `fig.scatter3d(...)`
