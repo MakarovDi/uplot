@@ -9,7 +9,7 @@ import uplot.imtool as imtool
 
 from uplot.interface import IFigure, LineStyle, MarkerStyle
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
-from uplot.colors import default_colors_list, decode_color, default_colors
+from uplot.color import default_colors_list, decode_color, default_colors
 from uplot.routine import unpack_param, kwargs_extract
 
 
@@ -54,6 +54,12 @@ class PlotlyFigure5(IFigure):
         if marker_size is None:
             marker_size = self.engine.MARKER_SIZE
 
+        # x and y is 1d arrays of points, color specified for each point
+        is_color_per_point_mode = (color is not None          and
+                                   len(y.T) == 1              and # y is 1d array
+                                   not isinstance(color, str) and # color is array (not str or none)
+                                   len(color) == len(x))
+
         for i, y_i in enumerate(y.T):
             name_i = unpack_param(name, i)
             if name_i is None:
@@ -62,24 +68,28 @@ class PlotlyFigure5(IFigure):
             else:
                 show_legend = True
 
-            color_i = decode_color(unpack_param(color, i))
-            if color_i is None:
-                color_i = self.current_color()
-                self.scroll_color()
+            if is_color_per_point_mode:
+                color_i = color # color per point
+            else:
+                # color per Y column
+                color_i = decode_color(unpack_param(color, i))
+                if color_i is None:
+                    color_i = self.current_color()
+                    self.scroll_color()
 
             line_i = LINE_STYLE_MAPPING[unpack_param(line_style, i)]
             marker_i = MARKER_STYLE_MAPPING[unpack_param(marker_style, i)]
 
-            mode = 'lines' if marker_i is None else 'lines+markers'
-            if line_i == ' ':
-                mode = 'markers'
-                line_i = None
-
             line = kwargs_extract(kwargs, name='line', default={})
-            line.setdefault('color', color_i)
-            line['dash'] = line_i
-
             marker = kwargs_extract(kwargs, name='marker', default={})
+
+            mode = 'lines' if marker_i is None else 'lines+markers'
+            if line_i == ' ': # no lines = scatter mode
+                mode = 'markers'
+                line['dash'] = None
+            else:
+                line.setdefault('color', color_i)
+
             marker.setdefault('color', color_i)
             marker.setdefault('line_color', color_i)
             marker.setdefault('line_width', self.engine.LINE_WIDTH)
