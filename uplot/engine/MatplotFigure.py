@@ -8,7 +8,7 @@ import uplot.imtool as imtool
 
 from uplot.interface import IFigure, LineStyle, MarkerStyle
 from uplot.engine.MatplotEngine import MatplotEngine
-from uplot.colors import default_colors_list, decode_color, default_colors
+from uplot.color import default_colors_list, decode_color, default_colors
 from uplot.routine import unpack_param, kwargs_extract
 
 
@@ -61,11 +61,21 @@ class MatplotFigure(IFigure):
         if marker_size is None:
             marker_size = self.engine.MARKER_SIZE
 
+        # x and y is 1d arrays of points, color specified for each point
+        is_color_per_point_mode = (color is not None          and
+                                   len(y.T) == 1              and # y is 1d array
+                                   not isinstance(color, str) and # color is array (not str or none)
+                                   len(color) == len(x))
+
         for i, y_i in enumerate(y.T):
-            color_i = decode_color(unpack_param(color, i))
             name_i = unpack_param(name, i)
             marker_i = unpack_param(marker_style, i)
             line_i = unpack_param(line_style, i)
+
+            if is_color_per_point_mode:
+                color_i = color # color per point
+            else:
+                color_i = decode_color(unpack_param(color, i)) # color per column of Y
 
             if color_i is None:
                 color_i = self.current_color()
