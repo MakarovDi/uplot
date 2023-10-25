@@ -9,7 +9,7 @@ import uplot.imtool as imtool
 from uplot.interface import IFigure, LineStyle, MarkerStyle
 from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.color import default_colors_list, decode_color, default_colors
-from uplot.routine import unpack_param, kwargs_extract
+from uplot.routine import kwargs_extract
 
 
 class MatplotFigure(IFigure):
@@ -41,74 +41,69 @@ class MatplotFigure(IFigure):
     def plot(self,
              x           : ArrayLike,
              y           : ArrayLike | None = None,
-             name        : str | list[str] | None = None,
+             z           : ArrayLike | None = None,
+             name        : str | None = None,
              color       : str | list[str] | None = None,
              line_style  : LineStyle | list[LineStyle] | None = None,
              marker_style: MarkerStyle | list[MarkerStyle] | None = None,
              marker_size : int | None = None,
              opacity     : float = 1.0,
              **kwargs):
-        x = np.atleast_1d(np.asarray(x))
+        x = np.asarray(x)
 
-        if y is not None:
-            y = np.asarray(y)
-        else:
+        if y is None:
             y = x
             x = np.arange(len(y))
+        else:
+            y = np.asarray(y)
 
-        y = y.reshape([len(x), -1])
+        assert x.ndim == y.ndim == 1, 'the input must be 1d arrays'
+        assert len(x) == len(y), 'the length of the input arrays must be the same'
+
+        if z is not None:
+            raise NotImplementedError('3d plot')
 
         if marker_size is None:
             marker_size = self.engine.MARKER_SIZE
 
-        # x and y is 1d arrays of points, color specified for each point
-        is_color_per_point_mode = (color is not None          and
-                                   len(y.T) == 1              and # y is 1d array
-                                   not isinstance(color, str) and # color is array (not str or none)
-                                   len(color) == len(x))
+        if color is None:
+            color = self.current_color()
+            self.scroll_color()
+        elif color is not isinstance(color, str):
+            # color specified for each point (x, y)
+            color = [ decode_color(c) for c in color ]
+        else:
+            color = decode_color(color)
 
-        for i, y_i in enumerate(y.T):
-            name_i = unpack_param(name, i)
-            marker_i = unpack_param(marker_style, i)
-            line_i = unpack_param(line_style, i)
-
-            if is_color_per_point_mode:
-                color_i = color # color per point
-            else:
-                color_i = decode_color(unpack_param(color, i)) # color per column of Y
-
-            if color_i is None:
-                color_i = self.current_color()
-                self.scroll_color()
-
-            if line_i == ' ':
-                self._axis.scatter(x, y_i,
-                                   color=color_i,
-                                   label=name_i,
-                                   marker=marker_i,
-                                   s=marker_size**2,
-                                   alpha=opacity,
-                                   **kwargs)
-            else:
-                self._axis.plot(x, y_i,
-                                color=color_i,
-                                label=name_i,
-                                marker=marker_i,
-                                linestyle=line_i,
-                                markersize=marker_size,
-                                alpha=opacity,
-                                **kwargs)
+        if line_style == ' ':
+            self._axis.scatter(x, y,
+                               color=color,
+                               label=name,
+                               marker=marker_style,
+                               s=marker_size**2,
+                               alpha=opacity,
+                               **kwargs)
+        else:
+            self._axis.plot(x, y,
+                            color=color,
+                            label=name,
+                            marker=marker_style,
+                            linestyle=line_style,
+                            markersize=marker_size,
+                            alpha=opacity,
+                            **kwargs)
 
     def scatter(self,
                 x           : ArrayLike,
                 y           : ArrayLike | None = None,
-                name        : str | list[str] | None = None,
+                z           : ArrayLike | None = None,
+                name        : str | None = None,
                 color       : str | list[str] | None = None,
                 marker_style: MarkerStyle | list[MarkerStyle] | None = None,
                 marker_size : int | None = None,
                 opacity     : float = 1.0,
                 **kwargs):
-        self.plot(x=x, y=y,
+        self.plot(x=x, y=y, z=z,
                   name=name,
                   line_style=' ',  # no line
                   color=color,
