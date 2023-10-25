@@ -8,16 +8,57 @@ Unified API and style for Python plotting libraries.
 
 ## Usage
 
+<table>
+
+<tr>
+<td> <b>plotly 5</b> </td> <td> <b>matplotlib</b> </td>
+</tr>
+
+<tr>
+<td>
+
 ```python
 import uplot
 
-f = uplot.figure(engine='matplotlib')
+f = uplot.figure('plotly5')
 f.plot([1, 2, 3], [1, 2, 3], name='Line 45')
 f.legend(show=True)
 f.xlabel('X')
 f.ylabel('Y')
 f.show(block=True)
 ```
+</td>
+<td>
+
+```python
+import uplot
+
+f = uplot.figure('matplotlib')
+f.plot([1, 2, 3], [1, 2, 3], name='Line 45')
+f.legend(show=True)
+f.xlabel('X')
+f.ylabel('Y')
+f.show(block=True)
+```
+</td>
+</tr>
+
+<tr>
+<td>
+
+![python](gallery/asset/plotly5-example.png)
+
+</td>
+
+<td>
+
+![python](gallery/asset/mpl-example.png)
+
+</td>
+
+</tr>
+</table>
+
 
 ## Install
 
@@ -57,7 +98,7 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 :red_circle: Limited interactivity (especially for Jupyter).  
 :red_circle: API, behavior and parameter names are inconsistent (e.g. plt.xlim and axis.set_xlim).  
 &emsp;`->` It's easy to spend an entire day setting up something simple (like a legend location).   
-:red_circle: Slow, cumbersome and inconsistent API for 3D graphs.   
+:red_circle: Slow API for 3D graphs.   
 
 
 ### [Plotly](https://plotly.com/python/)
