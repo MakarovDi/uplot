@@ -8,7 +8,7 @@ Unified API and style for Python plotting libraries.
 
 ## Usage
 
-<table>
+<table style="border-collapse: collapse; border-style: hidden;">
 
 <tr>
 <td> <b>plotly 5</b> </td> <td> <b>matplotlib</b> </td>
@@ -21,7 +21,7 @@ Unified API and style for Python plotting libraries.
 import uplot
 
 f = uplot.figure('plotly5')
-f.plot([1, 2, 3], [1, 2, 3], name='Line 45')
+f.plot([1, 2, 3], name='Line 45')
 f.legend(show=True)
 f.xlabel('X')
 f.ylabel('Y')
@@ -34,7 +34,7 @@ f.show(block=True)
 import uplot
 
 f = uplot.figure('matplotlib')
-f.plot([1, 2, 3], [1, 2, 3], name='Line 45')
+f.plot([1, 2, 3], name='Line 45')
 f.legend(show=True)
 f.xlabel('X')
 f.ylabel('Y')
