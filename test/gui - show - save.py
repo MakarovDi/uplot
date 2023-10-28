@@ -1,5 +1,3 @@
-import numpy as np
-
 import uplot
 import imageio.v3 as iio
 
@@ -10,15 +8,16 @@ engine = 'mpl'
 
 ## Data
 
-d1 = [4, 5, 6]
+x = [4, 5, 6, 8]
 
-d2 = np.array([[1, 2, 3],
-               [3, 2, 1]]).T
+y1 = [1, 2, 3, 4]
+y2 = [4, 3, 2, 1]
 
 ## Fig 1
 
 f1 = uplot.figure(engine=engine)
-f1.plot(d1, d2)
+f1.plot(x, y1)
+f1.plot(x, y2)
 f1.scatter(3, 5, name='The lonely dot')
 f1.title('Test')
 f1.legend(True)
@@ -35,7 +34,8 @@ else:
 ## Fig 2
 
 f2 = uplot.figure(aspect_ratio=0.4)
-f2.plot(d2.T)
+f2.plot(y1, x)
+f2.plot(y2, x)
 f2.title('Test')
 f2.legend(True)
 f2.xlabel('X value')
