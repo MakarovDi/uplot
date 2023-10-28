@@ -23,15 +23,20 @@ class MatplotFigure(IFigure):
         return self._fig
 
 
-    def __init__(self, engine: MatplotEngine):
+    def __init__(self, engine: MatplotEngine, width: int, aspect_ratio: float):
         self._engine = engine
 
-        self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
-        self._axis: engine.plt.Axes = self._fig.gca()
-        # Constrained layout automatically adjusts subplots so that decorations like tick labels,
-        # legends, and colorbars do not overlap, while still preserving the logical layout requested by the user.
-        # Constrained layout is similar to Tight layout, but is substantially more flexible.
-        # https://matplotlib.org/stable/users/explain/axes/constrainedlayout_guide.html
+        # temporary styling (no global effect):
+        # https://matplotlib.org/stable/users/explain/customizing.html
+        with engine.plt.style.context('bmh'):
+            self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
+            # Constrained layout automatically adjusts subplots so that decorations like tick labels,
+            # legends, and colorbars do not overlap, while still preserving the logical layout requested by the user.
+            # Constrained layout is similar to Tight layout, but is substantially more flexible.
+            # https://matplotlib.org/stable/users/explain/axes/constrainedlayout_guide.html
+            self._axis: engine.plt.Axes = self._fig.gca()
+            self._fig.set_figwidth(width / engine.SHOWING_DPI)
+            self._fig.set_figheight(aspect_ratio*(width / engine.SHOWING_DPI))
 
         self._color_index = 0
 

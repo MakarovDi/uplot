@@ -62,13 +62,6 @@ class MatplotEngine(IPlotEngine):
         # avoid to change global state of matplotlib
         current_backend = self._mpl.get_backend()
         self._mpl.use(backend=self._backend)
-
-        # temporary styling (no global effect):
-        # https://matplotlib.org/stable/users/explain/customizing.html
-        with self._plt.style.context('bmh'):
-            fig = MatplotFigure(self)
-            fig.internal.set_figwidth(width / self.SHOWING_DPI)
-            fig.internal.set_figheight(aspect_ratio*(width / self.SHOWING_DPI))
-
+        fig = MatplotFigure(self, width=width, aspect_ratio=aspect_ratio)
         self._mpl.use(backend=current_backend)
         return fig
