@@ -22,39 +22,39 @@ class MatplotFigure(IFigure):
     def internal(self):
         return self._fig
 
+    @property
+    def is_3d(self) -> bool | None:
+        return self._is_3d
 
     def __init__(self, engine: MatplotEngine, width: int, aspect_ratio: float):
         self._engine = engine
+        self._is_3d = None
+        self._axis: engine.plt.Axes = None
 
         # temporary styling (no global effect):
         # https://matplotlib.org/stable/users/explain/customizing.html
-        with engine.plt.style.context('bmh'):
+        with engine.plt.style.context(engine.STYLE):
             self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
             # Constrained layout automatically adjusts subplots so that decorations like tick labels,
             # legends, and colorbars do not overlap, while still preserving the logical layout requested by the user.
             # Constrained layout is similar to Tight layout, but is substantially more flexible.
             # https://matplotlib.org/stable/users/explain/axes/constrainedlayout_guide.html
-            self._axis: engine.plt.Axes = self._fig.gca()
             self._fig.set_figwidth(width / engine.SHOWING_DPI)
             self._fig.set_figheight(aspect_ratio*(width / engine.SHOWING_DPI))
 
         self._color_index = 0
 
-        # default style
-        self._axis.grid(visible=True)
-
-    def plot(self,
-             x           : ArrayLike,
-             y           : ArrayLike | None = None,
-             z           : ArrayLike | None = None,
-             name        : str | None = None,
-             color       : str | list[str] | None = None,
-             line_style  : LineStyle | list[LineStyle] | None = None,
-             marker_style: MarkerStyle | list[MarkerStyle] | None = None,
-             marker_size : int | None = None,
-             opacity     : float = 1.0,
-             **kwargs):
-        x = np.asarray(x)
+    def plot(self, x           : ArrayLike,
+                   y           : ArrayLike | None = None,
+                   z           : ArrayLike | None = None,
+                   name        : str | None = None,
+                   color       : str | list[str] | None = None,
+                   line_style  : LineStyle | list[LineStyle] | None = None,
+                   marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                   marker_size : int | None = None,
+                   opacity     : float = 1.0,
+                   **kwargs):
+        x = np.atleast_1d(np.asarray(x))
 
         if y is None:
             y = x
@@ -62,11 +62,18 @@ class MatplotFigure(IFigure):
         else:
             y = np.asarray(y)
 
+        y = np.atleast_1d(y)
+
         assert x.ndim == y.ndim == 1, 'the input must be 1d arrays'
         assert len(x) == len(y), 'the length of the input arrays must be the same'
 
-        if z is not None:
-            raise NotImplementedError('3d plot')
+        if z is None: # 2d
+            self._init_axis(is_3d=False)
+        else: # 3d
+            z = np.asarray(z)
+            assert z.ndim == 1, 'the input must be 1d arrays'
+            assert len(x) == len(z), 'the length of the input arrays must be the same'
+            self._init_axis(is_3d=True)
 
         if marker_size is None:
             marker_size = self.engine.MARKER_SIZE
@@ -80,8 +87,13 @@ class MatplotFigure(IFigure):
         else:
             color = decode_color(color)
 
-        if line_style == ' ':
-            self._axis.scatter(x, y,
+        if self.is_3d:
+            plot_data = x, y, z
+        else:
+            plot_data = x, y
+
+        if line_style == ' ': # only markers
+            self._axis.scatter(*plot_data,
                                color=color,
                                label=name,
                                marker=marker_style,
@@ -89,25 +101,24 @@ class MatplotFigure(IFigure):
                                alpha=opacity,
                                **kwargs)
         else:
-            self._axis.plot(x, y,
+            self._axis.plot(*plot_data,
                             color=color,
                             label=name,
                             marker=marker_style,
-                            linestyle=line_style,
                             markersize=marker_size,
+                            linestyle=line_style,
                             alpha=opacity,
                             **kwargs)
 
-    def scatter(self,
-                x           : ArrayLike,
-                y           : ArrayLike | None = None,
-                z           : ArrayLike | None = None,
-                name        : str | None = None,
-                color       : str | list[str] | None = None,
-                marker_style: MarkerStyle | list[MarkerStyle] | None = None,
-                marker_size : int | None = None,
-                opacity     : float = 1.0,
-                **kwargs):
+    def scatter(self, x           : ArrayLike,
+                      y           : ArrayLike | None = None,
+                      z           : ArrayLike | None = None,
+                      name        : str | None = None,
+                      color       : str | list[str] | None = None,
+                      marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                      marker_size : int | None = None,
+                      opacity     : float = 1.0,
+                      **kwargs):
         self.plot(x=x, y=y, z=z,
                   name=name,
                   line_style=' ',  # no line
@@ -217,4 +228,23 @@ class MatplotFigure(IFigure):
         # show only this figure
         self._fig.show()
         if block:
-            self._fig.waitforbuttonpress()
+
+    def _init_axis(self, is_3d: bool):
+        if self.is_3d == is_3d:
+            # axis already initialized
+            return
+
+        # remove current axis
+        self._fig.clear()
+
+        # temporary styling (no global effect):
+        with self.engine.plt.style.context(self.engine.STYLE):
+            projection = '3d' if is_3d else None
+            self._axis = self._fig.add_subplot(projection=projection)
+
+        self._is_3d = is_3d
+        self._axis.grid(visible=True) # show grid by default
+
+        if is_3d:
+            # sync axis and figure color
+            self._axis.set_facecolor(self._fig.get_facecolor())

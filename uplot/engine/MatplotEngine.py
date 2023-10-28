@@ -5,6 +5,7 @@ class MatplotEngine(IPlotEngine):
     MARKER_SIZE = 6
     SHOWING_DPI = 100
     SAVING_DPI = SHOWING_DPI * 2
+    STYLE = 'bmh'
 
     AUTOMATIC_MPL_BACKEND: str | None = None # automatically (default) chosen matplotlib backend
 

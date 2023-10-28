@@ -9,6 +9,7 @@ from uplot.MarkerStyle import MarkerStyle
 
 # TODO: documentation
 
+@runtime_checkable
 class IFigure(Protocol):
     """
     Matplotlib-like interface for plotting.
@@ -26,29 +27,31 @@ class IFigure(Protocol):
     def internal(self):
         return ...
 
-    def plot(self,
-             x           : ArrayLike,
-             y           : ArrayLike | None = None,
-             z           : ArrayLike | None = None,
-             name        : str | None = None,
-             color       : str | list[str] | None = None,
-             line_style  : LineStyle | list[LineStyle] | None = None,
-             marker_style: MarkerStyle | list[MarkerStyle] | None = None,
-             marker_size : int | None = None,
-             opacity     : float = 1.0,
-             **kwargs):
+    @property
+    def is_3d(self) -> bool:
+        return ...
+
+    def plot(self, x           : ArrayLike,
+                   y           : ArrayLike | None = None,
+                   z           : ArrayLike | None = None,
+                   name        : str | None = None,
+                   color       : str | list[str] | None = None,
+                   line_style  : LineStyle | list[LineStyle] | None = None,
+                   marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                   marker_size : int | None = None,
+                   opacity     : float = 1.0,
+                   **kwargs):
         ...
 
-    def scatter(self,
-                x           : ArrayLike,
-                y           : ArrayLike | None = None,
-                z           : ArrayLike | None = None,
-                name        : str | None = None,
-                color       : str | list[str] | None = None,
-                marker_style: MarkerStyle | list[MarkerStyle] | None = None,
-                marker_size : int | None = None,
-                opacity     : float = 1.0,
-                **kwargs):
+    def scatter(self, x           : ArrayLike,
+                      y           : ArrayLike | None = None,
+                      z           : ArrayLike | None = None,
+                      name        : str | None = None,
+                      color       : str | list[str] | None = None,
+                      marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                      marker_size : int | None = None,
+                      opacity     : float = 1.0,
+                      **kwargs):
         ...
 
     def imshow(self, image: ArrayLike, **kwargs):
