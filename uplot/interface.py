@@ -73,11 +73,18 @@ class IFigure(Protocol):
     def ylabel(self, text: str):
         ...
 
+    def zlabel(self, text: str):
+        ...
+
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None):
         ...
 
     def ylim(self, min_value: float | None = None,
+                   max_value: float | None = None):
+        ...
+
+    def zlim(self, min_value: float | None = None,
                    max_value: float | None = None):
         ...
 

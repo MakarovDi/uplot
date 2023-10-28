@@ -169,6 +169,10 @@ class MatplotFigure(IFigure):
     def ylabel(self, text: str):
         self._axis.set_ylabel(ylabel=text)
 
+    def zlabel(self, text: str):
+        if self.is_3d:
+            self._axis.set_zlabel(zlabel=text)
+
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None):
         self._axis.set_xlim(left=min_value, right=max_value)
@@ -176,6 +180,11 @@ class MatplotFigure(IFigure):
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None):
         self._axis.set_ylim(bottom=min_value, top=max_value)
+
+    def zlim(self, min_value: float | None = None,
+                   max_value: float | None = None):
+        if self.is_3d:
+            self._axis.set_zlim(bottom=min_value, top=max_value)
 
     def current_color(self) -> str:
         color_name = default_colors_list[self._color_index]
@@ -189,6 +198,7 @@ class MatplotFigure(IFigure):
         self._color_index = 0
 
     def axis_aspect(self, mode: AspectMode):
+        # https://stackoverflow.com/questions/8130823/set-matplotlib-3d-plot-aspect-ratio
         self._axis.set_aspect(aspect=mode)
 
     def as_image(self) -> ndarray:
