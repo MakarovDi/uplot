@@ -217,17 +217,20 @@ class MatplotFigure(IFigure):
             #    1. call `%matplotlib ...` at the notebook start.
             #    2. always use `plt.show()`.
             # It's easy to forget about (1) so `plt.show()` is more reliable
-            # but not the best, probably (because it'll show all figures).
+            # but not the best, probably (because it will show all figures).
             self.engine.plt.show()
             return
 
         if not self.engine.is_gui_backend:
-            # no need to show, bypass
-            return
+            return # no need to show, bypass
 
-        # show only this figure
-        self._fig.show()
+        self._fig.show() # show only this figure
+
         if block:
+            while self.engine.plt.fignum_exists(self._fig.number):
+                # allow multiple mouse clicks for 3d plot manipulation
+                self._fig.waitforbuttonpress()
+
 
     def _init_axis(self, is_3d: bool):
         if self.is_3d == is_3d:
