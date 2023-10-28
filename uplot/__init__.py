@@ -15,3 +15,4 @@ import uplot.color as color
 # common types
 from uplot.LineStyle import LineStyle
 from uplot.MarkerStyle import MarkerStyle
+from uplot.AspectMode import AspectMode

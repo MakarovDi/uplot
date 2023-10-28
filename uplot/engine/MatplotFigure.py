@@ -6,7 +6,7 @@ from numpy.typing import ArrayLike
 
 import uplot.imtool as imtool
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode
 from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.color import default_colors_list, decode_color, default_colors
 from uplot.routine import kwargs_extract
@@ -188,10 +188,8 @@ class MatplotFigure(IFigure):
     def reset_color(self):
         self._color_index = 0
 
-    def sync_axis_scale(self):
-        w, h = self._fig.get_size_inches()
-        mx = max(w, h)
-        self._fig.set_size_inches(mx, mx)
+    def axis_aspect(self, mode: AspectMode):
+        self._axis.set_aspect(aspect=mode)
 
     def as_image(self) -> ndarray:
         fig = self._fig

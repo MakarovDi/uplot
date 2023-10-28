@@ -6,6 +6,7 @@ from numpy.typing import ArrayLike
 
 from uplot.LineStyle import LineStyle
 from uplot.MarkerStyle import MarkerStyle
+from uplot.AspectMode import AspectMode
 
 # TODO: documentation
 
@@ -89,7 +90,7 @@ class IFigure(Protocol):
     def reset_color(self):
         ...
 
-    def sync_axis_scale(self):
+    def axis_aspect(self, mode: AspectMode):
         ...
 
     def as_image(self) -> ndarray:

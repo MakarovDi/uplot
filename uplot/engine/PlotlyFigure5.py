@@ -7,7 +7,7 @@ from numpy.typing import ArrayLike
 
 import uplot.imtool as imtool
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
 from uplot.color import default_colors_list, decode_color, default_colors
 from uplot.routine import kwargs_extract
@@ -187,8 +187,11 @@ class PlotlyFigure5(IFigure):
     def reset_color(self):
         self._color_index = 0
 
-    def sync_axis_scale(self):
-        self._fig.update_yaxes(scaleanchor='x')
+    def axis_aspect(self, mode: AspectMode):
+        if mode == AspectMode.EQUAL:
+            self._fig.update_yaxes(scaleanchor='x')
+        else:
+            self._fig.update_yaxes(scaleanchor=None)
 
     def as_image(self) -> ndarray:
         import io
