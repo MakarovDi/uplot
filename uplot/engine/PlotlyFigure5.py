@@ -125,16 +125,15 @@ class PlotlyFigure5(IFigure):
                                     showlegend=show_legend,
                                     hoverlabel=hoverlabel)
 
-    def scatter(self,
-                x           : ArrayLike,
-                y           : ArrayLike | None = None,
-                z           : ArrayLike | None = None,
-                name        : str | None = None,
-                color       : str | list[str] | None = None,
-                marker_style: MarkerStyle | list[MarkerStyle] | None = None,
-                marker_size : int | None = None,
-                opacity     : float = 1.0,
-                **kwargs):
+    def scatter(self, x           : ArrayLike,
+                      y           : ArrayLike | None = None,
+                      z           : ArrayLike | None = None,
+                      name        : str | None = None,
+                      color       : str | list[str] | None = None,
+                      marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                      marker_size : int | None = None,
+                      opacity     : float = 1.0,
+                      **kwargs):
         self.plot(x=x, y=y, z=z,
                   name=name,
                   line_style=' ',  # no line
@@ -147,6 +146,8 @@ class PlotlyFigure5(IFigure):
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
         value_range = imtool.estimate_range(image)
+
+        self._is_3d = False
 
         self._fig.add_trace(self.engine.go.Image(
             z=image,
@@ -173,8 +174,18 @@ class PlotlyFigure5(IFigure):
         ))
 
     def grid(self, show: bool = True):
-        self._fig.update_xaxes(showgrid=show)
-        self._fig.update_yaxes(showgrid=show)
+        if self.is_3d:
+            Scene = self.engine.go.layout.Scene
+            XAxis = self.engine.go.layout.scene.XAxis
+            YAxis = self.engine.go.layout.scene.YAxis
+            ZAxis = self.engine.go.layout.scene.ZAxis
+            self._fig.update_layout(scene=Scene(xaxis=XAxis(showgrid=show),
+                                                yaxis=YAxis(showgrid=show),
+                                                zaxis=ZAxis(showgrid=show))
+            )
+        else:
+            self._fig.update_xaxes(showgrid=show)
+            self._fig.update_yaxes(showgrid=show)
 
     def xlabel(self, text: str):
         self._fig.update_xaxes(title=text)
