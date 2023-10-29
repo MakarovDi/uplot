@@ -70,7 +70,7 @@ class MatplotFigure(IFigure):
         if z is None: # 2d
             self._init_axis(is_3d=False)
         else: # 3d
-            z = np.asarray(z)
+            z = np.atleast_1d(np.asarray(z))
             assert z.ndim == 1, 'the input must be 1d arrays'
             assert len(x) == len(z), 'the length of the input arrays must be the same'
             self._init_axis(is_3d=True)

@@ -23,26 +23,29 @@ class PlotlyFigure5(IFigure):
     def internal(self):
         return self._fig
 
+    @property
+    def is_3d(self) -> bool | None:
+        return self._is_3d
 
     def __init__(self, engine: PlotlyEngine5):
         self._engine = engine
         self._color_index = 0
 
         self._fig: engine.figure_type = engine.go.Figure()
+        self._is_3d = None
 
 
-    def plot(self,
-             x           : ArrayLike,
-             y           : ArrayLike | None = None,
-             z           : ArrayLike | None = None,
-             name        : str | None = None,
-             color       : str | list[str] | None = None,
-             line_style  : LineStyle | list[LineStyle] | None = None,
-             marker_style: MarkerStyle | list[MarkerStyle] | None = None,
-             marker_size : int | None = None,
-             opacity     : float = 1.0,
-             **kwargs):
-        x = np.asarray(x)
+    def plot(self, x           : ArrayLike,
+                   y           : ArrayLike | None = None,
+                   z           : ArrayLike | None = None,
+                   name        : str | None = None,
+                   color       : str | list[str] | None = None,
+                   line_style  : LineStyle | list[LineStyle] | None = None,
+                   marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                   marker_size : int | None = None,
+                   opacity     : float = 1.0,
+                   **kwargs):
+        x = np.atleast_1d(np.asarray(x))
 
         if y is None:
             y = x
@@ -50,11 +53,18 @@ class PlotlyFigure5(IFigure):
         else:
             y = np.asarray(y)
 
+        y = np.atleast_1d(y)
+
         assert x.ndim == y.ndim == 1, 'the input must be 1d arrays'
         assert len(x) == len(y), 'the length of the input arrays must be the same'
 
         if z is not None:
-            raise NotImplementedError('3d plot')
+            z = np.atleast_1d(np.asarray(z))
+            assert z.ndim == 1, 'the input must be 1d arrays'
+            assert len(x) == len(z), 'the length of the input arrays must be the same'
+            self._is_3d = True
+        else:
+            self._is_3d = False
 
         if marker_size is None:
             marker_size = self.engine.MARKER_SIZE
@@ -96,16 +106,24 @@ class PlotlyFigure5(IFigure):
         hoverlabel = kwargs_extract(kwargs, name='hoverlabel', default={})
         hoverlabel.setdefault('namelength', -1)
 
-        self._fig.add_scatter(
-            x=x, y=y,
-            name=name,
-            mode=mode,
-            line=line,
-            marker=marker,
-            opacity=opacity,
-            showlegend=show_legend,
-            hoverlabel=hoverlabel,
-        )
+        if not self._is_3d:
+            self._fig.add_scatter(x=x, y=y,
+                                  name=name,
+                                  mode=mode,
+                                  line=line,
+                                  marker=marker,
+                                  opacity=opacity,
+                                  showlegend=show_legend,
+                                  hoverlabel=hoverlabel)
+        else:
+            self._fig.add_scatter3d(x=x, y=y, z=z,
+                                    name=name,
+                                    mode=mode,
+                                    line=line,
+                                    marker=marker,
+                                    opacity=opacity,
+                                    showlegend=show_legend,
+                                    hoverlabel=hoverlabel)
 
     def scatter(self,
                 x           : ArrayLike,
