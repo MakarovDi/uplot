@@ -189,25 +189,19 @@ class PlotlyFigure5(IFigure):
 
     def xlabel(self, text: str):
         if self.is_3d:
-            XAxis = self.engine.go.layout.scene.XAxis
-            Scene = self.engine.go.layout.Scene
-            self._fig.update_layout(scene=Scene(xaxis=XAxis(title=text)))
+            self._fig.update_layout(scene=dict(xaxis_title=text))
         else:
             self._fig.update_xaxes(title=text)
 
     def ylabel(self, text: str):
         if self.is_3d:
-            YAxis = self.engine.go.layout.scene.YAxis
-            Scene = self.engine.go.layout.Scene
-            self._fig.update_layout(scene=Scene(yaxis=YAxis(title=text)))
+            self._fig.update_layout(scene=dict(yaxis_title=text))
         else:
             self._fig.update_yaxes(title=text)
 
     def zlabel(self, text: str):
         if self.is_3d:
-            ZAxis = self.engine.go.layout.scene.ZAxis
-            Scene = self.engine.go.layout.Scene
-            self._fig.update_layout(scene=Scene(zaxis=ZAxis(title=text)))
+            self._fig.update_layout(scene=dict(zaxis_title=text))
 
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None):
