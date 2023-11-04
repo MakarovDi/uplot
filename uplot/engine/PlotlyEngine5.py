@@ -5,7 +5,6 @@ class PlotlyEngine5(IPlotEngine):
     FILE_RESOLUTION_SCALE = 2
     MARKER_SIZE = 8
     LINE_WIDTH = 2
-    RANGE_EXTRA_SPACE_PERCENT = 2 # adding extra space to min/max ranges
 
     @classmethod
     def is_available(cls) -> bool:

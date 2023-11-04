@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import numpy as np
-from typing import Literal
 from numpy import ndarray
 from numpy.typing import ArrayLike
 
@@ -206,15 +205,44 @@ class PlotlyFigure5(IFigure):
 
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None):
-        update_axis_limit(figure=self._fig, axis='x',
-                          range_min=min_value, range_max=max_value,
-                          extra_space_percent=self.engine.RANGE_EXTRA_SPACE_PERCENT)
+        from uplot.engine.plotly import estimate_axis_range
+
+        if min_value is None:
+            min_value = estimate_axis_range(self._fig, axis='x', mode='min')
+        if max_value is None:
+            max_value = estimate_axis_range(self._fig, axis='x', mode='max')
+        if self.is_3d:
+            self._fig.update_layout(scene=dict(xaxis=dict(range=[min_value, max_value])))
+        else:
+            self._fig.update_xaxes(range=[min_value, max_value])
 
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None):
-        update_axis_limit(figure=self._fig, axis='y',
-                          range_min=min_value, range_max=max_value,
-                          extra_space_percent=self.engine.RANGE_EXTRA_SPACE_PERCENT)
+        from uplot.engine.plotly import estimate_axis_range
+
+        if min_value is None:
+            min_value = estimate_axis_range(self._fig, axis='y', mode='min')
+        if max_value is None:
+            max_value = estimate_axis_range(self._fig, axis='y', mode='max')
+
+        if self.is_3d:
+            self._fig.update_layout(scene=dict(yaxis=dict(range=[min_value, max_value])))
+        else:
+            self._fig.update_yaxes(range=[min_value, max_value])
+
+    def zlim(self, min_value: float | None = None,
+                   max_value: float | None = None):
+        if not self.is_3d:
+            return
+
+        from uplot.engine.plotly import estimate_axis_range
+
+        if min_value is None:
+            min_value = estimate_axis_range(self._fig, axis='z', mode='min')
+        if max_value is None:
+            max_value = estimate_axis_range(self._fig, axis='z', mode='max')
+
+        self._fig.update_layout(scene=dict(zaxis=dict(range=[min_value, max_value])))
 
     def current_color(self) -> str:
         color_name = default_colors_list[self._color_index]
@@ -255,84 +283,3 @@ class PlotlyFigure5(IFigure):
 
     def show(self, block: bool = False):
         self.engine.pio.show(self._fig)
-
-
-# TODO: update to 5.17
-def update_axis_limit(figure, axis: Literal['x', 'y'],
-                      range_min: float | None = None,
-                      range_max: float | None = None,
-                      extra_space_percent: int=2):
-    # setting only min or only max is not implemented in plotly
-    # https://github.com/plotly/plotly.js/issues/400
-    # so manual estimation of min/max is required
-    if (range_max is None or range_min is None) and not figure.data:
-        raise RuntimeError('there is no any graph, use xlim/ylim after plotting or '
-                           'specify both range_min and range_max')
-
-    update_axis = {
-        'x': figure.update_xaxes,
-        'y': figure.update_yaxes,
-    }[axis]
-
-    get_axis_data = {
-        'x': lambda trace: trace.x,
-        'y': lambda trace: trace.y,
-    }[axis]
-
-    # min estimation
-    if range_min is None:
-        range_min = []
-        for trace_data in figure.data:
-            range_min.append(np.min(get_axis_data(trace_data)))
-        range_min = np.min(range_min)
-
-    # max estimation
-    if range_max is None:
-        range_max = []
-        for trace_data in figure.data:
-            range_max.append(np.max(get_axis_data(trace_data)))
-        range_max = np.max(range_max)
-
-    range_min *= 1 - np.sign(range_min) * extra_space_percent / 100
-    range_max *= 1 + np.sign(range_max) * extra_space_percent / 100
-    update_axis(range=[range_min, range_max])
-
-
-LINE_STYLE_MAPPING: dict[LineStyle | None, str | None] = {
-    '-' : 'solid',
-    '--': 'dash',
-    ':' : 'dot',
-    '-.': 'dashdot',
-    ''  : None,
-    ' ' : ' ',
-    None: None,
-}
-
-MARKER_STYLE_MAPPING: dict[MarkerStyle | None, str | None] = {
-    '.': 'circle',
-    ',': None,
-    'o': 'circle-open',
-    'v': 'triangle-down',
-    '^': 'triangle-up',
-    '<': 'triangle-left',
-    '>': 'triangle-right',
-    '1': 'y-down',
-    '2': 'y-up',
-    '3': 'y-left',
-    '4': 'y-right',
-    '8': 'octagon',
-    's': 'square',
-    'p': 'pentagon',
-    '*': 'star',
-    'h': 'hexagon',
-    'H': 'hexagon2',
-    '+': 'cross-thin',
-    'x': 'x-thin',
-    'X': 'x',
-    'D': 'diamond',
-    'd': 'diamond-tall',
-    '|': 'line-ns',
-    '_': 'line-ew',
-    'P': 'cross',
-    None: None,
-}
