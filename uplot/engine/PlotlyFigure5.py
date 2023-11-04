@@ -256,10 +256,13 @@ class PlotlyFigure5(IFigure):
         self._color_index = 0
 
     def axis_aspect(self, mode: AspectMode):
-        if mode == AspectMode.EQUAL:
-            self._fig.update_yaxes(scaleanchor='x')
+        if self.is_3d:
+            if mode == AspectMode.EQUAL:
+                aspectmode = 'cube' if mode == AspectMode.EQUAL else 'auto'
+                self._fig.update_scenes(aspectmode=aspectmode)
         else:
-            self._fig.update_yaxes(scaleanchor=None)
+            scaleanchor = 'x' if mode == AspectMode.EQUAL else None
+            self._fig.update_yaxes(scaleanchor=scaleanchor)
 
     def as_image(self) -> ndarray:
         import io
