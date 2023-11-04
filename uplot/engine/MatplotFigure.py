@@ -220,7 +220,7 @@ class MatplotFigure(IFigure):
         self._fig.close()
         self._fig = None
 
-    def show(self, block: bool = False):
+    def show(self, block: bool=True):
         if self.engine.is_ipython_backend:
             # There are two ways for consistent figure visualization in jupyter
             #    1. call `%matplotlib ...` at the notebook start.

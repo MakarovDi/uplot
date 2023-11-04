@@ -265,8 +265,10 @@ class PlotlyFigure5(IFigure):
         import io
         from PIL import Image
 
-        fig_bytes = io.BytesIO(self._fig.to_image(format='png',
-                                                  scale=self.engine.FILE_RESOLUTION_SCALE))
+        fig_bytes = io.BytesIO(
+            self._fig.to_image(format='png', scale=self.engine.FILE_RESOLUTION_SCALE)
+        )
+
         image = Image.open(fig_bytes)
         image = np.asarray(image)
         image = image[..., :3] # RGBA -> RGB
@@ -281,5 +283,5 @@ class PlotlyFigure5(IFigure):
     def close(self):
         self._fig = None
 
-    def show(self, block: bool = False):
+    def show(self, block: bool=True):
         self.engine.pio.show(self._fig)

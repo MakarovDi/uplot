@@ -133,7 +133,7 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def show(self, block: bool = False):
+    def show(self, block: bool=True):
         ...
 
 @runtime_checkable
