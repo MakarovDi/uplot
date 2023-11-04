@@ -132,6 +132,7 @@ class MatplotFigure(IFigure):
         image = np.asarray(image)
         value_range = imtool.estimate_range(image)
 
+        self._init_axis(is_3d=False)
         self._axis.imshow(image / value_range,
                           cmap=kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
                           vmin=kwargs_extract(kwargs, name='vmin', default=0),
