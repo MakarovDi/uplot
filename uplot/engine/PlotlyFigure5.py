@@ -84,6 +84,7 @@ class PlotlyFigure5(IFigure):
         else:
             color = decode_color(color)
 
+        from uplot.engine.plotly import LINE_STYLE_MAPPING, MARKER_STYLE_MAPPING
         line_style = LINE_STYLE_MAPPING[line_style]
         marker_style = MARKER_STYLE_MAPPING[marker_style]
 
