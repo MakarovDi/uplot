@@ -3,7 +3,9 @@
 ## `[v0.2.0]` - ??.10.2023
 
 #### Added
-* `[interface]` engine-specific parameters via `kwargs`: `plot()`, `scatter()`, `legend()`.
+* `[interface]` `[engine]` 3d plot & scatter.
+* `[interface]` `[engine]` 3d plot support: `zlim()`, `zlabel()`.
+* `[interface]` `[engine]` engine-specific parameters via `kwargs`: `plot()`, `scatter()`, `legend()`.
 * `[engine]` "color per point" support for scatter.
 
 #### Changed

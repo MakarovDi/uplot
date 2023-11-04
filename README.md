@@ -22,10 +22,10 @@ import uplot
 
 f = uplot.figure('plotly5')
 f.plot([1, 2, 3], name='Line 45')
-f.legend(show=True)
+f.legend(True)
 f.xlabel('X')
 f.ylabel('Y')
-f.show(block=True)
+f.show()
 ```
 </td>
 <td>
@@ -35,10 +35,10 @@ import uplot
 
 f = uplot.figure('matplotlib')
 f.plot([1, 2, 3], name='Line 45')
-f.legend(show=True)
+f.legend(True)
 f.xlabel('X')
 f.ylabel('Y')
-f.show(block=True)
+f.show()
 ```
 </td>
 </tr>
@@ -59,6 +59,7 @@ f.show(block=True)
 </tr>
 </table>
 
+> See [gallery](gallery/gallery.md) for more examples.
 
 ## Install
 
@@ -98,7 +99,7 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 :red_circle: Limited interactivity (especially for Jupyter).  
 :red_circle: API, behavior and parameter names are inconsistent (e.g. plt.xlim and axis.set_xlim).  
 &emsp;`->` It's easy to spend an entire day setting up something simple (like a legend location).   
-:red_circle: Slow API for 3D graphs.   
+:red_circle: Slow and limited 3D rendering.   
 
 
 ### [Plotly](https://plotly.com/python/)
@@ -162,7 +163,7 @@ See the [LICENSE](LICENSE) file for details.
 - [x] Gallery
 - [x] Changelog
 - [x] **API**: aspect ratio param: `uplot.figure(..., aspect_ratio: float)`
-- [ ] **API**: `fig.plot3d(...)` and `fig.scatter3d(...)`
+- [x] **API**: `fig.plot3d(...)` and `fig.scatter3d(...)`
 - [ ] **API**: `fig.surface3d(...)`
 - [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
 - [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
