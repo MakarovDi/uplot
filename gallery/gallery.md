@@ -1,11 +1,7 @@
 # Gallery
 
 1. [plot](#plot)  
-   1.1. [2d](#2d)  
-   1.2. [3d](#3d)  
 1. [scatter](#scatter)  
-   2.1. [2d](#2d)  
-   2.2. [3d](#3d)  
 
 
 > See also jupyter notebook: `gallery.ipynb`.
@@ -35,7 +31,7 @@ fig.legend()
 fig.show()
 ```
 
-![plot](asset/plot.png)
+<img src='asset/plot.png' width='700'>
 
 ### 3d
 
@@ -55,7 +51,7 @@ fig.legend()
 fig.show()
 ```
 
-![plot-3d](asset/plot-3d.png)
+<img src='asset/plot-3d.png' width='700'>
 
 ## scatter
 
@@ -77,7 +73,7 @@ fig.scatter(x, y)
 fig.show()
 ```
 
-![scatter](asset/scatter.png)
+<img src='asset/scatter.png' width='700'>
 
 
 ### 3d
@@ -97,4 +93,4 @@ fig.scatter(x, y, z, color=uplot.color.rgb_to_str(rgb_colors))
 fig.show()
 ```
 
-![scatter](asset/scatter-3d.png)
+<img src='asset/scatter-3d.png' width='700'>

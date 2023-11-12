@@ -58,13 +58,13 @@ fig.show()
 <tr>
 <td>
 
-![python](gallery/asset/plotly5-example.png)
+<img src='gallery/asset/plotly5-example.png' width='600'>
 
 </td>
 
 <td>
 
-![python](gallery/asset/mpl-example.png)
+<img src='gallery/asset/mpl-example.png' width='600'>
 
 </td>
 
