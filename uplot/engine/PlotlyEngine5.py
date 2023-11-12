@@ -4,7 +4,7 @@ from uplot.interface import IPlotEngine, IFigure
 class PlotlyEngine5(IPlotEngine):
     FILE_RESOLUTION_SCALE = 2
     MARKER_SIZE = 8
-    LINE_WIDTH = 2
+    LINE_WIDTH = 2.5
 
     @classmethod
     def is_available(cls) -> bool:
