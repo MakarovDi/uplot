@@ -18,27 +18,39 @@ Unified API and style for Python plotting libraries.
 <td>
 
 ```python
+import numpy as np
 import uplot
 
-f = uplot.figure('plotly5')
-f.plot([1, 2, 3], name='Line 45')
-f.legend(True)
-f.xlabel('X')
-f.ylabel('Y')
-f.show()
+x = np.linspace(0, np.pi*4, num=100)
+
+fig = uplot.figure('plotly5')
+fig.plot(x, np.sin(x - 0*np.pi/4), name='data #1')
+fig.plot(x, np.sin(x - 1*np.pi/4), name='data #2')
+fig.plot(x, np.sin(x - 2*np.pi/4), name='data #3')
+fig.plot(x, np.sin(x - 3*np.pi/4), name='data #4')
+fig.xlabel('X')
+fig.ylabel('Y')
+fig.legend()
+fig.show()
 ```
 </td>
 <td>
 
 ```python
+import numpy as np
 import uplot
 
-f = uplot.figure('matplotlib')
-f.plot([1, 2, 3], name='Line 45')
-f.legend(True)
-f.xlabel('X')
-f.ylabel('Y')
-f.show()
+x = np.linspace(0, np.pi*4, num=100)
+
+fig = uplot.figure('matplotlib')
+fig.plot(x, np.sin(x - 0*np.pi/4), name='data #1')
+fig.plot(x, np.sin(x - 1*np.pi/4), name='data #2')
+fig.plot(x, np.sin(x - 2*np.pi/4), name='data #3')
+fig.plot(x, np.sin(x - 3*np.pi/4), name='data #4')
+fig.xlabel('X')
+fig.ylabel('Y')
+fig.legend()
+fig.show()
 ```
 </td>
 </tr>
@@ -84,7 +96,7 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 |                      |                                                Standalone |                                    JupyterLab<br>`4.0.6` |                           Jupyter<br/>Notebook<br/>`7.0` |                     IDE |
 |:--------------------:|----------------------------------------------------------:|---------------------------------------------------------:|---------------------------------------------------------:|------------------------:|
 | matplotlib<br/>`3.7` |      `gui` :green_circle:<br/>`save image` :green_circle: | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `vscode` :green_circle: |
-|  plotly<br/>`5.17`   | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: | `vscode` :green_circle: |
+|  plotly<br/>`5.16`   | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: | `vscode` :green_circle: |
 
 
 ## Plotting Libs - Pros & Cons
@@ -98,7 +110,6 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
  
 :red_circle: Limited interactivity (especially for Jupyter).  
 :red_circle: API, behavior and parameter names are inconsistent (e.g. plt.xlim and axis.set_xlim).  
-&emsp;`->` It's easy to spend an entire day setting up something simple (like a legend location).   
 :red_circle: Slow and limited 3D rendering.   
 
 
@@ -108,7 +119,6 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 :green_circle: Native compatibility with Jupyter.  
 :green_circle: Possibility to save interactive plot (html-file).  
 :green_circle: Fast and interactive 3D plot.  
-:yellow_circle: Good API design (especially compared to matplotlib). 
 
 :red_circle: Not well documented (a lot of parameters, small amount of examples).  
 :red_circle: High memory consumption (limited number of plots in Jupyter).  
@@ -169,11 +179,12 @@ See the [LICENSE](LICENSE) file for details.
 - [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
 - [ ] **API**: `fig.bar(...)` 
 - [ ] **API**: `fig.click_event(...)`
-- [ ] **API**: `fig.legend_group(...)`
+- [ ] **API**: `fig.legend_group(...)` or parameter `legend_group`
 - [ ] **API**: `fig.hover_text(...)`
 - [x] **API**: `kwargs` to directly access underlying engine 
 - [ ] **API**: `fig.legend`: param for the legend location
 - [ ] Unified styling
+  - [ ] Engine independent config: `uplot.defaults`
 - [ ] TeX support
 - [ ] `DataFrame` support
 - [ ] `Bokeh` engine
