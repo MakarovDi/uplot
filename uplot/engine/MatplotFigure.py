@@ -81,7 +81,7 @@ class MatplotFigure(IFigure):
         if color is None:
             color = self.current_color()
             self.scroll_color()
-        elif color is not isinstance(color, str):
+        elif not isinstance(color, str):
             # color specified for each point (x, y)
             color = [ decode_color(c) for c in color ]
         else:
