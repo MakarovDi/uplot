@@ -6,8 +6,8 @@ CURRENT_ENGINE: IPlotEngine | None = None
 
 
 def figure(engine: str | IPlotEngine | None = None,
-           width: int | None = 800,
-           aspect_ratio: float = 0.8) -> IFigure:
+           width : int | None = 800,
+           aspect_ratio: float = 0.6) -> IFigure:
     """
     Creates figure via specified or default engine.
 
