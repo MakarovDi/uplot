@@ -72,7 +72,7 @@ class PlotlyFigure5(IFigure):
             name = ''
             show_legend = False
         else:
-            show_legend = True
+            show_legend = kwargs_extract(kwargs, name='showlegend', default=True)
 
         if color is None:
             color = self.current_color()
@@ -115,7 +115,8 @@ class PlotlyFigure5(IFigure):
                                   marker=marker,
                                   opacity=opacity,
                                   showlegend=show_legend,
-                                  hoverlabel=hoverlabel)
+                                  hoverlabel=hoverlabel,
+                                  **kwargs)
         else:
             self._fig.add_scatter3d(x=x, y=y, z=z,
                                     name=name,
@@ -124,7 +125,8 @@ class PlotlyFigure5(IFigure):
                                     marker=marker,
                                     opacity=opacity,
                                     showlegend=show_legend,
-                                    hoverlabel=hoverlabel)
+                                    hoverlabel=hoverlabel,
+                                    **kwargs)
 
     def scatter(self, x           : ArrayLike,
                       y           : ArrayLike | None = None,
