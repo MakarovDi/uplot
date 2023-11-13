@@ -97,6 +97,7 @@ class PlotlyFigure5(IFigure):
         else:
             line.setdefault('color', color)
             line.setdefault('width', self.engine.LINE_WIDTH)
+            line['dash'] = line_style
 
         marker.setdefault('color', color)
         marker.setdefault('line_color', color)
