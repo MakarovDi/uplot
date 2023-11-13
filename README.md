@@ -115,7 +115,7 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 
 ### [Plotly](https://plotly.com/python/)
 
-:green_circle: Very good interactively.  
+:green_circle: Very good interactivity.  
 :green_circle: Native compatibility with Jupyter.  
 :green_circle: Possibility to save interactive plot (html-file).  
 :green_circle: Fast and interactive 3D plot.  
