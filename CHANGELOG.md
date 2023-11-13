@@ -1,6 +1,12 @@
 # Changelog
 
-## `[v0.2.0]` - ??.10.2023
+## `[v0.2.1]` - 13.11.2023
+
+#### Fixed
+* `[engine.plotly5]` fixed problem with `line_style` setting.
+
+
+## `[v0.2.0]` - 12.11.2023
 
 #### Added
 * `[interface]` `[engine]` 3d plot & scatter.

@@ -17,7 +17,7 @@ y2 = [4, 3, 2, 1]
 
 f1 = uplot.figure(engine=engine)
 f1.plot(x, y1)
-f1.plot(x, y2)
+f1.plot(x, y2, line_style=':', color='gray')
 f1.scatter(3, 5, name='The lonely dot')
 f1.title('Test')
 f1.legend(True)
