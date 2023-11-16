@@ -174,6 +174,7 @@ class PlotlyFigure5(IFigure):
             visible=show,
             bgcolor=kwargs_extract(kwargs, name='bgcolor', default='rgba(255,255,255,0.8)'),
             itemsizing=kwargs_extract(kwargs, name='itemsizing', default='constant'),
+            itemwidth=kwargs_extract(kwargs, name='itemwidth', default=50),
             **kwargs,
         ))
 

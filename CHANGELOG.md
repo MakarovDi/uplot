@@ -1,5 +1,11 @@
 # Changelog
 
+## `[v0.2.2]` - ??.??.2023
+
+#### Fixed
+* `[engine.plotly5]` legend item width increased to show dashed line correctly.
+
+
 ## `[v0.2.1]` - 13.11.2023
 
 #### Fixed
