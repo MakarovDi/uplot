@@ -167,24 +167,3 @@ fig.show()
 
 This software is licensed under the `BSD-3-Clause` license.  
 See the [LICENSE](LICENSE) file for details.
-
-## TODO
-
-- [x] Gallery
-- [x] Changelog
-- [x] **API**: aspect ratio param: `uplot.figure(..., aspect_ratio: float)`
-- [x] **API**: `fig.plot3d(...)` and `fig.scatter3d(...)`
-- [ ] **API**: `fig.surface3d(...)`
-- [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
-- [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
-- [ ] **API**: `fig.bar(...)` 
-- [ ] **API**: `fig.click_event(...)`
-- [ ] **API**: `fig.legend_group(...)` or parameter `legend_group`
-- [ ] **API**: `fig.hover_text(...)`
-- [x] **API**: `kwargs` to directly access underlying engine 
-- [ ] **API**: `fig.legend`: param for the legend location
-- [ ] Unified styling
-  - [ ] Engine independent config: `uplot.defaults`
-- [ ] TeX support
-- [ ] `DataFrame` support
-- [ ] `Bokeh` engine
