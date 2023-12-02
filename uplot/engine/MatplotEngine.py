@@ -13,7 +13,7 @@ class MatplotEngine(IPlotEngine):
 
     @property
     def name(self) -> str:
-        return 'matplotlib'
+        return f'matplotlib-{self._backend.title().lower()}'
 
     @classmethod
     def is_available(cls) -> bool:

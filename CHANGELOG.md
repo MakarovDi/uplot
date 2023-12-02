@@ -2,6 +2,9 @@
 
 ## `[v0.2.2]` - ??.??.2023
 
+#### Changed
+* `[engine]` the engine management system reworked: `engine.get()`, `engine.available()`, `engine.register()`.
+
 #### Fixed
 * `[engine.plotly5]` legend item width increased to show dashed line correctly.
 
