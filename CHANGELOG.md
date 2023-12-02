@@ -4,6 +4,7 @@
 
 #### Added
 * `[interface]` singleton `DEFAULT` for storing and controlling default parameters.
+* `[color]` class `ColorScroller` for maintaining automatic color switching for plotting.
 
 #### Changed
 * `[engine]` the engine management system reworked: `engine.get()`, `engine.available()`, `engine.register()`.
