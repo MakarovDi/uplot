@@ -10,6 +10,7 @@ from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode
 from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.color import default_colors_list, decode_color, default_colors
 from uplot.routine import kwargs_extract
+from uplot.default import DEFAULT
 
 
 class MatplotFigure(IFigure):
@@ -33,7 +34,7 @@ class MatplotFigure(IFigure):
 
         # temporary styling (no global effect):
         # https://matplotlib.org/stable/users/explain/customizing.html
-        with engine.plt.style.context(engine.STYLE):
+        with engine.plt.style.context(DEFAULT.style):
             self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
             # Constrained layout automatically adjusts subplots so that decorations like tick labels,
             # legends, and colorbars do not overlap, while still preserving the logical layout requested by the user.
@@ -76,7 +77,7 @@ class MatplotFigure(IFigure):
             self._init_axis(is_3d=True)
 
         if marker_size is None:
-            marker_size = self.engine.MARKER_SIZE
+            marker_size = DEFAULT.marker_size
 
         if color is None:
             color = self.current_color()
@@ -250,7 +251,7 @@ class MatplotFigure(IFigure):
         self._fig.clear()
 
         # temporary styling (no global effect):
-        with self.engine.plt.style.context(self.engine.STYLE):
+        with self.engine.plt.style.context(DEFAULT.style):
             projection = '3d' if is_3d else None
             self._axis = self._fig.add_subplot(projection=projection)
 

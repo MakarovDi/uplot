@@ -10,6 +10,7 @@ from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
 from uplot.color import default_colors_list, decode_color, default_colors
 from uplot.routine import kwargs_extract
+from uplot.default import DEFAULT
 
 
 class PlotlyFigure5(IFigure):
@@ -66,7 +67,8 @@ class PlotlyFigure5(IFigure):
             self._is_3d = False
 
         if marker_size is None:
-            marker_size = self.engine.MARKER_SIZE
+            # 1.33 - conversion gain between matplotlib and plotly marker size
+            marker_size = DEFAULT.marker_size*1.33
 
         if name is None:
             name = ''

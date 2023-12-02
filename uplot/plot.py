@@ -1,13 +1,14 @@
 from uplot.interface import IFigure, IPlotEngine
 from uplot import engine as e
+from uplot.default import DEFAULT
 
 
 CURRENT_ENGINE: IPlotEngine | None = None
 
 
 def figure(engine: str | IPlotEngine | None = None,
-           width : int | None = 800,
-           aspect_ratio: float = 0.6) -> IFigure:
+           width : int | None = DEFAULT.figure_width,
+           aspect_ratio: float = DEFAULT.figure_aspect_ratio) -> IFigure:
     """
     Creates a new figure using the specified plotting engine or the default engine.
 

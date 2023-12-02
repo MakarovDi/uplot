@@ -1,9 +1,10 @@
 from uplot.interface import IPlotEngine, IFigure
+from uplot.default import DEFAULT
 
 
 class PlotlyEngine5(IPlotEngine):
+    # engine specific default parameters
     FILE_RESOLUTION_SCALE = 2
-    MARKER_SIZE = 8
     LINE_WIDTH = 2.5
 
     @property
@@ -35,8 +36,11 @@ class PlotlyEngine5(IPlotEngine):
         self._go = go
 
         # load style
-        from uplot.engine.style.plotly import bmh
-        self._layout_style = bmh
+        if DEFAULT.style.lower() == 'bmh':
+            from uplot.engine.style.plotly import bmh
+            self._layout_style = bmh
+        else:
+            raise NotImplementedError(f'style not supported for plotly: {DEFAULT.style}')
 
     def figure(self, width: int, aspect_ratio: float) -> IFigure:
         from uplot.engine.PlotlyFigure5 import PlotlyFigure5

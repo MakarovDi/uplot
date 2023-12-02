@@ -1,6 +1,9 @@
 # Changelog
 
-## `[v0.2.2]` - ??.??.2023
+## `[v0.3.0]` - ??.??.2023
+
+#### Added
+* `[interface]` singleton `DEFAULT` for storing and controlling default parameters.
 
 #### Changed
 * `[engine]` the engine management system reworked: `engine.get()`, `engine.available()`, `engine.register()`.

@@ -3,13 +3,11 @@ from uplot.interface import IPlotEngine, IFigure
 
 class MatplotEngine(IPlotEngine):
     # engine specific default parameters
-    MARKER_SIZE = 6
     SHOWING_DPI = 100
     SAVING_DPI = SHOWING_DPI * 2
-    STYLE = 'bmh'
 
-    AUTOMATIC_MPL_BACKEND: str | None = None # automatically (default) chosen matplotlib backend
-
+    # automatically (default) chosen matplotlib backend
+    AUTOMATIC_MPL_BACKEND: str | None = None
 
     @property
     def name(self) -> str:
