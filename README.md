@@ -81,12 +81,12 @@ pip install git+https://github.com/makarovdi/uplot.git@main
 ```
 to automatically install all optional dependencies (`matplotlib`, `plotly`, ...) use
 ```bash
-pip install git+https://github.com/makarovdi/uplot.git@main[all]
+pip install "uplot[all] @ git+https://github.com/makarovdi/uplot.git@main"
 ```
 
 If you need only `matplotlib` support:
 ```bash
-pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
+pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main"
 ```
 > Replace `[matplotlib]` with `[plotly5]` for plotly-only installation 
 
