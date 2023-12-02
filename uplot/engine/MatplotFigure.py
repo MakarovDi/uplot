@@ -216,7 +216,7 @@ class MatplotFigure(IFigure):
         self._fig.savefig(fname, dpi=self.engine.SAVING_DPI)
 
     def close(self):
-        self._fig.close()
+        self.engine.plt.close(self._fig)
         self._fig = None
 
     def show(self, block: bool=True):

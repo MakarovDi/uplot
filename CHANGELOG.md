@@ -11,6 +11,7 @@
 
 #### Fixed
 * `[engine.plotly5]` legend item width increased to show dashed line correctly.
+* `[engine.matplot]` now `figure.close()` works correctly.
 
 
 ## `[v0.2.1]` - 13.11.2023
