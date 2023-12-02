@@ -2,12 +2,18 @@ from uplot.interface import IPlotEngine, IFigure
 
 
 class MatplotEngine(IPlotEngine):
+    # engine specific default parameters
     MARKER_SIZE = 6
     SHOWING_DPI = 100
     SAVING_DPI = SHOWING_DPI * 2
     STYLE = 'bmh'
 
     AUTOMATIC_MPL_BACKEND: str | None = None # automatically (default) chosen matplotlib backend
+
+
+    @property
+    def name(self) -> str:
+        return 'matplotlib'
 
     @classmethod
     def is_available(cls) -> bool:
@@ -16,10 +22,6 @@ class MatplotEngine(IPlotEngine):
             return True
         except ImportError:
             return False
-
-    @property
-    def figure_type(self) -> type:
-        return self.plt.Figure
 
     @property
     def plt(self):

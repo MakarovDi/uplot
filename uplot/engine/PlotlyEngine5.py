@@ -6,6 +6,10 @@ class PlotlyEngine5(IPlotEngine):
     MARKER_SIZE = 8
     LINE_WIDTH = 2.5
 
+    @property
+    def name(self) -> str:
+        return 'plotly5'
+
     @classmethod
     def is_available(cls) -> bool:
         try:
@@ -13,10 +17,6 @@ class PlotlyEngine5(IPlotEngine):
             return True
         except ImportError:
             return False
-
-    @property
-    def figure_type(self) -> type:
-        return self.go.Figure
 
     @property
     def go(self):
@@ -30,8 +30,10 @@ class PlotlyEngine5(IPlotEngine):
     def __init__(self):
         import plotly.graph_objs as go
         import plotly.io as pio
+
         self._pio = pio
         self._go = go
+
         # load style
         from uplot.engine.style.plotly import bmh
         self._layout_style = bmh

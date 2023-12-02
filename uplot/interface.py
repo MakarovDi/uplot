@@ -24,17 +24,17 @@ class IFigure(Protocol):
     @property
     @abstract
     def engine(self) -> IPlotEngine:
-        return ...
+        ...
 
     @property
     @abstract
     def internal(self):
-        return ...
+        ...
 
     @property
     @abstract
     def is_3d(self) -> bool:
-        return ...
+        ...
 
     @abstract
     def plot(self, x           : ArrayLike,
@@ -136,18 +136,19 @@ class IFigure(Protocol):
     def show(self, block: bool=True):
         ...
 
+
 @runtime_checkable
 class IPlotEngine(Protocol):
+
+    @property
+    @abstract
+    def name(self) -> str:
+        ...
 
     @classmethod
     @abstract
     def is_available(cls) -> bool:
         ...
-
-    @property
-    @abstract
-    def figure_type(self) -> type:
-        return ...
 
     @abstract
     def figure(self, width: int, aspect_ratio: float) -> IFigure:

@@ -30,7 +30,7 @@ class PlotlyFigure5(IFigure):
         self._engine = engine
         self._color_index = 0
 
-        self._fig: engine.figure_type = engine.go.Figure()
+        self._fig: engine.go.Figure = engine.go.Figure()
         self._is_3d = None
 
 
