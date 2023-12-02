@@ -109,7 +109,7 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def scroll_color(self, count: int = 1):
+    def scroll_color(self, count: int = 1) -> str:
         ...
 
     @abstract

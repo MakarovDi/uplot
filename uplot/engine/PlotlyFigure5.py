@@ -5,10 +5,10 @@ from numpy import ndarray
 from numpy.typing import ArrayLike
 
 import uplot.imtool as imtool
+import uplot.color as ucolor
 
 from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
-from uplot.color import default_colors_list, decode_color, default_colors
 from uplot.routine import kwargs_extract
 from uplot.default import DEFAULT
 
@@ -29,7 +29,7 @@ class PlotlyFigure5(IFigure):
 
     def __init__(self, engine: PlotlyEngine5):
         self._engine = engine
-        self._color_index = 0
+        self._color_scroller = ucolor.ColorScroller()
 
         self._fig: engine.go.Figure = engine.go.Figure()
         self._is_3d = None
@@ -77,13 +77,12 @@ class PlotlyFigure5(IFigure):
             show_legend = kwargs_extract(kwargs, name='showlegend', default=True)
 
         if color is None:
-            color = self.current_color()
-            self.scroll_color()
+            color = self.scroll_color()
         elif not isinstance(color, str):
             # color specified for each point (x, y)
-            color = [ decode_color(c) for c in color ]
+            color = [ ucolor.name_to_hex(c) for c in color]
         else:
-            color = decode_color(color)
+            color = ucolor.name_to_hex(color)
 
         from uplot.engine.plotly import LINE_STYLE_MAPPING, MARKER_STYLE_MAPPING
         line_style = LINE_STYLE_MAPPING[line_style]
@@ -252,15 +251,13 @@ class PlotlyFigure5(IFigure):
         self._fig.update_layout(scene=dict(zaxis=dict(range=[min_value, max_value])))
 
     def current_color(self) -> str:
-        color_name = default_colors_list[self._color_index]
-        return default_colors[color_name]
+        return self._color_scroller.current_color()
 
-    def scroll_color(self, count: int=1):
-        self._color_index += count
-        self._color_index %= len(default_colors_list)
+    def scroll_color(self, count: int=1) -> str:
+        return self._color_scroller.scroll_color(count)
 
     def reset_color(self):
-        self._color_index = 0
+        self._color_scroller.reset()
 
     def axis_aspect(self, mode: AspectMode):
         if self.is_3d:
