@@ -9,23 +9,23 @@ def figure(engine: str | IPlotEngine | None = None,
            width : int | None = 800,
            aspect_ratio: float = 0.6) -> IFigure:
     """
-    Creates figure via specified or default engine.
+    Creates a new figure using the specified plotting engine or the default engine.
 
     Parameters
     ----------
-    engine :
-        plotting engine object or name, if None then return previous or default engine
+    engine : str, IPlotEngine, or None, optional
+        The plotting engine object or name. If None, the function returns the previous or default engine.
 
-    width :
-        the figure width in pixels
+    width : int or None, optional
+        The width of the figure in pixels.
 
-    aspect_ratio :
-        aspect ratio for the new figure
+    aspect_ratio : float, optional
+        The aspect ratio for the new figure.
 
     Returns
     -------
     IFigure
-        figure object
+        The created figure object.
     """
     global CURRENT_ENGINE
 
