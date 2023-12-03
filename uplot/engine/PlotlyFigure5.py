@@ -33,6 +33,7 @@ class PlotlyFigure5(IFigure):
 
         self._fig: engine.go.Figure = engine.go.Figure()
         self._is_3d = None
+        self._colorbar_x_pos = 0.8
 
 
     def plot(self, x           : ArrayLike,
@@ -157,11 +158,18 @@ class PlotlyFigure5(IFigure):
                         **kwargs):
         self._is_3d = True
 
+        if show_colormap:
+            colorbar = dict(len=0.5, x=self._colorbar_x_pos)
+            self._colorbar_x_pos += 0.12
+        else:
+            colorbar = None
+
         self._fig.add_surface(x=x, y=y, z=z,
                               name=name,
                               showlegend=(name != '') and (name is not None),
                               showscale=show_colormap,
                               colorscale=colormap,
+                              colorbar=colorbar,
                               **kwargs)
 
 
