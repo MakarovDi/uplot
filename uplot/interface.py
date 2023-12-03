@@ -62,6 +62,16 @@ class IFigure(Protocol):
         ...
 
     @abstract
+    def surface3d(self, x: ArrayLike,
+                        y: ArrayLike,
+                        z: ArrayLike,
+                        name: str | None = None,
+                        show_colormap: bool = False,
+                        colormap: str = 'viridis',
+                        **kwargs):
+        ...
+
+    @abstract
     def imshow(self, image: ArrayLike, **kwargs):
         ...
 

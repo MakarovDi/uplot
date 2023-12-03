@@ -69,12 +69,12 @@ class MatplotFigure(IFigure):
         assert len(x) == len(y), 'the length of the input arrays must be the same'
 
         if z is None: # 2d
-            self._init_axis(is_3d=False)
+            axis = self._init_axis(is_3d=False)
         else: # 3d
             z = np.atleast_1d(np.asarray(z))
             assert z.ndim == 1, 'the input must be 1d arrays'
             assert len(x) == len(z), 'the length of the input arrays must be the same'
-            self._init_axis(is_3d=True)
+            axis = self._init_axis(is_3d=True)
 
         if marker_size is None:
             marker_size = DEFAULT.marker_size
@@ -94,22 +94,22 @@ class MatplotFigure(IFigure):
             plot_data = x, y
 
         if line_style == ' ': # only markers
-            self._axis.scatter(*plot_data,
-                               color=color,
-                               label=name,
-                               marker=marker_style,
-                               s=marker_size**2,
-                               alpha=opacity,
-                               **kwargs)
+            axis.scatter(*plot_data,
+                         color=color,
+                         label=name,
+                         marker=marker_style,
+                         s=marker_size**2,
+                         alpha=opacity,
+                         **kwargs)
         else:
-            self._axis.plot(*plot_data,
-                            color=color,
-                            label=name,
-                            marker=marker_style,
-                            markersize=marker_size,
-                            linestyle=line_style,
-                            alpha=opacity,
-                            **kwargs)
+            axis.plot(*plot_data,
+                      color=color,
+                      label=name,
+                      marker=marker_style,
+                      markersize=marker_size,
+                      linestyle=line_style,
+                      alpha=opacity,
+                      **kwargs)
 
     def scatter(self, x           : ArrayLike,
                       y           : ArrayLike | None = None,
@@ -129,23 +129,43 @@ class MatplotFigure(IFigure):
                   opacity=opacity,
                   **kwargs)
 
+    def surface3d(self, x: ArrayLike,
+                        y: ArrayLike,
+                        z: ArrayLike,
+                        name: str | None = None,
+                        show_colormap: bool = False,
+                        colormap: str = 'viridis',
+                        **kwargs):
+        axis = self._init_axis(is_3d=True)
+
+        cmap = self.engine.mpl.cm.get_cmap(colormap.lower())
+
+        surf = axis.plot_surface(x, y, z,
+                                 label=name,
+                                 cmap=cmap,
+                                 antialiased=False,
+                                 **kwargs)
+        if show_colormap:
+            self._fig.colorbar(surf, shrink=0.5, aspect=10)
+
+
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
         value_range = imtool.estimate_range(image)
 
-        self._init_axis(is_3d=False)
-        self._axis.imshow(image / value_range,
-                          cmap=kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
-                          vmin=kwargs_extract(kwargs, name='vmin', default=0),
-                          vmax=kwargs_extract(kwargs, name='vmax', default=1.0),
-                          interpolation=kwargs_extract(kwargs, name='interpolation', default='none')
+        axis = self._init_axis(is_3d=False)
+        axis.imshow(image / value_range,
+                    cmap=kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
+                    vmin=kwargs_extract(kwargs, name='vmin', default=0),
+                    vmax=kwargs_extract(kwargs, name='vmax', default=1.0),
+                    interpolation=kwargs_extract(kwargs, name='interpolation', default='none')
         )
 
         # hide grid, frame, ticks and labels
-        self._axis.grid(visible=False)
-        self._axis.get_xaxis().set_visible(False)
-        self._axis.get_yaxis().set_visible(False)
-        self._axis.set_frame_on(False)
+        axis.grid(visible=False)
+        axis.get_xaxis().set_visible(False)
+        axis.get_yaxis().set_visible(False)
+        axis.set_frame_on(False)
 
     def title(self, text: str):
         self._axis.set_title(label=text)
@@ -243,7 +263,7 @@ class MatplotFigure(IFigure):
     def _init_axis(self, is_3d: bool):
         if self.is_3d == is_3d:
             # axis already initialized
-            return
+            return self._axis
 
         # remove current axis
         self._fig.clear()
@@ -259,3 +279,5 @@ class MatplotFigure(IFigure):
         if is_3d:
             # sync axis and figure color
             self._axis.set_facecolor(self._fig.get_facecolor())
+
+        return self._axis

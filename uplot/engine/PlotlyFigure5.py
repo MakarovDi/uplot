@@ -148,6 +148,23 @@ class PlotlyFigure5(IFigure):
                   opacity=opacity,
                   **kwargs)
 
+    def surface3d(self, x: ArrayLike,
+                        y: ArrayLike,
+                        z: ArrayLike,
+                        name: str | None = None,
+                        show_colormap: bool = False,
+                        colormap: str = 'viridis',
+                        **kwargs):
+        self._is_3d = True
+
+        self._fig.add_surface(x=x, y=y, z=z,
+                              name=name,
+                              showlegend=(name != '') and (name is not None),
+                              showscale=show_colormap,
+                              colorscale=colormap,
+                              **kwargs)
+
+
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
         value_range = imtool.estimate_range(image)
