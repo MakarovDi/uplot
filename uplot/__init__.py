@@ -16,6 +16,7 @@ import uplot.color as color
 from uplot.LineStyle import LineStyle
 from uplot.MarkerStyle import MarkerStyle
 from uplot.AspectMode import AspectMode
+from uplot.Colormap import Colormap
 
 # settings
 from uplot.default import DEFAULT

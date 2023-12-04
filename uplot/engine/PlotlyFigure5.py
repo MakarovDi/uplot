@@ -7,7 +7,7 @@ from numpy.typing import ArrayLike
 import uplot.imtool as imtool
 import uplot.color as ucolor
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
 from uplot.routine import kwargs_extract
 from uplot.default import DEFAULT
@@ -154,7 +154,7 @@ class PlotlyFigure5(IFigure):
                         z: ArrayLike,
                         name: str | None = None,
                         show_colormap: bool = False,
-                        colormap: str = 'viridis',
+                        colormap: Colormap = 'viridis',
                         **kwargs):
         self._is_3d = True
 

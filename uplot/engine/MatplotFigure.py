@@ -7,7 +7,7 @@ from numpy.typing import ArrayLike
 import uplot.imtool as imtool
 import uplot.color as ucolor
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
 from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.routine import kwargs_extract
 from uplot.default import DEFAULT
@@ -134,7 +134,7 @@ class MatplotFigure(IFigure):
                         z: ArrayLike,
                         name: str | None = None,
                         show_colormap: bool = False,
-                        colormap: str = 'viridis',
+                        colormap: Colormap = 'viridis',
                         **kwargs):
         axis = self._init_axis(is_3d=True)
 

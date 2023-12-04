@@ -8,6 +8,7 @@ from numpy.typing import ArrayLike
 from uplot.LineStyle import LineStyle
 from uplot.MarkerStyle import MarkerStyle
 from uplot.AspectMode import AspectMode
+from uplot.Colormap import Colormap
 
 # TODO: documentation
 
@@ -67,7 +68,7 @@ class IFigure(Protocol):
                         z: ArrayLike,
                         name: str | None = None,
                         show_colormap: bool = False,
-                        colormap: str = 'viridis',
+                        colormap: Colormap = 'viridis',
                         **kwargs):
         ...
 
