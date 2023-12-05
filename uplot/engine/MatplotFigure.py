@@ -7,8 +7,9 @@ from numpy.typing import ArrayLike
 import uplot.color as ucolor
 import uplot.utool as utool
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap, Interpolator
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
 from uplot.engine.MatplotEngine import MatplotEngine
+from uplot.utool import Interpolator
 from uplot.default import DEFAULT
 
 
@@ -137,6 +138,22 @@ class MatplotFigure(IFigure):
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
                         **kwargs):
+        x = np.asarray(x)
+        y = np.asarray(y)
+        z = np.asarray(z)
+        assert x.ndim == y.ndim == 1, 'x, y must be 1D arrays'
+        assert z.ndim == 1 or z.ndim == 2, 'z must be 1D or 2D array'
+
+        if z.ndim == 2:
+            # uniform grid
+            assert (len(y), len(x)) == z.shape, 'uniform grid: x and y range must match z'
+            x, y = np.meshgrid(x, y)
+        else:
+            # non-uniform grid - array of points (x, y, z)
+            x, y, z = utool.array_to_grid(x, y, z,
+                                          interpolation=interpolation,
+                                          interpolation_range=interpolation_range)
+
         axis = self._init_axis(is_3d=True)
 
         cmap = self.engine.mpl.cm.get_cmap(colormap.lower())

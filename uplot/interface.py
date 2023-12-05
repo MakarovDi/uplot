@@ -5,7 +5,8 @@ from typing import Protocol, runtime_checkable
 from abc import abstractmethod as abstract
 from numpy.typing import ArrayLike
 
-from uplot.utype import LineStyle, MarkerStyle, AspectMode, Colormap, Interpolator
+from uplot.utype import LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.utool import Interpolator
 
 # TODO: documentation
 

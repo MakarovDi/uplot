@@ -2,12 +2,6 @@ from typing import Literal
 from uplot.utool import StrEnum
 
 
-class Interpolator(StrEnum):
-    NEAREST = 'nearest'
-    LINEAR = 'linear'
-    CUBIC = 'cubic'
-
-
 class AspectMode(StrEnum):
     AUTO = 'auto'
     EQUAL = 'equal'
