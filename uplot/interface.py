@@ -17,9 +17,11 @@ class IFigure(Protocol):
 
     Note
     ----
-    Probably it's not the best choice of the interface
-    but very common and familiar for MATLAB users.
+    This interface follows a Matplotlib-like interface for plotting, providing a familiar
+    environment for users, particularly those accustomed to MATLAB.
+    It may not be the best choice, but it offers common conventions and practices.
     """
+
     @property
     @abstract
     def engine(self) -> IPlotEngine:
@@ -70,6 +72,36 @@ class IFigure(Protocol):
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
                         **kwargs):
+        """
+        Plot a surface in 3D space where the color scale corresponds to the z-values.
+        Two coordinate formats are supported:
+          - Uniform grid: x, y are 1D uniform ranges, z is a 2D array of corresponding values.
+          - Non-uniform grid (set of points): x, y, z are 1D arrays of corresponding points' coordinates in 3D space.
+            The non-uniform grid will be interpolated to a uniform grid using the specified **interpolator**.
+
+        Parameters
+        ----------
+        x, y, z : ArrayLike
+            Data values.
+
+        name : str or None, optional
+            The plot name, which will appear as the legend item.
+
+        show_colormap : bool, optional
+            Whether the colormap should be visualized as a bar alongside the plot.
+
+        colormap : Colormap, optional
+            A palette name string.
+
+        interpolation : Interpolator, optional
+            The interpolation method for the case when (x, y, z) is a non-uniform grid.
+
+        interpolation_range : int, optional
+            The number of points in the interpolated grid.
+
+        kwargs : dict
+            Other keyword arguments are forwarded to the underlying engine.
+        """
         ...
 
     @abstract
@@ -164,6 +196,6 @@ class IPlotEngine(Protocol):
     @abstract
     def figure(self, width: int, aspect_ratio: float) -> IFigure:
         """
-        Factory method for a figure creation
+        Factory method for the figure creation
         """
         ...
