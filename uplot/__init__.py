@@ -13,10 +13,7 @@ from uplot.plot import figure
 import uplot.color as color
 
 # common types
-from uplot.LineStyle import LineStyle
-from uplot.MarkerStyle import MarkerStyle
-from uplot.AspectMode import AspectMode
-from uplot.Colormap import Colormap
+from uplot.utype import LineStyle, MarkerStyle, AspectMode, Colormap
 
 # settings
 from uplot.default import DEFAULT

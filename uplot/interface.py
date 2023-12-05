@@ -5,10 +5,7 @@ from typing import Protocol, runtime_checkable
 from abc import abstractmethod as abstract
 from numpy.typing import ArrayLike
 
-from uplot.LineStyle import LineStyle
-from uplot.MarkerStyle import MarkerStyle
-from uplot.AspectMode import AspectMode
-from uplot.Colormap import Colormap
+from uplot.utype import LineStyle, MarkerStyle, AspectMode, Colormap, Interpolator
 
 # TODO: documentation
 
@@ -63,12 +60,14 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def surface3d(self, x: ArrayLike,
-                        y: ArrayLike,
-                        z: ArrayLike,
-                        name: str | None = None,
+    def surface3d(self, x            : ArrayLike,
+                        y            : ArrayLike,
+                        z            : ArrayLike,
+                        name         : str | None = None,
                         show_colormap: bool = False,
-                        colormap: Colormap = 'viridis',
+                        colormap     : Colormap = 'viridis',
+                        interpolation: Interpolator = 'cubic',
+                        interpolation_range: int = 100,
                         **kwargs):
         ...
 
