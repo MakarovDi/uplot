@@ -4,12 +4,11 @@ import numpy as np
 from numpy import ndarray
 from numpy.typing import ArrayLike
 
-import uplot.imtool as imtool
 import uplot.color as ucolor
+import uplot.utool as utool
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap, Interpolator
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
-from uplot.routine import kwargs_extract
 from uplot.default import DEFAULT
 
 
@@ -75,7 +74,7 @@ class PlotlyFigure5(IFigure):
             name = ''
             show_legend = False
         else:
-            show_legend = kwargs_extract(kwargs, name='showlegend', default=True)
+            show_legend = utool.kwargs_extract(kwargs, name='showlegend', default=True)
 
         if color is None:
             color = self.scroll_color()
@@ -89,8 +88,8 @@ class PlotlyFigure5(IFigure):
         line_style = LINE_STYLE_MAPPING[line_style]
         marker_style = MARKER_STYLE_MAPPING[marker_style]
 
-        line = kwargs_extract(kwargs, name='line', default={})
-        marker = kwargs_extract(kwargs, name='marker', default={})
+        line = utool.kwargs_extract(kwargs, name='line', default={})
+        marker = utool.kwargs_extract(kwargs, name='marker', default={})
 
         mode = 'lines' if marker_style is None else 'lines+markers'
         if line_style == ' ': # no lines = scatter mode
@@ -107,7 +106,7 @@ class PlotlyFigure5(IFigure):
         marker['symbol'] = marker_style
         marker['size'] = marker_size
 
-        hoverlabel = kwargs_extract(kwargs, name='hoverlabel', default={})
+        hoverlabel = utool.kwargs_extract(kwargs, name='hoverlabel', default={})
         hoverlabel.setdefault('namelength', -1)
 
         if not self._is_3d:
@@ -149,12 +148,14 @@ class PlotlyFigure5(IFigure):
                   opacity=opacity,
                   **kwargs)
 
-    def surface3d(self, x: ArrayLike,
-                        y: ArrayLike,
-                        z: ArrayLike,
-                        name: str | None = None,
+    def surface3d(self, x            : ArrayLike,
+                        y            : ArrayLike,
+                        z            : ArrayLike,
+                        name         : str | None = None,
                         show_colormap: bool = False,
-                        colormap: Colormap = 'viridis',
+                        colormap     : Colormap = 'viridis',
+                        interpolation: Interpolator = 'cubic',
+                        interpolation_range: int = 100,
                         **kwargs):
         self._is_3d = True
 
@@ -175,14 +176,14 @@ class PlotlyFigure5(IFigure):
 
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
-        value_range = imtool.estimate_range(image)
+        value_range = utool.image_range(image)
 
         self._is_3d = False
 
         self._fig.add_trace(self.engine.go.Image(
             z=image,
-            zmax=kwargs_extract(kwargs, name='zmax', default=[value_range]*4),
-            zmin=kwargs_extract(kwargs, name='zmin', default=[0]*4),
+            zmax=utool.kwargs_extract(kwargs, name='zmax', default=[value_range]*4),
+            zmin=utool.kwargs_extract(kwargs, name='zmin', default=[0]*4),
             **kwargs,
         ))
 
@@ -198,9 +199,9 @@ class PlotlyFigure5(IFigure):
     def legend(self, show: bool = True, **kwargs):
         self._fig.update_layout(legend=self.engine.go.layout.Legend(
             visible=show,
-            bgcolor=kwargs_extract(kwargs, name='bgcolor', default='rgba(255,255,255,0.8)'),
-            itemsizing=kwargs_extract(kwargs, name='itemsizing', default='constant'),
-            itemwidth=kwargs_extract(kwargs, name='itemwidth', default=50),
+            bgcolor=utool.kwargs_extract(kwargs, name='bgcolor', default='rgba(255,255,255,0.8)'),
+            itemsizing=utool.kwargs_extract(kwargs, name='itemsizing', default='constant'),
+            itemwidth=utool.kwargs_extract(kwargs, name='itemwidth', default=50),
             **kwargs,
         ))
 

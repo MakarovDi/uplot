@@ -1,4 +1,4 @@
-from uplot.StrEnum import StrEnum
+from uplot.utool import StrEnum
 
 
 class AspectMode(StrEnum):

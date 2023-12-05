@@ -4,12 +4,11 @@ import numpy as np
 from numpy import ndarray
 from numpy.typing import ArrayLike
 
-import uplot.imtool as imtool
 import uplot.color as ucolor
+import uplot.utool as utool
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap, Interpolator
 from uplot.engine.MatplotEngine import MatplotEngine
-from uplot.routine import kwargs_extract
 from uplot.default import DEFAULT
 
 
@@ -129,12 +128,14 @@ class MatplotFigure(IFigure):
                   opacity=opacity,
                   **kwargs)
 
-    def surface3d(self, x: ArrayLike,
-                        y: ArrayLike,
-                        z: ArrayLike,
-                        name: str | None = None,
+    def surface3d(self, x            : ArrayLike,
+                        y            : ArrayLike,
+                        z            : ArrayLike,
+                        name         : str | None = None,
                         show_colormap: bool = False,
-                        colormap: Colormap = 'viridis',
+                        colormap     : Colormap = 'viridis',
+                        interpolation: Interpolator = 'cubic',
+                        interpolation_range: int = 100,
                         **kwargs):
         axis = self._init_axis(is_3d=True)
 
@@ -151,14 +152,14 @@ class MatplotFigure(IFigure):
 
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
-        value_range = imtool.estimate_range(image)
+        value_range = utool.image_range(image)
 
         axis = self._init_axis(is_3d=False)
         axis.imshow(image / value_range,
-                    cmap=kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
-                    vmin=kwargs_extract(kwargs, name='vmin', default=0),
-                    vmax=kwargs_extract(kwargs, name='vmax', default=1.0),
-                    interpolation=kwargs_extract(kwargs, name='interpolation', default='none')
+            cmap=utool.kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
+            vmin=utool.kwargs_extract(kwargs, name='vmin', default=0),
+            vmax=utool.kwargs_extract(kwargs, name='vmax', default=1.0),
+            interpolation=utool.kwargs_extract(kwargs, name='interpolation', default='none')
         )
 
         # hide grid, frame, ticks and labels
@@ -173,7 +174,7 @@ class MatplotFigure(IFigure):
     def legend(self, show: bool = True, **kwargs):
         handles, labels = self._axis.get_legend_handles_labels()
         if len(handles) > 0:
-            loc = kwargs_extract(kwargs, name='loc', default='outside right upper')
+            loc = utool.kwargs_extract(kwargs, name='loc', default='outside right upper')
             if 'outside' in loc:
                 # outside works only for the figure
                 # "outside right upper" works correctly with "constrained" or "compressed" layout only
