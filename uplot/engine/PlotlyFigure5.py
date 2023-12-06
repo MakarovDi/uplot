@@ -33,7 +33,7 @@ class PlotlyFigure5(IFigure):
 
         self._fig: engine.go.Figure = engine.go.Figure()
         self._is_3d = None
-        self._colorbar_x_pos = 0.8
+        self._colorbar_x_pos = 1.0
 
 
     def plot(self, x           : ArrayLike,
