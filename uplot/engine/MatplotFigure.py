@@ -250,8 +250,8 @@ class MatplotFigure(IFigure):
         w, h = fig.canvas.get_width_height()
         return image.reshape([h, w, 3])
 
-    def save(self, fname: str):
-        self._fig.savefig(fname, dpi=self.engine.SAVING_DPI)
+    def save(self, filename: str):
+        self._fig.savefig(filename, dpi=self.engine.SAVING_DPI)
 
     def close(self):
         self.engine.plt.close(self._fig)

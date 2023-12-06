@@ -168,7 +168,7 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def save(self, fname: str):
+    def save(self, filename: str):
         ...
 
     @abstract
