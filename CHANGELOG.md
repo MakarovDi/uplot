@@ -1,9 +1,10 @@
 # Changelog
 
-## `[v0.3.0]` - ??.??.2023
+## `[v0.3.0]` - 06.12.2023
 
 #### Added
 * `[interface]` singleton `DEFAULT` for storing and controlling default parameters.
+* `[interface]` 3d surface plotting: `figure.surface3d(...)`
 * `[color]` class `ColorScroller` for maintaining automatic color switching for plotting.
 
 #### Changed
@@ -11,7 +12,7 @@
 
 #### Fixed
 * `[engine.plotly5]` legend item width increased to show dashed line correctly.
-* `[engine.matplot]` now `figure.close()` works correctly.
+* `[engine.matplot]` problem with `figure.close()` fixed.
 
 
 ## `[v0.2.1]` - 13.11.2023
