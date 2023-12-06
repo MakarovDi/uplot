@@ -135,6 +135,7 @@ class MatplotFigure(IFigure):
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
+                        opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
                         **kwargs):
@@ -161,7 +162,10 @@ class MatplotFigure(IFigure):
         surf = axis.plot_surface(x, y, z,
                                  label=name,
                                  cmap=cmap,
+                                 # antialiased=False: to fix some of z-order issues (not all of them)
+                                 # https://stackoverflow.com/questions/39144482/matplotlib-plot-surface-transparency-artefact
                                  antialiased=False,
+                                 alpha=opacity,
                                  **kwargs)
         if show_colormap:
             self._fig.colorbar(surf, shrink=0.5, aspect=10)

@@ -69,6 +69,7 @@ class IFigure(Protocol):
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
+                        opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
                         **kwargs):
@@ -92,6 +93,9 @@ class IFigure(Protocol):
 
         colormap : Colormap, optional
             A palette name string.
+
+        opacity : float, optional
+            Sets the opacity of the surface.
 
         interpolation : Interpolator, optional
             The interpolation method for the case when (x, y, z) is a non-uniform grid.

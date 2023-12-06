@@ -155,6 +155,7 @@ class PlotlyFigure5(IFigure):
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
+                        opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
                         **kwargs):
@@ -188,6 +189,7 @@ class PlotlyFigure5(IFigure):
                               showscale=show_colormap,
                               colorscale=colormap,
                               colorbar=colorbar,
+                              opacity=opacity,
                               **kwargs)
 
 
