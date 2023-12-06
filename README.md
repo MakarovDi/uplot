@@ -123,7 +123,7 @@ pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main
 :red_circle: Not well documented (a lot of parameters, small amount of examples).  
 :red_circle: High memory consumption (limited number of plots in Jupyter).  
 :red_circle: Some expected API functions are missing (e.g. imshow).  
-:red_circle: 3D and 2D axis parameters are not unified (layout.xaxis doesn't work for 3D).   
+:red_circle: 3D and 2D axis parameters are not unified (e.g. layout.xaxis doesn't work for 3D).   
 
 ## Extending
 
@@ -167,3 +167,7 @@ fig.show()
 
 This software is licensed under the `BSD-3-Clause` license.  
 See the [LICENSE](LICENSE) file for details.
+
+## TODO
+
+Check the plan for new features [here](TODO.md).

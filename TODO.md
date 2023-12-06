@@ -2,12 +2,15 @@
 
 ## Next Release
 
-- [ ] **API**: `fig.surface3d(...)`
-- [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
+- [ ] Fixed size of the legend items for **matplotlib**
 - [ ] **API**: `fig.legend_group(...)` or parameter `legend_group`
+- [ ] **README** refactoring
 
 ## Backlog
 
+- [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
+- [ ] API documentation
+- [ ] `README` API description: supported functions per engine
 - [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
 - [ ] **API**: `fig.bar(...)` 
 - [ ] **API**: `fig.click_event(...)`
@@ -21,6 +24,7 @@
 
 ## Done
 
+- [x] **API**: `fig.surface3d(...)`
 - [x] Gallery
 - [x] Changelog
 - [x] **API**: `kwargs` to directly access underlying engine
