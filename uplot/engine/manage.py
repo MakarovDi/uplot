@@ -3,44 +3,79 @@ from typing import OrderedDict
 
 
 DEFAULT_ENGINES: dict[str, IPlotEngine] = OrderedDict[str, IPlotEngine]()
-DEFAULT_ENGINES_SHORT_NAME: dict[str, str] = { }
 
 
-# TODO: docs
+def available() -> dict[str, list[str]]:
+    """
+    Retrieve a dictionary mapping available plot engines to their registered shortcut names.
+
+    Returns
+    -------
+    dict[str, list[str]]
+        A mapping between plot engines and their corresponding registered names.
+    """
+    engine_name_mapping = {}
+
+    for name, engine in DEFAULT_ENGINES.items():
+        if engine.name not in engine_name_mapping:
+            # create a list of names for the engine
+            engine_name_mapping[engine.name] = []
+        # add the registered name for the engine
+        engine_name_mapping[engine.name].append(name)
+
+    return engine_name_mapping
 
 
-def available(short_names: bool = False) -> tuple[str, ...]:
-    if short_names:
-        return tuple(DEFAULT_ENGINES_SHORT_NAME.keys())
-    else:
-        return tuple(DEFAULT_ENGINES.keys())
+def register(engine: IPlotEngine, name: str) -> bool:
+    """
+    Register a plot engine object with a specified shortcut name for use in the **figure()** function.
 
+    Parameters
+    ----------
+    engine : IPlotEngine
+        The plot engine object to register.
 
-def register(e: IPlotEngine, name: str, short_name: str = '') -> bool:
-    assert name not in DEFAULT_ENGINES, 'the engine name must be unique'
-    assert short_name not in DEFAULT_ENGINES_SHORT_NAME, 'the engine short name must be unique'
+    name : str
+        The shortcut name for the engine.
 
-    if not e.is_available():
+    Returns
+    -------
+    bool
+        Returns True if the registration is successful.
+        Returns False if the engine is unavailable or the name is already occupied.
+    """
+    name = name.lower()
+
+    if name in DEFAULT_ENGINES:
         return False
 
-    DEFAULT_ENGINES[name] = e
+    if not engine.is_available():
+        return False
 
-    if short_name != '':
-        DEFAULT_ENGINES_SHORT_NAME[short_name] = name
-
+    DEFAULT_ENGINES[name] = engine
     return True
 
 
 def get(name: str | None = None) -> IPlotEngine:
+    """
+    Retrieve a registered plot engine object by its specified name.
+
+    Parameters
+    ----------
+    name : str or None, optional
+        The name of the plot engine. If None, the first registered engine will be returned.
+
+    Returns
+    -------
+    IPlotEngine or None
+        The plot engine object corresponding to the specified name, or None if not found.
+    """
     if len(DEFAULT_ENGINES) == 0:
-        raise RuntimeError('no plotting engines')
+        raise RuntimeError('No plotting engines are registered.')
 
     if name is None:
+        # return the first available engine
         return list(DEFAULT_ENGINES.values())[0]
 
-    engine = DEFAULT_ENGINES_SHORT_NAME.get(name, name)
-    engine = DEFAULT_ENGINES.get(engine)
-    if engine is None:
-        raise LookupError(f'no engine "{name}"')
-
+    engine = DEFAULT_ENGINES.get(name.lower())
     return engine

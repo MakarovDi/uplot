@@ -34,7 +34,7 @@ else:
 ## Fig 2
 
 f2 = uplot.figure(engine=engine, aspect_ratio=0.4)
-f2.plot(y1, x)
+f2.plot(y1, x, name='#1', line_style='--')
 f2.plot(y2, x)
 f2.title('Test')
 f2.legend(True)

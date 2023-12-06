@@ -4,12 +4,13 @@ import numpy as np
 from numpy import ndarray
 from numpy.typing import ArrayLike
 
-import uplot.imtool as imtool
+import uplot.color as ucolor
+import uplot.utool as utool
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
 from uplot.engine.MatplotEngine import MatplotEngine
-from uplot.color import default_colors_list, decode_color, default_colors
-from uplot.routine import kwargs_extract
+from uplot.utool import Interpolator
+from uplot.default import DEFAULT
 
 
 class MatplotFigure(IFigure):
@@ -33,7 +34,7 @@ class MatplotFigure(IFigure):
 
         # temporary styling (no global effect):
         # https://matplotlib.org/stable/users/explain/customizing.html
-        with engine.plt.style.context(engine.STYLE):
+        with engine.plt.style.context(DEFAULT.style):
             self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
             # Constrained layout automatically adjusts subplots so that decorations like tick labels,
             # legends, and colorbars do not overlap, while still preserving the logical layout requested by the user.
@@ -42,7 +43,7 @@ class MatplotFigure(IFigure):
             self._fig.set_figwidth(width / engine.SHOWING_DPI)
             self._fig.set_figheight(aspect_ratio*(width / engine.SHOWING_DPI))
 
-        self._color_index = 0
+        self._color_scroller = ucolor.ColorScroller()
 
     def plot(self, x           : ArrayLike,
                    y           : ArrayLike | None = None,
@@ -68,24 +69,24 @@ class MatplotFigure(IFigure):
         assert len(x) == len(y), 'the length of the input arrays must be the same'
 
         if z is None: # 2d
-            self._init_axis(is_3d=False)
+            axis = self._init_axis(is_3d=False)
         else: # 3d
             z = np.atleast_1d(np.asarray(z))
             assert z.ndim == 1, 'the input must be 1d arrays'
             assert len(x) == len(z), 'the length of the input arrays must be the same'
-            self._init_axis(is_3d=True)
+            axis = self._init_axis(is_3d=True)
 
         if marker_size is None:
-            marker_size = self.engine.MARKER_SIZE
+            marker_size = DEFAULT.marker_size
 
         if color is None:
-            color = self.current_color()
-            self.scroll_color()
+            color = self.scroll_color()
+
         elif not isinstance(color, str):
             # color specified for each point (x, y)
-            color = [ decode_color(c) for c in color ]
+            color = [ ucolor.name_to_hex(c) for c in color ]
         else:
-            color = decode_color(color)
+            color = ucolor.name_to_hex(color)
 
         if self.is_3d:
             plot_data = x, y, z
@@ -93,22 +94,22 @@ class MatplotFigure(IFigure):
             plot_data = x, y
 
         if line_style == ' ': # only markers
-            self._axis.scatter(*plot_data,
-                               color=color,
-                               label=name,
-                               marker=marker_style,
-                               s=marker_size**2,
-                               alpha=opacity,
-                               **kwargs)
+            axis.scatter(*plot_data,
+                         color=color,
+                         label=name,
+                         marker=marker_style,
+                         s=marker_size**2,
+                         alpha=opacity,
+                         **kwargs)
         else:
-            self._axis.plot(*plot_data,
-                            color=color,
-                            label=name,
-                            marker=marker_style,
-                            markersize=marker_size,
-                            linestyle=line_style,
-                            alpha=opacity,
-                            **kwargs)
+            axis.plot(*plot_data,
+                      color=color,
+                      label=name,
+                      marker=marker_style,
+                      markersize=marker_size,
+                      linestyle=line_style,
+                      alpha=opacity,
+                      **kwargs)
 
     def scatter(self, x           : ArrayLike,
                       y           : ArrayLike | None = None,
@@ -128,23 +129,65 @@ class MatplotFigure(IFigure):
                   opacity=opacity,
                   **kwargs)
 
+    def surface3d(self, x            : ArrayLike,
+                        y            : ArrayLike,
+                        z            : ArrayLike,
+                        name         : str | None = None,
+                        show_colormap: bool = False,
+                        colormap     : Colormap = 'viridis',
+                        opacity      : float = 1.0,
+                        interpolation: Interpolator = 'cubic',
+                        interpolation_range: int = 100,
+                        **kwargs):
+        x = np.asarray(x)
+        y = np.asarray(y)
+        z = np.asarray(z)
+        assert x.ndim == y.ndim == 1, 'x, y must be 1D arrays'
+        assert z.ndim == 1 or z.ndim == 2, 'z must be 1D or 2D array'
+
+        if z.ndim == 2:
+            # uniform grid
+            assert (len(y), len(x)) == z.shape, 'uniform grid: x and y range must match z'
+            x, y = np.meshgrid(x, y)
+        else:
+            # non-uniform grid - array of points (x, y, z)
+            x, y, z = utool.array_to_grid(x, y, z,
+                                          interpolation=interpolation,
+                                          interpolation_range=interpolation_range)
+
+        axis = self._init_axis(is_3d=True)
+
+        cmap = self.engine.mpl.cm.get_cmap(colormap.lower())
+
+        surf = axis.plot_surface(x, y, z,
+                                 label=name,
+                                 cmap=cmap,
+                                 # antialiased=False: to fix some of z-order issues (not all of them)
+                                 # https://stackoverflow.com/questions/39144482/matplotlib-plot-surface-transparency-artefact
+                                 antialiased=False,
+                                 alpha=opacity,
+                                 **kwargs)
+        if show_colormap:
+            self._fig.colorbar(surf, shrink=0.5, aspect=10)
+
+
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
-        value_range = imtool.estimate_range(image)
+        value_range = utool.image_range(image)
 
-        self._init_axis(is_3d=False)
-        self._axis.imshow(image / value_range,
-                          cmap=kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
-                          vmin=kwargs_extract(kwargs, name='vmin', default=0),
-                          vmax=kwargs_extract(kwargs, name='vmax', default=1.0),
-                          interpolation=kwargs_extract(kwargs, name='interpolation', default='none')
+        axis = self._init_axis(is_3d=False)
+        axis.imshow(image / value_range,
+            cmap=utool.kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
+            vmin=utool.kwargs_extract(kwargs, name='vmin', default=0),
+            vmax=utool.kwargs_extract(kwargs, name='vmax', default=1.0),
+            interpolation=utool.kwargs_extract(kwargs, name='interpolation', default='none')
         )
 
         # hide grid, frame, ticks and labels
-        self._axis.grid(visible=False)
-        self._axis.get_xaxis().set_visible(False)
-        self._axis.get_yaxis().set_visible(False)
-        self._axis.set_frame_on(False)
+        axis.grid(visible=False)
+        axis.get_xaxis().set_visible(False)
+        axis.get_yaxis().set_visible(False)
+        axis.set_frame_on(False)
 
     def title(self, text: str):
         self._axis.set_title(label=text)
@@ -152,7 +195,7 @@ class MatplotFigure(IFigure):
     def legend(self, show: bool = True, **kwargs):
         handles, labels = self._axis.get_legend_handles_labels()
         if len(handles) > 0:
-            loc = kwargs_extract(kwargs, name='loc', default='outside right upper')
+            loc = utool.kwargs_extract(kwargs, name='loc', default='outside right upper')
             if 'outside' in loc:
                 # outside works only for the figure
                 # "outside right upper" works correctly with "constrained" or "compressed" layout only
@@ -188,15 +231,13 @@ class MatplotFigure(IFigure):
             self._axis.set_zlim(bottom=min_value, top=max_value)
 
     def current_color(self) -> str:
-        color_name = default_colors_list[self._color_index]
-        return default_colors[color_name]
+        return self._color_scroller.current_color()
 
-    def scroll_color(self, count: int=1):
-        self._color_index += count
-        self._color_index %= len(default_colors_list)
+    def scroll_color(self, count: int=1) -> str:
+        return self._color_scroller.scroll_color(count)
 
     def reset_color(self):
-        self._color_index = 0
+        self._color_scroller.reset()
 
     def axis_aspect(self, mode: AspectMode):
         # https://stackoverflow.com/questions/8130823/set-matplotlib-3d-plot-aspect-ratio
@@ -213,11 +254,11 @@ class MatplotFigure(IFigure):
         w, h = fig.canvas.get_width_height()
         return image.reshape([h, w, 3])
 
-    def save(self, fname: str):
-        self._fig.savefig(fname, dpi=self.engine.SAVING_DPI)
+    def save(self, filename: str):
+        self._fig.savefig(filename, dpi=self.engine.SAVING_DPI)
 
     def close(self):
-        self._fig.close()
+        self.engine.plt.close(self._fig)
         self._fig = None
 
     def show(self, block: bool=True):
@@ -244,13 +285,13 @@ class MatplotFigure(IFigure):
     def _init_axis(self, is_3d: bool):
         if self.is_3d == is_3d:
             # axis already initialized
-            return
+            return self._axis
 
         # remove current axis
         self._fig.clear()
 
         # temporary styling (no global effect):
-        with self.engine.plt.style.context(self.engine.STYLE):
+        with self.engine.plt.style.context(DEFAULT.style):
             projection = '3d' if is_3d else None
             self._axis = self._fig.add_subplot(projection=projection)
 
@@ -260,3 +301,5 @@ class MatplotFigure(IFigure):
         if is_3d:
             # sync axis and figure color
             self._axis.set_facecolor(self._fig.get_facecolor())
+
+        return self._axis

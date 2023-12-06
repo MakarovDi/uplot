@@ -81,12 +81,12 @@ pip install git+https://github.com/makarovdi/uplot.git@main
 ```
 to automatically install all optional dependencies (`matplotlib`, `plotly`, ...) use
 ```bash
-pip install git+https://github.com/makarovdi/uplot.git@main[all]
+pip install "uplot[all] @ git+https://github.com/makarovdi/uplot.git@main"
 ```
 
 If you need only `matplotlib` support:
 ```bash
-pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
+pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main"
 ```
 > Replace `[matplotlib]` with `[plotly5]` for plotly-only installation 
 
@@ -123,7 +123,7 @@ pip install git+https://github.com/makarovdi/uplot.git@main[matplotlib]
 :red_circle: Not well documented (a lot of parameters, small amount of examples).  
 :red_circle: High memory consumption (limited number of plots in Jupyter).  
 :red_circle: Some expected API functions are missing (e.g. imshow).  
-:red_circle: 3D and 2D axis parameters are not unified (layout.xaxis doesn't work for 3D).   
+:red_circle: 3D and 2D axis parameters are not unified (e.g. layout.xaxis doesn't work for 3D).   
 
 ## Extending
 
@@ -170,21 +170,4 @@ See the [LICENSE](LICENSE) file for details.
 
 ## TODO
 
-- [x] Gallery
-- [x] Changelog
-- [x] **API**: aspect ratio param: `uplot.figure(..., aspect_ratio: float)`
-- [x] **API**: `fig.plot3d(...)` and `fig.scatter3d(...)`
-- [ ] **API**: `fig.surface3d(...)`
-- [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
-- [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
-- [ ] **API**: `fig.bar(...)` 
-- [ ] **API**: `fig.click_event(...)`
-- [ ] **API**: `fig.legend_group(...)` or parameter `legend_group`
-- [ ] **API**: `fig.hover_text(...)`
-- [x] **API**: `kwargs` to directly access underlying engine 
-- [ ] **API**: `fig.legend`: param for the legend location
-- [ ] Unified styling
-  - [ ] Engine independent config: `uplot.defaults`
-- [ ] TeX support
-- [ ] `DataFrame` support
-- [ ] `Bokeh` engine
+Check the plan for new features [here](TODO.md).

@@ -2,7 +2,7 @@ import numpy as np
 from numpy import ndarray
 
 
-def estimate_range(image: ndarray) -> int:
+def image_range(image: ndarray) -> int | float:
     """
     Guess the range by an image type and values
     """

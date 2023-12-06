@@ -1,7 +1,8 @@
 # Gallery
 
 1. [plot](#plot)  
-1. [scatter](#scatter)  
+1. [scatter](#scatter)
+1. [surface3d](#surface3d)  
 
 
 > See also jupyter notebook: `gallery.ipynb`.
@@ -94,3 +95,23 @@ fig.show()
 ```
 
 <img src='asset/scatter-3d.png' width='700'>
+
+## surface3d
+
+```python
+x = np.arange(0, 5, 0.25)
+y = np.arange(-5, 5, 0.25)
+X, Y = np.meshgrid(x, y)
+Z = np.sin(np.sqrt(X**2 + Y**2))
+
+fig = uplot.figure('plotly', aspect_ratio=0.8)
+fig.surface3d(x, y, Z,   name='data #1', colormap='blues')
+fig.surface3d(x, y, Z*6, name='data #2', show_colormap=True)
+fig.xlabel('X Axis')
+fig.ylabel('Y Axis')
+fig.zlabel('Z Axis')
+fig.legend()
+fig.show()
+```
+
+<img src='asset/surface3d.png' width='700'>
