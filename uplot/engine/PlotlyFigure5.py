@@ -10,7 +10,6 @@ import uplot.utool as utool
 from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
 from uplot.utool import Interpolator
-from uplot.default import DEFAULT
 
 
 class PlotlyFigure5(IFigure):
@@ -35,119 +34,60 @@ class PlotlyFigure5(IFigure):
         self._is_3d = None
         self._colorbar_x_pos = 1.0
 
-
     def plot(self, x           : ArrayLike,
                    y           : ArrayLike | None = None,
                    z           : ArrayLike | None = None,
                    name        : str | None = None,
-                   color       : str | list[str] | None = None,
-                   line_style  : LineStyle | list[LineStyle] | None = None,
-                   marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                   color       : str | None = None,
+                   line_style  : LineStyle | None = None,
+                   marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
                    **kwargs):
-        x = np.atleast_1d(np.asarray(x))
+        from uplot.engine.plotly.plot import plot_line_marker
 
-        if y is None:
-            y = x
-            x = np.arange(len(y))
-        else:
-            y = np.asarray(y)
-
-        y = np.atleast_1d(y)
-
-        assert x.ndim == y.ndim == 1, 'the input must be 1d arrays'
-        assert len(x) == len(y), 'the length of the input arrays must be the same'
-
-        if z is not None:
-            z = np.atleast_1d(np.asarray(z))
-            assert z.ndim == 1, 'the input must be 1d arrays'
-            assert len(x) == len(z), 'the length of the input arrays must be the same'
-            self._is_3d = True
-        else:
-            self._is_3d = False
-
-        if marker_size is None:
-            # 1.33 - conversion gain between matplotlib and plotly marker size
-            marker_size = DEFAULT.marker_size*1.33
-
-        if name is None:
-            name = ''
-            show_legend = False
-        else:
-            show_legend = utool.kwargs_extract(kwargs, name='showlegend', default=True)
+        self._is_3d = z is not None
 
         if color is None:
             color = self.scroll_color()
-        elif not isinstance(color, str):
-            # color specified for each point (x, y)
-            color = [ ucolor.name_to_hex(c) for c in color]
-        else:
-            color = ucolor.name_to_hex(color)
 
-        from uplot.engine.plotly import LINE_STYLE_MAPPING, MARKER_STYLE_MAPPING
-        line_style = LINE_STYLE_MAPPING[line_style]
-        marker_style = MARKER_STYLE_MAPPING[marker_style]
-
-        line = utool.kwargs_extract(kwargs, name='line', default={})
-        marker = utool.kwargs_extract(kwargs, name='marker', default={})
-
-        mode = 'lines' if marker_style is None else 'lines+markers'
-        if line_style == ' ': # no lines = scatter mode
-            mode = 'markers'
-            line['dash'] = None
-        else:
-            line.setdefault('color', color)
-            line.setdefault('width', self.engine.LINE_WIDTH)
-            line['dash'] = line_style
-
-        marker.setdefault('color', color)
-        marker.setdefault('line_color', color)
-        marker.setdefault('line_width', self.engine.LINE_WIDTH)
-        marker['symbol'] = marker_style
-        marker['size'] = marker_size
-
-        hoverlabel = utool.kwargs_extract(kwargs, name='hoverlabel', default={})
-        hoverlabel.setdefault('namelength', -1)
-
-        if not self._is_3d:
-            self._fig.add_scatter(x=x, y=y,
-                                  name=name,
-                                  mode=mode,
-                                  line=line,
-                                  marker=marker,
-                                  opacity=opacity,
-                                  showlegend=show_legend,
-                                  hoverlabel=hoverlabel,
-                                  **kwargs)
-        else:
-            self._fig.add_scatter3d(x=x, y=y, z=z,
-                                    name=name,
-                                    mode=mode,
-                                    line=line,
-                                    marker=marker,
-                                    opacity=opacity,
-                                    showlegend=show_legend,
-                                    hoverlabel=hoverlabel,
-                                    **kwargs)
+        plot_line_marker(figure=self._fig,
+                         x=x, y=y, z=z,
+                         color=color,
+                         name=name,
+                         line_style=line_style,
+                         line_width=self.engine.LINE_WIDTH,
+                         marker_style=marker_style,
+                         marker_size=marker_size,
+                         opacity=opacity,
+                         **kwargs)
 
     def scatter(self, x           : ArrayLike,
                       y           : ArrayLike | None = None,
                       z           : ArrayLike | None = None,
                       name        : str | None = None,
                       color       : str | list[str] | None = None,
-                      marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                      marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
                       **kwargs):
-        self.plot(x=x, y=y, z=z,
-                  name=name,
-                  line_style=' ',  # no line
-                  color=color,
-                  marker_style=marker_style,
-                  marker_size=marker_size,
-                  opacity=opacity,
-                  **kwargs)
+        from uplot.engine.plotly.plot import plot_line_marker
+
+        self._is_3d = z is not None
+
+        if color is None:
+            color = self.scroll_color()
+
+        plot_line_marker(figure=self._fig,
+                         x=x, y=y, z=z,
+                         color=color,
+                         name=name,
+                         line_style=' ', # no line (scatter mode)
+                         line_width=self.engine.LINE_WIDTH,
+                         marker_style=marker_style,
+                         marker_size=marker_size,
+                         opacity=opacity,
+                         **kwargs)
 
     def surface3d(self, x            : ArrayLike,
                         y            : ArrayLike,
@@ -191,7 +131,6 @@ class PlotlyFigure5(IFigure):
                               colorbar=colorbar,
                               opacity=opacity,
                               **kwargs)
-
 
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
@@ -256,7 +195,7 @@ class PlotlyFigure5(IFigure):
 
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None):
-        from uplot.engine.plotly import estimate_axis_range
+        from uplot.engine.plotly.axis_range import estimate_axis_range
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='x', mode='min')
@@ -269,7 +208,7 @@ class PlotlyFigure5(IFigure):
 
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None):
-        from uplot.engine.plotly import estimate_axis_range
+        from uplot.engine.plotly.axis_range import estimate_axis_range
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='y', mode='min')
@@ -286,7 +225,7 @@ class PlotlyFigure5(IFigure):
         if not self.is_3d:
             return
 
-        from uplot.engine.plotly import estimate_axis_range
+        from uplot.engine.plotly.axis_range import estimate_axis_range
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='z', mode='min')

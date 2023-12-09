@@ -42,9 +42,9 @@ class IFigure(Protocol):
                    y           : ArrayLike | None = None,
                    z           : ArrayLike | None = None,
                    name        : str | None = None,
-                   color       : str | list[str] | None = None,
-                   line_style  : LineStyle | list[LineStyle] | None = None,
-                   marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                   color       : str | None = None,
+                   line_style  : LineStyle | None = None,
+                   marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
                    **kwargs):
@@ -56,7 +56,7 @@ class IFigure(Protocol):
                       z           : ArrayLike | None = None,
                       name        : str | None = None,
                       color       : str | list[str] | None = None,
-                      marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                      marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
                       **kwargs):
