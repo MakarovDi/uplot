@@ -1,5 +1,15 @@
 # Changelog
 
+## `[v0.3.1]` - ??.??.2023
+
+#### Added
+
+#### Changed
+
+#### Fixed
+* `[engine.matplot]` remove the empty legend space on `figure.legend(False)`
+
+
 ## `[v0.3.0]` - 06.12.2023
 
 #### Added

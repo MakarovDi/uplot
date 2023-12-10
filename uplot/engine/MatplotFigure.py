@@ -165,16 +165,27 @@ class MatplotFigure(IFigure):
         self._axis.set_title(label=text)
 
     def legend(self, show: bool = True, **kwargs):
+        if not self._axis: return
+
+        # check if there is anything to put to the legend
         handles, labels = self._axis.get_legend_handles_labels()
-        if len(handles) > 0:
-            loc = utool.kwargs_extract(kwargs, name='loc', default='outside right upper')
-            if 'outside' in loc:
-                # outside works only for the figure
-                # "outside right upper" works correctly with "constrained" or "compressed" layout only
-                self._fig.legend().set(visible=show, loc=loc, **kwargs)
-            else:
-                # axes.legend() is better for an other options because legend will be inside graph
-                self._fig.gca().legend().set(visible=show, loc=loc, **kwargs)
+        if len(handles) == 0: return
+
+        if show == False:
+            # remove existing legend
+            self._fig.legends.clear() # remove legend outside axis
+            self._fig.gca().legend().remove() # remove legend inside
+            return
+
+        # create legend
+        loc = utool.kwargs_extract(kwargs, name='loc', default='outside right upper')
+        if 'outside' in loc:
+            # outside works only for the figure
+            # "outside right upper" works correctly with "constrained" or "compressed" layout only
+            self._fig.legend().set(loc=loc, **kwargs)
+        else:
+            # axes.legend() is better for an other options because legend will be inside graph
+            self._fig.gca().legend().set(loc=loc, **kwargs)
 
     def grid(self, show: bool = True):
         self._axis.grid(visible=show)
