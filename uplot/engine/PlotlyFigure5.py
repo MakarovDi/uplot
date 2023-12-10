@@ -154,11 +154,15 @@ class PlotlyFigure5(IFigure):
     def title(self, text: str):
         self._fig.update_layout(title=text)
 
-    def legend(self, show: bool = True, **kwargs):
+    def legend(self, show: bool = True,
+                     equal_marker_size: bool = True,
+                     **kwargs):
+        itemsizing = 'constant' if equal_marker_size else None
+
         self._fig.update_layout(legend=self.engine.go.layout.Legend(
             visible=show,
             bgcolor=utool.kwargs_extract(kwargs, name='bgcolor', default='rgba(255,255,255,0.8)'),
-            itemsizing=utool.kwargs_extract(kwargs, name='itemsizing', default='constant'),
+            itemsizing=utool.kwargs_extract(kwargs, name='itemsizing', default=itemsizing),
             itemwidth=utool.kwargs_extract(kwargs, name='itemwidth', default=50),
             **kwargs,
         ))

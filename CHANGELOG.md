@@ -5,6 +5,7 @@
 #### Added
 
 #### Changed
+* `[interface & engine]` marker size is fixed in the legend, by default
 
 #### Fixed
 * `[engine.matplot]` remove the empty legend space on `figure.legend(False)`

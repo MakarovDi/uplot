@@ -5,6 +5,7 @@ class MatplotEngine(IPlotEngine):
     # engine specific default parameters
     SHOWING_DPI = 100
     SAVING_DPI = SHOWING_DPI * 2
+    LEGEND_MARKER_SIZE = 8
 
     # automatically (default) chosen matplotlib backend
     AUTOMATIC_MPL_BACKEND: str | None = None

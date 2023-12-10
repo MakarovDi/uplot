@@ -164,15 +164,33 @@ class MatplotFigure(IFigure):
     def title(self, text: str):
         self._axis.set_title(label=text)
 
-    def legend(self, show: bool = True, **kwargs):
+    def legend(self, show: bool = True,
+                     equal_marker_size: bool = True,
+                     **kwargs):
         if not self._axis: return
 
         # check if there is anything to put to the legend
         handles, labels = self._axis.get_legend_handles_labels()
         if len(handles) == 0: return
 
-        if show == False:
-            # remove existing legend
+        if equal_marker_size:
+            from matplotlib.legend_handler import HandlerPathCollection, HandlerLine2D
+            from matplotlib.collections import PathCollection
+            from matplotlib.pyplot import Line2D
+
+            def updatescatter(handle, orig):
+                handle.update_from(orig)
+                handle.set_sizes([self.engine.LEGEND_MARKER_SIZE ** 2])
+            def updateline(handle, orig):
+                handle.update_from(orig)
+                handle.set_markersize(self.engine.LEGEND_MARKER_SIZE)
+
+            handler_map = { PathCollection: HandlerPathCollection(update_func=updatescatter),
+                            Line2D: HandlerLine2D(update_func=updateline) }
+        else:
+            handler_map = None
+
+        if not show:
             self._fig.legends.clear() # remove legend outside axis
             self._fig.gca().legend().remove() # remove legend inside
             return
@@ -182,10 +200,10 @@ class MatplotFigure(IFigure):
         if 'outside' in loc:
             # outside works only for the figure
             # "outside right upper" works correctly with "constrained" or "compressed" layout only
-            self._fig.legend().set(loc=loc, **kwargs)
+            self._fig.legend(handler_map=handler_map).set(loc=loc, **kwargs)
         else:
             # axes.legend() is better for an other options because legend will be inside graph
-            self._fig.gca().legend().set(loc=loc, **kwargs)
+            self._fig.gca().legend(handler_map=handler_map).set(loc=loc, **kwargs)
 
     def grid(self, show: bool = True):
         self._axis.grid(visible=show)
