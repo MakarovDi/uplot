@@ -117,7 +117,9 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def legend(self, show: bool = True, **kwargs):
+    def legend(self, show: bool = True,
+                     equal_marker_size: bool = True,
+                     **kwargs):
         ...
 
     @abstract
