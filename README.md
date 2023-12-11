@@ -75,11 +75,11 @@ fig.show()
 
 ## Install
 
-The recent stable version (without any plotting library):
+Recent stable version (without any plotting library):
 ```bash
-pip install git+https://github.com/makarovdi/uplot.git@main
+pip install "git+https://github.com/makarovdi/uplot.git@main"
 ```
-to automatically install all optional dependencies (`matplotlib`, `plotly`, ...) use
+To automatically install all optional dependencies (matplotlib, plotly, ...):
 ```bash
 pip install "uplot[all] @ git+https://github.com/makarovdi/uplot.git@main"
 ```
@@ -127,7 +127,7 @@ pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main
 
 ## Extending
 
-Adding a new engine is straightforward. You should implement two interfaces `IPlotEngine` and `IFigure`:
+Adding a new engine is straightforward. Implement two interfaces `IPlotEngine` and `IFigure`:
 ```python
 from uplot import IPlotEngine, IFigure
 
@@ -140,7 +140,7 @@ class MyFigure(IFigure):
     def scatter(self, ...): ...
     ...
 ```
-Then it can be used in the regular way:
+Then use it in the regular way:
 ```python
 import uplot
 

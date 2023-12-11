@@ -1,5 +1,15 @@
 # Changelog
 
+## `[v0.3.1]` - 11.12.2023
+
+#### Changed
+* `[interface & engine]` marker size is fixed in the legend, by default
+* `[interface]` API documentation
+
+#### Fixed
+* `[engine.matplot]` remove the empty legend space on `figure.legend(False)`
+
+
 ## `[v0.3.0]` - 06.12.2023
 
 #### Added

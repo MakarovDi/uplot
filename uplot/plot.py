@@ -6,16 +6,16 @@ from uplot.default import DEFAULT
 CURRENT_ENGINE: IPlotEngine | None = None
 
 
-def figure(engine: str | IPlotEngine | None = None,
-           width : int | None = DEFAULT.figure_width,
+def figure(engine      : str | IPlotEngine | None = None,
+           width       : int | None = DEFAULT.figure_width,
            aspect_ratio: float = DEFAULT.figure_aspect_ratio) -> IFigure:
     """
-    Creates a new figure using the specified plotting engine or the default engine.
+    Create a new figure using the specified plotting engine or the default engine.
 
     Parameters
     ----------
     engine : str, IPlotEngine, or None, optional
-        The plotting engine object or name. If None, the function returns the previous or default engine.
+        The plotting engine object, name, or None. If None, the function uses the previous or default engine.
 
     width : int or None, optional
         The width of the figure in pixels.
@@ -27,6 +27,16 @@ def figure(engine: str | IPlotEngine | None = None,
     -------
     IFigure
         The created figure object.
+
+    Examples
+    --------
+    >>> fig = figure(engine='plotly', width=800, aspect_ratio=0.6)
+    >>> fig.plot(x, y, name='Data')
+    >>> fig.show()
+
+    >>> fig = figure(width=1200)
+    >>> fig.scatter(x, y)
+    >>> fig.show()
     """
     global CURRENT_ENGINE
 

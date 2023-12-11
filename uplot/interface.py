@@ -8,7 +8,6 @@ from numpy.typing import ArrayLike
 from uplot.utype import LineStyle, MarkerStyle, AspectMode, Colormap
 from uplot.utool import Interpolator
 
-# TODO: documentation
 
 @runtime_checkable
 class IFigure(Protocol):
@@ -25,16 +24,42 @@ class IFigure(Protocol):
     @property
     @abstract
     def engine(self) -> IPlotEngine:
+        """
+        Get the underlying plotting engine associated with the figure.
+
+        Returns
+        -------
+        IPlotEngine
+            The plotting engine.
+        """
         ...
 
     @property
     @abstract
     def internal(self):
+        """
+        Access the underlying engine-specific figure object.
+        Use it if you need richer functionality than uplot can provide.
+        But manipulation with the internal figure may lead to undefined behavior of uplot.
+
+        Returns
+        -------
+        Any
+            An engine-specific figure object.
+        """
         ...
 
     @property
     @abstract
     def is_3d(self) -> bool:
+        """
+        Check if the figure is set up for 3D plotting.
+
+        Returns
+        -------
+        bool
+            True if the figure is in 3D mode, False otherwise.
+        """
         ...
 
     @abstract
@@ -42,12 +67,41 @@ class IFigure(Protocol):
                    y           : ArrayLike | None = None,
                    z           : ArrayLike | None = None,
                    name        : str | None = None,
-                   color       : str | list[str] | None = None,
-                   line_style  : LineStyle | list[LineStyle] | None = None,
-                   marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                   color       : str | None = None,
+                   line_style  : LineStyle | None = None,
+                   marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
                    **kwargs):
+        """
+        Plot 2D or 3D line.
+
+        Parameters
+        ----------
+        x, y, z : ArrayLike
+            1D data arrays of the same size.
+
+        name : str or None, optional
+            The plot name, which will appear as the legend item.
+
+        color : str or None, optional
+            The color of the line.
+
+        line_style : LineStyle or None, optional
+            The line style.
+
+        marker_style : MarkerStyle or None, optional
+            The marker style.
+
+        marker_size : int or None, optional
+            The size of the marker.
+
+        opacity : float, optional
+            Sets the opacity of the line(s).
+
+        kwargs : dict
+            Other keyword arguments are forwarded to the underlying engine.
+        """
         ...
 
     @abstract
@@ -56,10 +110,36 @@ class IFigure(Protocol):
                       z           : ArrayLike | None = None,
                       name        : str | None = None,
                       color       : str | list[str] | None = None,
-                      marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                      marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
                       **kwargs):
+        """
+        Scatter plot for 2D or 3D data points.
+
+        Parameters
+        ----------
+        x, y, z : ArrayLike
+            1D data arrays of the same size.
+
+        name : str or None, optional
+            The plot name, which will appear as the legend item.
+
+        color : str, list of str, or None, optional
+            The color(s) of the markers.
+
+        marker_style : MarkerStyle or None, optional
+            The marker style.
+
+        marker_size : int or None, optional
+            The size of the markers.
+
+        opacity : float, optional
+            Sets the opacity of the markers.
+
+        kwargs : dict
+            Other keyword arguments are forwarded to the underlying engine.
+        """
         ...
 
     @abstract
@@ -110,96 +190,287 @@ class IFigure(Protocol):
 
     @abstract
     def imshow(self, image: ArrayLike, **kwargs):
+        """
+        Display an image.
+
+        Parameters
+        ----------
+        image : ArrayLike
+            Image data. Supported ranges: double [0, 1], uint8, uint16.
+
+        kwargs : dict
+            Other keyword arguments are forwarded to the underlying engine.
+        """
         ...
 
     @abstract
     def title(self, text: str):
+        """
+        Set the title of the figure.
+
+        Parameters
+        ----------
+        text : str
+            The title text.
+        """
         ...
 
     @abstract
-    def legend(self, show: bool = True, **kwargs):
+    def legend(self, show: bool = True,
+                     equal_marker_size: bool = True,
+                     **kwargs):
+        """
+        Show or hide the legend on the figure.
+
+        Parameters
+        ----------
+        show : bool, optional
+            Whether to show or hide the legend.
+
+        equal_marker_size : bool, optional
+            Whether markers in the legend are equal in size.
+
+        kwargs : dict
+            Other keyword arguments are forwarded to the underlying engine.
+        """
         ...
 
     @abstract
     def grid(self, show: bool = True):
+        """
+        Show or hide the grid on the figure.
+
+        Parameters
+        ----------
+        show : bool, optional
+            Whether to show or hide the grid.
+        """
         ...
 
     @abstract
     def xlabel(self, text: str):
+        """
+        Set the label for the x-axis.
+
+        Parameters
+        ----------
+        text : str
+            The label text.
+        """
         ...
 
     @abstract
     def ylabel(self, text: str):
+        """
+        Set the label for the y-axis.
+
+        Parameters
+        ----------
+        text : str
+            The label text.
+        """
         ...
 
     @abstract
     def zlabel(self, text: str):
+        """
+        Set the label for the z-axis.
+
+        Parameters
+        ----------
+        text : str
+            The label text.
+        """
         ...
 
     @abstract
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None):
+        """
+        Set limits for the x-axis.
+
+        Parameters
+        ----------
+        min_value : float or None, optional
+            The minimum value for the x-axis.
+
+        max_value : float or None, optional
+            The maximum value for the x-axis.
+        """
         ...
 
     @abstract
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None):
+        """
+        Set limits for the y-axis.
+
+        Parameters
+        ----------
+        min_value : float or None, optional
+            The minimum value for the y-axis.
+
+        max_value : float or None, optional
+            The maximum value for the y-axis.
+        """
         ...
 
     @abstract
     def zlim(self, min_value: float | None = None,
                    max_value: float | None = None):
+        """
+        Set limits for the z-axis.
+
+        Parameters
+        ----------
+        min_value : float or None, optional
+            The minimum value for the z-axis.
+
+        max_value : float or None, optional
+            The maximum value for the z-axis.
+        """
         ...
 
     @abstract
     def current_color(self) -> str:
+        """
+        Get the color which will be used for the next plot.
+
+        Returns
+        -------
+        str
+            The current color.
+        """
         ...
 
     @abstract
     def scroll_color(self, count: int = 1) -> str:
+        """
+        Scroll a list of predefined colors for plots.
+
+        Parameters
+        ----------
+        count : int, optional
+            The number of colors to scroll.
+
+        Returns
+        -------
+        str
+            The current color before scrolling.
+        """
         ...
 
     @abstract
     def reset_color(self):
+        """
+        Set the current color to the start of the list.
+        """
         ...
 
     @abstract
     def axis_aspect(self, mode: AspectMode):
+        """
+        Set the aspect ratio of the axis.
+
+        Parameters
+        ----------
+        mode : AspectMode
+            The aspect ratio mode.
+        """
         ...
 
     @abstract
     def as_image(self) -> ndarray:
+        """
+        Get the figure as a numpy array.
+
+        Returns
+        -------
+        ndarray
+            The figure as an image.
+        """
         ...
 
     @abstract
     def save(self, filename: str):
+        """
+        Save the figure to a file.
+
+        Parameters
+        ----------
+        filename : str
+            The filename for saving the figure.
+        """
         ...
 
     @abstract
     def close(self):
+        """
+        Close the figure. Free allocated resources.
+        """
         ...
 
     @abstract
-    def show(self, block: bool=True):
+    def show(self, block: bool = True):
+        """
+        Display the figure.
+
+        Parameters
+        ----------
+        block : bool, optional
+            Whether to block further execution until the figure window is closed.
+        """
         ...
 
 
 @runtime_checkable
 class IPlotEngine(Protocol):
+    """
+    Interface for a plotting engine (lib) that provides functionality for creating IFigure.
+    """
 
     @property
     @abstract
     def name(self) -> str:
+        """
+        Get the name of the plotting engine.
+
+        Returns
+        -------
+        str
+            The name of the plotting engine.
+        """
         ...
 
     @classmethod
     @abstract
     def is_available(cls) -> bool:
+        """
+        Check if the plotting engine is available for use (a plotting lib installed).
+
+        Returns
+        -------
+        bool
+            True if the plotting engine is available, False otherwise.
+        """
         ...
 
     @abstract
     def figure(self, width: int, aspect_ratio: float) -> IFigure:
         """
-        Factory method for the figure creation
+        Factory method for creating a new figure with the specified width and aspect ratio.
+
+        Parameters
+        ----------
+        width : int
+            The width of the figure in pixels.
+
+        aspect_ratio : float
+            The aspect ratio of the figure.
+
+        Returns
+        -------
+        IFigure
+            A new figure instance.
         """
         ...

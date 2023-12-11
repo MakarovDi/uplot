@@ -49,85 +49,58 @@ class MatplotFigure(IFigure):
                    y           : ArrayLike | None = None,
                    z           : ArrayLike | None = None,
                    name        : str | None = None,
-                   color       : str | list[str] | None = None,
-                   line_style  : LineStyle | list[LineStyle] | None = None,
-                   marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                   color       : str | None = None,
+                   line_style  : LineStyle | None = None,
+                   marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
                    **kwargs):
-        x = np.atleast_1d(np.asarray(x))
+        from uplot.engine.matplot.plot import plot_line_marker
 
-        if y is None:
-            y = x
-            x = np.arange(len(y))
-        else:
-            y = np.asarray(y)
+        # get or init axis
+        axis = self._init_axis(is_3d=z is not None)
 
-        y = np.atleast_1d(y)
-
-        assert x.ndim == y.ndim == 1, 'the input must be 1d arrays'
-        assert len(x) == len(y), 'the length of the input arrays must be the same'
-
-        if z is None: # 2d
-            axis = self._init_axis(is_3d=False)
-        else: # 3d
-            z = np.atleast_1d(np.asarray(z))
-            assert z.ndim == 1, 'the input must be 1d arrays'
-            assert len(x) == len(z), 'the length of the input arrays must be the same'
-            axis = self._init_axis(is_3d=True)
-
-        if marker_size is None:
-            marker_size = DEFAULT.marker_size
-
+        # init color
         if color is None:
             color = self.scroll_color()
 
-        elif not isinstance(color, str):
-            # color specified for each point (x, y)
-            color = [ ucolor.name_to_hex(c) for c in color ]
-        else:
-            color = ucolor.name_to_hex(color)
-
-        if self.is_3d:
-            plot_data = x, y, z
-        else:
-            plot_data = x, y
-
-        if line_style == ' ': # only markers
-            axis.scatter(*plot_data,
+        plot_line_marker(axis=axis,
+                         x=x, y=y, z=z,
+                         name=name,
                          color=color,
-                         label=name,
-                         marker=marker_style,
-                         s=marker_size**2,
-                         alpha=opacity,
+                         line_style=line_style,
+                         marker_style=marker_style,
+                         marker_size=marker_size,
+                         opacity=opacity,
                          **kwargs)
-        else:
-            axis.plot(*plot_data,
-                      color=color,
-                      label=name,
-                      marker=marker_style,
-                      markersize=marker_size,
-                      linestyle=line_style,
-                      alpha=opacity,
-                      **kwargs)
 
     def scatter(self, x           : ArrayLike,
                       y           : ArrayLike | None = None,
                       z           : ArrayLike | None = None,
                       name        : str | None = None,
                       color       : str | list[str] | None = None,
-                      marker_style: MarkerStyle | list[MarkerStyle] | None = None,
+                      marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
                       **kwargs):
-        self.plot(x=x, y=y, z=z,
-                  name=name,
-                  line_style=' ',  # no line
-                  color=color,
-                  marker_style=marker_style,
-                  marker_size=marker_size,
-                  opacity=opacity,
-                  **kwargs)
+        from uplot.engine.matplot.plot import plot_line_marker
+
+        # get or init axis
+        axis = self._init_axis(is_3d=z is not None)
+
+        # init color
+        if color is None:
+            color = self.scroll_color()
+
+        plot_line_marker(axis=axis,
+                         x=x, y=y, z=z,
+                         name=name,
+                         color=color,
+                         line_style=' ',  # no line (scatter mode)
+                         marker_style=marker_style,
+                         marker_size=marker_size,
+                         opacity=opacity,
+                         **kwargs)
 
     def surface3d(self, x            : ArrayLike,
                         y            : ArrayLike,
@@ -170,7 +143,6 @@ class MatplotFigure(IFigure):
         if show_colormap:
             self._fig.colorbar(surf, shrink=0.5, aspect=10)
 
-
     def imshow(self, image: ArrayLike, **kwargs):
         image = np.asarray(image)
         value_range = utool.image_range(image)
@@ -192,17 +164,46 @@ class MatplotFigure(IFigure):
     def title(self, text: str):
         self._axis.set_title(label=text)
 
-    def legend(self, show: bool = True, **kwargs):
+    def legend(self, show: bool = True,
+                     equal_marker_size: bool = True,
+                     **kwargs):
+        if not self._axis: return
+
+        # check if there is anything to put to the legend
         handles, labels = self._axis.get_legend_handles_labels()
-        if len(handles) > 0:
-            loc = utool.kwargs_extract(kwargs, name='loc', default='outside right upper')
-            if 'outside' in loc:
-                # outside works only for the figure
-                # "outside right upper" works correctly with "constrained" or "compressed" layout only
-                self._fig.legend().set(visible=show, loc=loc, **kwargs)
-            else:
-                # axes.legend() is better for an other options because legend will be inside graph
-                self._fig.gca().legend().set(visible=show, loc=loc, **kwargs)
+        if len(handles) == 0: return
+
+        if equal_marker_size:
+            from matplotlib.legend_handler import HandlerPathCollection, HandlerLine2D
+            from matplotlib.collections import PathCollection
+            from matplotlib.pyplot import Line2D
+
+            def updatescatter(handle, orig):
+                handle.update_from(orig)
+                handle.set_sizes([self.engine.LEGEND_MARKER_SIZE ** 2])
+            def updateline(handle, orig):
+                handle.update_from(orig)
+                handle.set_markersize(self.engine.LEGEND_MARKER_SIZE)
+
+            handler_map = { PathCollection: HandlerPathCollection(update_func=updatescatter),
+                            Line2D: HandlerLine2D(update_func=updateline) }
+        else:
+            handler_map = None
+
+        if not show:
+            self._fig.legends.clear() # remove legend outside axis
+            self._fig.gca().legend().remove() # remove legend inside
+            return
+
+        # create legend
+        loc = utool.kwargs_extract(kwargs, name='loc', default='outside right upper')
+        if 'outside' in loc:
+            # outside works only for the figure
+            # "outside right upper" works correctly with "constrained" or "compressed" layout only
+            self._fig.legend(handler_map=handler_map).set(loc=loc, **kwargs)
+        else:
+            # axes.legend() is better for an other options because legend will be inside graph
+            self._fig.gca().legend(handler_map=handler_map).set(loc=loc, **kwargs)
 
     def grid(self, show: bool = True):
         self._axis.grid(visible=show)
