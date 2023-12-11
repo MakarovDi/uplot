@@ -5,7 +5,7 @@
 - [x] Fixed size of the legend items for **matplotlib**
 - [ ] **API**: `fig.legend_group(...)` or parameter `legend_group`
 - [x] **README** refactoring
-- [ ] API documentation
+- [x] API documentation
 
 ## Backlog
 
