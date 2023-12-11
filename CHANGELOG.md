@@ -1,8 +1,6 @@
 # Changelog
 
-## `[v0.3.1]` - ??.??.2023
-
-#### Added
+## `[v0.3.1]` - 11.12.2023
 
 #### Changed
 * `[interface & engine]` marker size is fixed in the legend, by default
