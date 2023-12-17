@@ -1,5 +1,15 @@
 # Changelog
 
+## `[v0.4.0]` - ??.??.20??
+
+#### Added
+
+#### Changed
+* `[interface]` return `IFigure` when possible to support chaining
+
+#### Fixed
+
+
 ## `[v0.3.1]` - 11.12.2023
 
 #### Changed

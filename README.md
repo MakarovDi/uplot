@@ -8,7 +8,7 @@ Unified API and style for Python plotting libraries.
 
 ## Usage
 
-<table style="border-collapse: collapse; border-style: hidden; font-size: 14px;">
+<table style="border-collapse: collapse; border-style: hidden;">
 
 <tr>
 <td> <b>plotly 5</b> </td> <td> <b>matplotlib</b> </td>
@@ -16,6 +16,7 @@ Unified API and style for Python plotting libraries.
 
 <tr>
 <td>
+<small>
 
 ```python
 import numpy as np
@@ -33,8 +34,11 @@ fig.ylabel('Y')
 fig.legend()
 fig.show()
 ```
+
+</small>
 </td>
 <td>
+<small>
 
 ```python
 import numpy as np
@@ -52,6 +56,8 @@ fig.ylabel('Y')
 fig.legend()
 fig.show()
 ```
+
+</small>
 </td>
 </tr>
 

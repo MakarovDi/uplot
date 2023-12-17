@@ -43,7 +43,7 @@ class PlotlyFigure5(IFigure):
                    marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
-                   **kwargs):
+                   **kwargs) -> IFigure:
         from uplot.engine.plotly.plot import plot_line_marker
 
         self._is_3d = z is not None
@@ -61,6 +61,7 @@ class PlotlyFigure5(IFigure):
                          marker_size=marker_size,
                          opacity=opacity,
                          **kwargs)
+        return self
 
     def scatter(self, x           : ArrayLike,
                       y           : ArrayLike | None = None,
@@ -70,7 +71,7 @@ class PlotlyFigure5(IFigure):
                       marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
-                      **kwargs):
+                      **kwargs) -> IFigure:
         from uplot.engine.plotly.plot import plot_line_marker
 
         self._is_3d = z is not None
@@ -88,6 +89,7 @@ class PlotlyFigure5(IFigure):
                          marker_size=marker_size,
                          opacity=opacity,
                          **kwargs)
+        return self
 
     def surface3d(self, x            : ArrayLike,
                         y            : ArrayLike,
@@ -98,7 +100,7 @@ class PlotlyFigure5(IFigure):
                         opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
-                        **kwargs):
+                        **kwargs) -> IFigure:
         x = np.asarray(x)
         y = np.asarray(y)
         z = np.asarray(z)
@@ -131,8 +133,9 @@ class PlotlyFigure5(IFigure):
                               colorbar=colorbar,
                               opacity=opacity,
                               **kwargs)
+        return self
 
-    def imshow(self, image: ArrayLike, **kwargs):
+    def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
         image = np.asarray(image)
         value_range = utool.image_range(image)
 
@@ -151,12 +154,15 @@ class PlotlyFigure5(IFigure):
         self._fig.update_xaxes(visible=False)
         self._fig.update_yaxes(visible=False)
 
-    def title(self, text: str):
+        return self
+
+    def title(self, text: str) -> IFigure:
         self._fig.update_layout(title=text)
+        return self
 
     def legend(self, show: bool = True,
                      equal_marker_size: bool = True,
-                     **kwargs):
+                     **kwargs) -> IFigure:
         itemsizing = 'constant' if equal_marker_size else None
 
         self._fig.update_layout(legend=self.engine.go.layout.Legend(
@@ -166,8 +172,9 @@ class PlotlyFigure5(IFigure):
             itemwidth=utool.kwargs_extract(kwargs, name='itemwidth', default=50),
             **kwargs,
         ))
+        return self
 
-    def grid(self, show: bool = True):
+    def grid(self, show: bool = True) -> IFigure:
         if self.is_3d:
             Scene = self.engine.go.layout.Scene
             XAxis = self.engine.go.layout.scene.XAxis
@@ -180,25 +187,29 @@ class PlotlyFigure5(IFigure):
         else:
             self._fig.update_xaxes(showgrid=show)
             self._fig.update_yaxes(showgrid=show)
+        return self
 
-    def xlabel(self, text: str):
+    def xlabel(self, text: str) -> IFigure:
         if self.is_3d:
             self._fig.update_layout(scene=dict(xaxis_title=text))
         else:
             self._fig.update_xaxes(title=text)
+        return self
 
-    def ylabel(self, text: str):
+    def ylabel(self, text: str) -> IFigure:
         if self.is_3d:
             self._fig.update_layout(scene=dict(yaxis_title=text))
         else:
             self._fig.update_yaxes(title=text)
+        return self
 
-    def zlabel(self, text: str):
+    def zlabel(self, text: str) -> IFigure:
         if self.is_3d:
             self._fig.update_layout(scene=dict(zaxis_title=text))
+        return self
 
     def xlim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         from uplot.engine.plotly.axis_range import estimate_axis_range
 
         if min_value is None:
@@ -209,9 +220,10 @@ class PlotlyFigure5(IFigure):
             self._fig.update_layout(scene=dict(xaxis=dict(range=[min_value, max_value])))
         else:
             self._fig.update_xaxes(range=[min_value, max_value])
+        return self
 
     def ylim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         from uplot.engine.plotly.axis_range import estimate_axis_range
 
         if min_value is None:
@@ -223,11 +235,12 @@ class PlotlyFigure5(IFigure):
             self._fig.update_layout(scene=dict(yaxis=dict(range=[min_value, max_value])))
         else:
             self._fig.update_yaxes(range=[min_value, max_value])
+        return self
 
     def zlim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         if not self.is_3d:
-            return
+            return self
 
         from uplot.engine.plotly.axis_range import estimate_axis_range
 
@@ -238,6 +251,8 @@ class PlotlyFigure5(IFigure):
 
         self._fig.update_layout(scene=dict(zaxis=dict(range=[min_value, max_value])))
 
+        return self
+
     def current_color(self) -> str:
         return self._color_scroller.current_color()
 
@@ -247,7 +262,7 @@ class PlotlyFigure5(IFigure):
     def reset_color(self):
         self._color_scroller.reset()
 
-    def axis_aspect(self, mode: AspectMode):
+    def axis_aspect(self, mode: AspectMode) -> IFigure:
         if self.is_3d:
             if mode == AspectMode.EQUAL:
                 aspectmode = 'cube' if mode == AspectMode.EQUAL else 'auto'
@@ -255,6 +270,7 @@ class PlotlyFigure5(IFigure):
         else:
             scaleanchor = 'x' if mode == AspectMode.EQUAL else None
             self._fig.update_yaxes(scaleanchor=scaleanchor)
+        return self
 
     def as_image(self) -> ndarray:
         import io
