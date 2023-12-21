@@ -44,6 +44,7 @@ class MatplotFigure(IFigure):
             self._fig.set_figheight(aspect_ratio*(width / engine.SHOWING_DPI))
 
         self._color_scroller = ucolor.ColorScroller()
+        self._init_axis(is_3d=False)
 
     def plot(self, x           : ArrayLike,
                    y           : ArrayLike | None = None,
