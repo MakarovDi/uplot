@@ -148,8 +148,8 @@ class PlotlyFigure5(IFigure):
                               colorscale=colormap,
                               colorbar=colorbar,
                               opacity=opacity,
-                              legend_group=legend_group,
-                              legend_group_title=legend_group if self._group_counter[legend_group] > 1 else None,
+                              legendgroup=legend_group,
+                              legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 1 else None,
                               **kwargs)
         return self
 
