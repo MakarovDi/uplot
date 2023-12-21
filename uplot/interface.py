@@ -170,7 +170,7 @@ class IFigure(Protocol):
                         opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
-                        legend_group: str | None = None,
+                        legend_group : str | None = None,
                         **kwargs) -> IFigure:
         """
         Plot a surface in 3D space where the color scale corresponds to the z-values.

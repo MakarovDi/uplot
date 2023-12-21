@@ -55,6 +55,7 @@ class MatplotFigure(IFigure):
                    marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
+                   legend_group: str | None = None,
                    **kwargs) -> IFigure:
         from uplot.engine.matplot.plot import plot_line_marker
 
@@ -84,6 +85,7 @@ class MatplotFigure(IFigure):
                       marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
+                      legend_group: str | None = None,
                       **kwargs) -> IFigure:
         from uplot.engine.matplot.plot import plot_line_marker
 
@@ -114,6 +116,7 @@ class MatplotFigure(IFigure):
                         opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
+                        legend_group : str | None = None,
                         **kwargs) -> IFigure:
         x = np.asarray(x)
         y = np.asarray(y)
