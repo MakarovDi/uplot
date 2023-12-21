@@ -1,19 +1,18 @@
 # Changelog
 
-## `[v0.4.0]` - ??.??.20??
+## `[v0.4.0]` - 21.12.2023
 
 #### Added
+* `[interface] & [engine]` parameter `legend_group` added
 
 #### Changed
 * `[interface]` return `IFigure` when possible to support chaining
-
-#### Fixed
 
 
 ## `[v0.3.1]` - 11.12.2023
 
 #### Changed
-* `[interface & engine]` marker size is fixed in the legend, by default
+* `[interface] & [engine]` marker size is fixed in the legend, by default
 * `[interface]` API documentation
 
 #### Fixed
