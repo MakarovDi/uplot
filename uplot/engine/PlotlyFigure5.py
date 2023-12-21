@@ -34,6 +34,9 @@ class PlotlyFigure5(IFigure):
         self._is_3d = None
         self._colorbar_x_pos = 1.0
 
+        self._group_counter: dict[str | None, int] = { None: 0 }
+
+
     def plot(self, x           : ArrayLike,
                    y           : ArrayLike | None = None,
                    z           : ArrayLike | None = None,
@@ -43,6 +46,7 @@ class PlotlyFigure5(IFigure):
                    marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
+                   legend_group: str | None = None,
                    **kwargs) -> IFigure:
         from uplot.engine.plotly.plot import plot_line_marker
 
@@ -50,6 +54,8 @@ class PlotlyFigure5(IFigure):
 
         if color is None:
             color = self.scroll_color()
+
+        self._update_group_counter(plot_name=name, legend_group=legend_group)
 
         plot_line_marker(figure=self._fig,
                          x=x, y=y, z=z,
@@ -60,6 +66,8 @@ class PlotlyFigure5(IFigure):
                          marker_style=marker_style,
                          marker_size=marker_size,
                          opacity=opacity,
+                         legend_group=legend_group,
+                         legend_group_title=legend_group if self._group_counter[legend_group] > 1 else None,
                          **kwargs)
         return self
 
@@ -71,6 +79,7 @@ class PlotlyFigure5(IFigure):
                       marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
+                      legend_group: str | None = None,
                       **kwargs) -> IFigure:
         from uplot.engine.plotly.plot import plot_line_marker
 
@@ -78,6 +87,8 @@ class PlotlyFigure5(IFigure):
 
         if color is None:
             color = self.scroll_color()
+
+        self._update_group_counter(plot_name=name, legend_group=legend_group)
 
         plot_line_marker(figure=self._fig,
                          x=x, y=y, z=z,
@@ -88,6 +99,8 @@ class PlotlyFigure5(IFigure):
                          marker_style=marker_style,
                          marker_size=marker_size,
                          opacity=opacity,
+                         legend_group=legend_group,
+                         legend_group_title=legend_group if self._group_counter[legend_group] > 1 else None,
                          **kwargs)
         return self
 
@@ -100,6 +113,7 @@ class PlotlyFigure5(IFigure):
                         opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
+                        legend_group : str | None = None,
                         **kwargs) -> IFigure:
         x = np.asarray(x)
         y = np.asarray(y)
@@ -125,6 +139,8 @@ class PlotlyFigure5(IFigure):
         else:
             colorbar = None
 
+        self._update_group_counter(plot_name=name, legend_group=legend_group)
+
         self._fig.add_surface(x=x, y=y, z=z,
                               name=name,
                               showlegend=(name != '') and (name is not None),
@@ -132,6 +148,8 @@ class PlotlyFigure5(IFigure):
                               colorscale=colormap,
                               colorbar=colorbar,
                               opacity=opacity,
+                              legend_group=legend_group,
+                              legend_group_title=legend_group if self._group_counter[legend_group] > 1 else None,
                               **kwargs)
         return self
 
@@ -296,3 +314,16 @@ class PlotlyFigure5(IFigure):
 
     def show(self, block: bool=True):
         self.engine.pio.show(self._fig)
+
+
+    def _update_group_counter(self, plot_name: str | None, legend_group: str | None):
+        """
+        Count visible legend's items for the same group
+        """
+        if legend_group is None or len(legend_group) == 0: return
+        group_size = self._group_counter.get(legend_group, 0)
+
+        if plot_name is not None and len(plot_name) > 0:
+            group_size += 1
+
+        self._group_counter[legend_group] = group_size
