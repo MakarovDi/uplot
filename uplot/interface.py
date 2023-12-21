@@ -72,6 +72,7 @@ class IFigure(Protocol):
                    marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
+                   legend_group: str | None = None,
                    **kwargs) -> IFigure:
         """
         Plot 2D or 3D line.
@@ -99,8 +100,16 @@ class IFigure(Protocol):
         opacity : float, optional
             Sets the opacity of the line(s).
 
+        legend_group : str or None, optional
+            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -113,6 +122,7 @@ class IFigure(Protocol):
                       marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
+                      legend_group: str | None = None,
                       **kwargs) -> IFigure:
         """
         Scatter plot for 2D or 3D data points.
@@ -137,8 +147,16 @@ class IFigure(Protocol):
         opacity : float, optional
             Sets the opacity of the markers.
 
+        legend_group : str or None, optional
+            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -152,6 +170,7 @@ class IFigure(Protocol):
                         opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
+                        legend_group: str | None = None,
                         **kwargs) -> IFigure:
         """
         Plot a surface in 3D space where the color scale corresponds to the z-values.
@@ -183,8 +202,16 @@ class IFigure(Protocol):
         interpolation_range : int, optional
             The number of points in the interpolated grid.
 
+        legend_group : str or None, optional
+            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -200,6 +227,11 @@ class IFigure(Protocol):
 
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -212,6 +244,11 @@ class IFigure(Protocol):
         ----------
         text : str
             The title text.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -232,6 +269,11 @@ class IFigure(Protocol):
 
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -244,6 +286,11 @@ class IFigure(Protocol):
         ----------
         show : bool, optional
             Whether to show or hide the grid.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -256,6 +303,11 @@ class IFigure(Protocol):
         ----------
         text : str
             The label text.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -268,6 +320,11 @@ class IFigure(Protocol):
         ----------
         text : str
             The label text.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -280,6 +337,11 @@ class IFigure(Protocol):
         ----------
         text : str
             The label text.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -296,6 +358,11 @@ class IFigure(Protocol):
 
         max_value : float or None, optional
             The maximum value for the x-axis.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -312,6 +379,11 @@ class IFigure(Protocol):
 
         max_value : float or None, optional
             The maximum value for the y-axis.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -328,6 +400,11 @@ class IFigure(Protocol):
 
         max_value : float or None, optional
             The maximum value for the z-axis.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -364,6 +441,11 @@ class IFigure(Protocol):
     def reset_color(self) -> IFigure:
         """
         Set the current color to the start of the list.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -376,6 +458,11 @@ class IFigure(Protocol):
         ----------
         mode : AspectMode
             The aspect ratio mode.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
