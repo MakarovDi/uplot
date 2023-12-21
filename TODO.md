@@ -2,18 +2,16 @@
 
 ## Next Release
 
-- [ ] **API**: `fig.legend_group(...)` or parameter `legend_group`
-- [ ] **API**: return **IFigure** if possible to allow chaining
+- [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
 
 
 ## Backlog
 
-- [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
 - [ ] **API**: `fig.legend`: param for the legend location
-- [ ] `README` API description: supported functions per engine
 - [ ] `README` Add name, description and shortcuts for all engines
-- [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
 - [ ] **API**: `fig.bar(...)` 
+- [ ] `README` API description: supported functions per engine
+- [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
 - [ ] **API**: `fig.click_event(...)`
 - [ ] **API**: `fig.hover_text(...)` 
 - [ ] Unified styling
@@ -24,6 +22,8 @@
 
 ## Done
 
+- [x] **API**: `fig.legend_group(...)` or parameter `legend_group`
+- [x] **API**: return **IFigure** if possible to allow chaining
 - [x] Fixed size of the legend items for **matplotlib**
 - [x] **README** refactoring
 - [x] API documentation
