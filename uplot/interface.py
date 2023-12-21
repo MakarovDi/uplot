@@ -72,7 +72,8 @@ class IFigure(Protocol):
                    marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
-                   **kwargs):
+                   legend_group: str | None = None,
+                   **kwargs) -> IFigure:
         """
         Plot 2D or 3D line.
 
@@ -99,8 +100,16 @@ class IFigure(Protocol):
         opacity : float, optional
             Sets the opacity of the line(s).
 
+        legend_group : str or None, optional
+            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -113,7 +122,8 @@ class IFigure(Protocol):
                       marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
-                      **kwargs):
+                      legend_group: str | None = None,
+                      **kwargs) -> IFigure:
         """
         Scatter plot for 2D or 3D data points.
 
@@ -137,8 +147,16 @@ class IFigure(Protocol):
         opacity : float, optional
             Sets the opacity of the markers.
 
+        legend_group : str or None, optional
+            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -152,7 +170,8 @@ class IFigure(Protocol):
                         opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
-                        **kwargs):
+                        legend_group : str | None = None,
+                        **kwargs) -> IFigure:
         """
         Plot a surface in 3D space where the color scale corresponds to the z-values.
         Two coordinate formats are supported:
@@ -183,13 +202,21 @@ class IFigure(Protocol):
         interpolation_range : int, optional
             The number of points in the interpolated grid.
 
+        legend_group : str or None, optional
+            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
-    def imshow(self, image: ArrayLike, **kwargs):
+    def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
         """
         Display an image.
 
@@ -200,11 +227,16 @@ class IFigure(Protocol):
 
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
-    def title(self, text: str):
+    def title(self, text: str) -> IFigure:
         """
         Set the title of the figure.
 
@@ -212,13 +244,18 @@ class IFigure(Protocol):
         ----------
         text : str
             The title text.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
     def legend(self, show: bool = True,
                      equal_marker_size: bool = True,
-                     **kwargs):
+                     **kwargs) -> IFigure:
         """
         Show or hide the legend on the figure.
 
@@ -232,11 +269,16 @@ class IFigure(Protocol):
 
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
-    def grid(self, show: bool = True):
+    def grid(self, show: bool = True) -> IFigure:
         """
         Show or hide the grid on the figure.
 
@@ -244,11 +286,16 @@ class IFigure(Protocol):
         ----------
         show : bool, optional
             Whether to show or hide the grid.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
-    def xlabel(self, text: str):
+    def xlabel(self, text: str) -> IFigure:
         """
         Set the label for the x-axis.
 
@@ -256,11 +303,16 @@ class IFigure(Protocol):
         ----------
         text : str
             The label text.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
-    def ylabel(self, text: str):
+    def ylabel(self, text: str) -> IFigure:
         """
         Set the label for the y-axis.
 
@@ -268,11 +320,16 @@ class IFigure(Protocol):
         ----------
         text : str
             The label text.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
-    def zlabel(self, text: str):
+    def zlabel(self, text: str) -> IFigure:
         """
         Set the label for the z-axis.
 
@@ -280,12 +337,17 @@ class IFigure(Protocol):
         ----------
         text : str
             The label text.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
     def xlim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         """
         Set limits for the x-axis.
 
@@ -296,12 +358,17 @@ class IFigure(Protocol):
 
         max_value : float or None, optional
             The maximum value for the x-axis.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
     def ylim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         """
         Set limits for the y-axis.
 
@@ -312,12 +379,17 @@ class IFigure(Protocol):
 
         max_value : float or None, optional
             The maximum value for the y-axis.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
     def zlim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         """
         Set limits for the z-axis.
 
@@ -328,6 +400,11 @@ class IFigure(Protocol):
 
         max_value : float or None, optional
             The maximum value for the z-axis.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
@@ -361,14 +438,19 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def reset_color(self):
+    def reset_color(self) -> IFigure:
         """
         Set the current color to the start of the list.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 
     @abstract
-    def axis_aspect(self, mode: AspectMode):
+    def axis_aspect(self, mode: AspectMode) -> IFigure:
         """
         Set the aspect ratio of the axis.
 
@@ -376,6 +458,11 @@ class IFigure(Protocol):
         ----------
         mode : AspectMode
             The aspect ratio mode.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
         """
         ...
 

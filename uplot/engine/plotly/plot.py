@@ -21,6 +21,8 @@ def plot_line_marker(figure      : Figure,
                      marker_style: MarkerStyle | None = None,
                      marker_size : int | None = None,
                      opacity     : float = 1.0,
+                     legend_group: str | None = None,
+                     legend_group_title: str | None = None,
                      **kwargs):
     """
     General plot: line, line+markers, markers(scatter).
@@ -93,6 +95,8 @@ def plot_line_marker(figure      : Figure,
                            opacity=opacity,
                            showlegend=show_legend,
                            hoverlabel=hoverlabel,
+                           legendgroup=legend_group,
+                           legendgrouptitle_text=legend_group_title,
                            **kwargs)
     else:
         figure.add_scatter3d(x=x, y=y, z=z,
@@ -103,4 +107,6 @@ def plot_line_marker(figure      : Figure,
                              opacity=opacity,
                              showlegend=show_legend,
                              hoverlabel=hoverlabel,
+                             legendgroup=legend_group,
+                             legendgrouptitle_text=legend_group_title,
                              **kwargs)

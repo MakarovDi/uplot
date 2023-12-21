@@ -44,6 +44,7 @@ class MatplotFigure(IFigure):
             self._fig.set_figheight(aspect_ratio*(width / engine.SHOWING_DPI))
 
         self._color_scroller = ucolor.ColorScroller()
+        self._init_axis(is_3d=False)
 
     def plot(self, x           : ArrayLike,
                    y           : ArrayLike | None = None,
@@ -54,7 +55,8 @@ class MatplotFigure(IFigure):
                    marker_style: MarkerStyle | None = None,
                    marker_size : int | None = None,
                    opacity     : float = 1.0,
-                   **kwargs):
+                   legend_group: str | None = None,
+                   **kwargs) -> IFigure:
         from uplot.engine.matplot.plot import plot_line_marker
 
         # get or init axis
@@ -73,6 +75,7 @@ class MatplotFigure(IFigure):
                          marker_size=marker_size,
                          opacity=opacity,
                          **kwargs)
+        return self
 
     def scatter(self, x           : ArrayLike,
                       y           : ArrayLike | None = None,
@@ -82,7 +85,8 @@ class MatplotFigure(IFigure):
                       marker_style: MarkerStyle | None = None,
                       marker_size : int | None = None,
                       opacity     : float = 1.0,
-                      **kwargs):
+                      legend_group: str | None = None,
+                      **kwargs) -> IFigure:
         from uplot.engine.matplot.plot import plot_line_marker
 
         # get or init axis
@@ -101,6 +105,7 @@ class MatplotFigure(IFigure):
                          marker_size=marker_size,
                          opacity=opacity,
                          **kwargs)
+        return self
 
     def surface3d(self, x            : ArrayLike,
                         y            : ArrayLike,
@@ -111,7 +116,8 @@ class MatplotFigure(IFigure):
                         opacity      : float = 1.0,
                         interpolation: Interpolator = 'cubic',
                         interpolation_range: int = 100,
-                        **kwargs):
+                        legend_group : str | None = None,
+                        **kwargs) -> IFigure:
         x = np.asarray(x)
         y = np.asarray(y)
         z = np.asarray(z)
@@ -143,7 +149,9 @@ class MatplotFigure(IFigure):
         if show_colormap:
             self._fig.colorbar(surf, shrink=0.5, aspect=10)
 
-    def imshow(self, image: ArrayLike, **kwargs):
+        return self
+
+    def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
         image = np.asarray(image)
         value_range = utool.image_range(image)
 
@@ -161,17 +169,22 @@ class MatplotFigure(IFigure):
         axis.get_yaxis().set_visible(False)
         axis.set_frame_on(False)
 
-    def title(self, text: str):
+        return self
+
+    def title(self, text: str) -> IFigure:
         self._axis.set_title(label=text)
+        return self
 
     def legend(self, show: bool = True,
                      equal_marker_size: bool = True,
-                     **kwargs):
-        if not self._axis: return
+                     **kwargs) -> IFigure:
+        if not self._axis:
+            return self
 
         # check if there is anything to put to the legend
         handles, labels = self._axis.get_legend_handles_labels()
-        if len(handles) == 0: return
+        if len(handles) == 0:
+            return self
 
         if equal_marker_size:
             from matplotlib.legend_handler import HandlerPathCollection, HandlerLine2D
@@ -193,7 +206,7 @@ class MatplotFigure(IFigure):
         if not show:
             self._fig.legends.clear() # remove legend outside axis
             self._fig.gca().legend().remove() # remove legend inside
-            return
+            return self
 
         # create legend
         loc = utool.kwargs_extract(kwargs, name='loc', default='outside right upper')
@@ -205,31 +218,40 @@ class MatplotFigure(IFigure):
             # axes.legend() is better for an other options because legend will be inside graph
             self._fig.gca().legend(handler_map=handler_map).set(loc=loc, **kwargs)
 
-    def grid(self, show: bool = True):
+        return self
+
+    def grid(self, show: bool = True) -> IFigure:
         self._axis.grid(visible=show)
+        return self
 
-    def xlabel(self, text: str):
+    def xlabel(self, text: str) -> IFigure:
         self._axis.set_xlabel(xlabel=text)
+        return self
 
-    def ylabel(self, text: str):
+    def ylabel(self, text: str) -> IFigure:
         self._axis.set_ylabel(ylabel=text)
+        return self
 
-    def zlabel(self, text: str):
+    def zlabel(self, text: str) -> IFigure:
         if self.is_3d:
             self._axis.set_zlabel(zlabel=text)
+        return self
 
     def xlim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         self._axis.set_xlim(left=min_value, right=max_value)
+        return self
 
     def ylim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         self._axis.set_ylim(bottom=min_value, top=max_value)
+        return self
 
     def zlim(self, min_value: float | None = None,
-                   max_value: float | None = None):
+                   max_value: float | None = None) -> IFigure:
         if self.is_3d:
             self._axis.set_zlim(bottom=min_value, top=max_value)
+        return self
 
     def current_color(self) -> str:
         return self._color_scroller.current_color()
@@ -240,9 +262,10 @@ class MatplotFigure(IFigure):
     def reset_color(self):
         self._color_scroller.reset()
 
-    def axis_aspect(self, mode: AspectMode):
+    def axis_aspect(self, mode: AspectMode) -> IFigure:
         # https://stackoverflow.com/questions/8130823/set-matplotlib-3d-plot-aspect-ratio
         self._axis.set_aspect(aspect=mode)
+        return self
 
     def as_image(self) -> ndarray:
         fig = self._fig

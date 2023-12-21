@@ -22,17 +22,19 @@ import numpy as np
 import uplot
 
 x = np.linspace(0, np.pi*4, num=100)
+phi = np.pi/4
 
 fig = uplot.figure('plotly5')
-fig.plot(x, np.sin(x - 0*np.pi/4), name='#1')
-fig.plot(x, np.sin(x - 1*np.pi/4), name='#2')
-fig.plot(x, np.sin(x - 2*np.pi/4), name='#3')
-fig.plot(x, np.sin(x - 3*np.pi/4), name='#4')
+fig.plot(x, np.sin(x - 0*phi), name='#1')
+fig.plot(x, np.sin(x - 1*phi), name='#2')
+fig.plot(x, np.sin(x - 2*phi), name='#3')
+fig.plot(x, np.sin(x - 3*phi), name='#4')
 fig.xlabel('X')
 fig.ylabel('Y')
 fig.legend()
 fig.show()
 ```
+
 </td>
 <td>
 
@@ -41,30 +43,32 @@ import numpy as np
 import uplot
 
 x = np.linspace(0, np.pi*4, num=100)
+phi = np.pi/4
 
 fig = uplot.figure('matplotlib')
-fig.plot(x, np.sin(x - 0*np.pi/4), name='#1')
-fig.plot(x, np.sin(x - 1*np.pi/4), name='#2')
-fig.plot(x, np.sin(x - 2*np.pi/4), name='#3')
-fig.plot(x, np.sin(x - 3*np.pi/4), name='#4')
+fig.plot(x, np.sin(x - 0*phi), name='#1')
+fig.plot(x, np.sin(x - 1*phi), name='#2')
+fig.plot(x, np.sin(x - 2*phi), name='#3')
+fig.plot(x, np.sin(x - 3*phi), name='#4')
 fig.xlabel('X')
 fig.ylabel('Y')
 fig.legend()
 fig.show()
 ```
+
 </td>
 </tr>
 
 <tr>
 <td>
 
-<img src='gallery/asset/plotly5-example.png' width='400'>
+<img src='gallery/asset/plotly5-example.png' width='380'>
 
 </td>
 
 <td>
 
-<img src='gallery/asset/mpl-example.png' width='400'>
+<img src='gallery/asset/mpl-example.png' width='380'>
 
 </td>
 
