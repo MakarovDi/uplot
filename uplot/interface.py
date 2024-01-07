@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from numpy import ndarray
-from typing import Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 from abc import abstractmethod as abstract
 from numpy.typing import ArrayLike
 
@@ -63,7 +63,7 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def plot(self, x           : ArrayLike,
+    def plot(self, x           : ArrayLike | Any,
                    y           : ArrayLike | None = None,
                    z           : ArrayLike | None = None,
                    name        : str | None = None,
@@ -114,7 +114,7 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def scatter(self, x           : ArrayLike,
+    def scatter(self, x           : ArrayLike | Any,
                       y           : ArrayLike | None = None,
                       z           : ArrayLike | None = None,
                       name        : str | None = None,
@@ -161,9 +161,9 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def surface3d(self, x            : ArrayLike,
-                        y            : ArrayLike,
-                        z            : ArrayLike,
+    def surface3d(self, x            : ArrayLike | Any,
+                        y            : ArrayLike | None = None,
+                        z            : ArrayLike | None = None,
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
