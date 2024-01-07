@@ -3,9 +3,11 @@ from __future__ import annotations
 import numpy as np
 from numpy import ndarray
 from numpy.typing import ArrayLike
+from typing import Any
 
 import uplot.color as ucolor
 import uplot.utool as utool
+import uplot.plugin as plugin
 
 from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
 from uplot.engine.MatplotEngine import MatplotEngine
@@ -36,9 +38,9 @@ class MatplotFigure(IFigure):
         # https://matplotlib.org/stable/users/explain/customizing.html
         with engine.plt.style.context(DEFAULT.style):
             self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
-            # Constrained layout automatically adjusts subplots so that decorations like tick labels,
+            # constrained layout automatically adjusts subplots so that decorations like tick labels,
             # legends, and colorbars do not overlap, while still preserving the logical layout requested by the user.
-            # Constrained layout is similar to Tight layout, but is substantially more flexible.
+            # constrained layout is similar to Tight layout, but is substantially more flexible.
             # https://matplotlib.org/stable/users/explain/axes/constrainedlayout_guide.html
             self._fig.set_figwidth(width / engine.SHOWING_DPI)
             self._fig.set_figheight(aspect_ratio*(width / engine.SHOWING_DPI))
@@ -58,6 +60,19 @@ class MatplotFigure(IFigure):
                    legend_group: str | None = None,
                    **kwargs) -> IFigure:
         from uplot.engine.matplot.plot import plot_line_marker
+
+        # check if x is a custom object and a plugin is available
+        if plugin.plot(plot_method=self.plot,
+                       x=x, y=y, z=z,
+                       name=name,
+                       color=color,
+                       line_style=line_style,
+                       marker_style=marker_style,
+                       marker_size=marker_size,
+                       opacity=opacity,
+                       legend_group=legend_group,
+                       **kwargs):
+            return self
 
         # get or init axis
         axis = self._init_axis(is_3d=z is not None)
@@ -89,6 +104,18 @@ class MatplotFigure(IFigure):
                       **kwargs) -> IFigure:
         from uplot.engine.matplot.plot import plot_line_marker
 
+        # check if x is a custom object and a plugin is available
+        if plugin.plot(plot_method=self.scatter,
+                       x=x, y=y, z=z,
+                       name=name,
+                       color=color,
+                       marker_style=marker_style,
+                       marker_size=marker_size,
+                       opacity=opacity,
+                       legend_group=legend_group,
+                       **kwargs):
+            return self
+
         # get or init axis
         axis = self._init_axis(is_3d=z is not None)
 
@@ -107,9 +134,9 @@ class MatplotFigure(IFigure):
                          **kwargs)
         return self
 
-    def surface3d(self, x            : ArrayLike,
-                        y            : ArrayLike,
-                        z            : ArrayLike,
+    def surface3d(self, x            : ArrayLike | Any,
+                        y            : ArrayLike | None = None,
+                        z            : ArrayLike | None = None,
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
@@ -118,6 +145,19 @@ class MatplotFigure(IFigure):
                         interpolation_range: int = 100,
                         legend_group : str | None = None,
                         **kwargs) -> IFigure:
+        # check if x is a custom object and a plugin is available
+        if plugin.plot(plot_method=self.surface3d,
+                       x=x, y=y, z=z,
+                       name=name,
+                       show_colormap=show_colormap,
+                       colormap=colormap,
+                       opacity=opacity,
+                       interpolation=interpolation,
+                       interpolation_range=interpolation_range,
+                       legend_group=legend_group,
+                       **kwargs):
+            return self
+
         x = np.asarray(x)
         y = np.asarray(y)
         z = np.asarray(z)
@@ -215,7 +255,7 @@ class MatplotFigure(IFigure):
             # "outside right upper" works correctly with "constrained" or "compressed" layout only
             self._fig.legend(handler_map=handler_map).set(loc=loc, **kwargs)
         else:
-            # axes.legend() is better for an other options because legend will be inside graph
+            # axes.legend() is better for an other options because legend will be inside the graph
             self._fig.gca().legend(handler_map=handler_map).set(loc=loc, **kwargs)
 
         return self
@@ -287,10 +327,10 @@ class MatplotFigure(IFigure):
 
     def show(self, block: bool=True):
         if self.engine.is_ipython_backend:
-            # There are two ways for consistent figure visualization in jupyter
+            # there are two ways for consistent figure visualization in jupyter
             #    1. call `%matplotlib ...` at the notebook start.
             #    2. always use `plt.show()`.
-            # It's easy to forget about (1) so `plt.show()` is more reliable
+            # it's easy to forget about (1) so `plt.show()` is more reliable
             # but not the best, probably (because it will show all figures).
             self.engine.plt.show()
             return
