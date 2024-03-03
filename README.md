@@ -160,7 +160,7 @@ fig.show()
 
 - `Python` ≥ 3.10 
 - `numpy` ≥ 1.21
-- `pillow` ≥ 8.3
+- `pillow` ≥ 10.2
 
 ### Optional
 - `matplotlib` ≥ 3.7
