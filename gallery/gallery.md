@@ -172,3 +172,5 @@ fig = uplot.figure()
 fig.plot(car_crashes[['total', 'speeding', 'alcohol', 'no_previous']])
 fig.show()
 ```
+
+<img src='asset/plugin.png' width='700'>
