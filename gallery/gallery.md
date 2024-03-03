@@ -115,3 +115,60 @@ fig.show()
 ```
 
 <img src='asset/surface3d.png' width='700'>
+
+# Legend
+
+```python
+x = np.arange(8)
+y = np.arange(8)
+
+fig = uplot.figure('plotly')
+fig.scatter(x, y, marker_style='.', marker_size=1, name='data #1', legend_group='Small')
+fig.scatter(x, y+1, marker_style='s', marker_size=6, name='data #2', legend_group='Small')
+fig.scatter(x, y-1, marker_style='v', marker_size=10, name='data #3', legend_group='Small')
+fig.scatter(x, y+3, marker_style='x', marker_size=25, name='data #4', legend_group='Big')
+fig.plot(x, y-3, marker_style='o', marker_size=25, name='data #5', legend_group='Big')
+fig.legend(True, equal_marker_size=True)
+fig.show()
+```
+
+<img src='asset/legend.png' width='700'>
+
+# Plugin
+
+`DataFrame` plugin:
+```python
+import pandas as pd
+import uplot.plugin as plugin
+
+
+class DataFramePlugin(plugin.IPlotPlugin):
+    """
+    DataFrame minimalistic plugin (only data extraction)
+    """
+
+    def extract_data(self, obj: pd.DataFrame) -> list[plugin.PlotData]:
+        data = []
+        for name in obj.columns:
+            if not np.issubdtype(obj.dtypes[name], np.number): continue
+            y = obj[name].values
+            x = np.arange(len(y))
+            name = name.replace('_', ' ').title()
+            data.append(plugin.PlotData(x=x, y=y, name=name))
+        return data
+
+
+# register plugin
+plugin.register(pd.DataFrame, handler=DataFramePlugin())
+```
+
+`DataFrame` visualization:
+```python
+car_crashes = pd.read_csv(
+    'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/car_crashes.csv'
+)
+
+fig = uplot.figure()
+fig.plot(car_crashes[['total', 'speeding', 'alcohol', 'no_previous']])
+fig.show()
+```
