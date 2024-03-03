@@ -80,7 +80,8 @@ class IFigure(Protocol):
         Parameters
         ----------
         x, y, z : ArrayLike
-            1D data arrays of the same size. The x could be any object supported by a plugin.
+            1D data arrays of the same size.
+            The x could be any object supported by a plugin.
 
         name : str or None, optional
             The plot name, which will appear as the legend item.
@@ -101,7 +102,8 @@ class IFigure(Protocol):
             Sets the opacity of the line(s).
 
         legend_group : str or None, optional
-            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+            Sets the legend group for this plot.
+            Plots from the same group will be combined in the legend.
 
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
