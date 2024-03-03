@@ -126,7 +126,6 @@ pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main
 
 ### Plugin
 
----
 The plugin system allows extending `uplot` for visualizing custom objects.   
 For example, the `DataFrame` plugin enables this code:
 ```python
@@ -169,7 +168,6 @@ plugin.register(pd.DataFrame, handler=DataFramePlugin())
 
 ### Engine
 
----
 Adding a new plotting library is straightforward. Implement two interfaces `IPlotEngine` and `IFigure`:
 ```python
 import uplot
