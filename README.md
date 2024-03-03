@@ -75,7 +75,7 @@ fig.show()
 </tr>
 </table>
 
-> See [gallery](gallery/gallery.md) for more examples.
+> :bulb: See [gallery](gallery/gallery.md) for more examples.
 
 ## Install
 
@@ -92,15 +92,7 @@ If you need only `matplotlib` support:
 ```bash
 pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main"
 ```
-> Replace `[matplotlib]` with `[plotly5]` for plotly-only installation 
-
-
-## Verified Versions
-
-|                      |                                                Standalone |                                    JupyterLab<br>`4.0.6` |                           Jupyter<br/>Notebook<br/>`7.0` |                     IDE |
-|:--------------------:|----------------------------------------------------------:|---------------------------------------------------------:|---------------------------------------------------------:|------------------------:|
-| matplotlib<br/>`3.7` |      `gui` :green_circle:<br/>`save image` :green_circle: | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `vscode` :green_circle: |
-|  plotly<br/>`5.16`   | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: | `vscode` :green_circle: |
+> :bulb: Replace `[matplotlib]` with `[plotly5]` for plotly-only installation 
 
 
 ## Plotting Libs - Pros & Cons
@@ -131,8 +123,54 @@ pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main
 
 ## Extending
 
-Adding a new engine is straightforward. Implement two interfaces `IPlotEngine` and `IFigure`:
+
+### Plugin
+
+The plugin system allows extending `uplot` for visualizing custom objects.   
+For example, the `DataFrame` plugin enables this code:
 ```python
+import uplot
+import pandas as pd
+
+car_crashes = pd.read_csv(
+    'https://raw.githubusercontent.com/mwaskom/seaborn-data/master/car_crashes.csv'
+)
+
+fig = uplot.figure()
+fig.plot(car_crashes[['total', 'speeding', 'alcohol', 'no_previous']])
+fig.show()
+```
+<img src='gallery/asset/plugin.png' width='480'>
+
+To implement the plugin, you can follow this structure:
+```python
+import numpy as np
+import pandas as pd
+
+import uplot.plugin as plugin
+
+
+class DataFramePlugin(plugin.IPlotPlugin):
+
+    def extract_data(self, obj: pd.DataFrame) -> list[plugin.PlotData]:
+        data = []
+        for name in obj.columns:
+            if not np.issubdtype(obj.dtypes[name], np.number): continue
+            y = obj[name].values
+            x = np.arange(len(y))
+            data.append(plugin.PlotData(x=x, y=y, name=name.replace('_', ' ').title()))
+        return data
+
+plugin.register(pd.DataFrame, handler=DataFramePlugin())
+```
+
+> :bulb: Check `test/plugin.py` for a more advanced plugin example. 
+
+### Engine
+
+Adding a new plotting library is straightforward. Implement two interfaces `IPlotEngine` and `IFigure`:
+```python
+import uplot
 from uplot import IPlotEngine, IFigure
 
 class MyEngine(IPlotEngine):
@@ -143,24 +181,33 @@ class MyFigure(IFigure):
     def plot(self, ...): ...
     def scatter(self, ...): ...
     ...
+
+# register the engine
+uplot.engine.register(MyEngine(), name='test') 
 ```
 Then use it in the regular way:
 ```python
 import uplot
 
-my_engine = MyEngine(...)
-
-
-fig = uplot.figure(engine=my_engine)
+fig = uplot.figure(engine='test')
 fig.plot(...)
 fig.show()
 ```
+
+## Verified Versions
+
+|                      |                                                Standalone |                                    JupyterLab<br>`4.0.6` |                           Jupyter<br/>Notebook<br/>`7.0` |                     IDE |
+|:--------------------:|----------------------------------------------------------:|---------------------------------------------------------:|---------------------------------------------------------:|------------------------:|
+| matplotlib<br/>`3.7` |      `gui` :green_circle:<br/>`save image` :green_circle: | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `vscode` :green_circle: |
+|  plotly<br/>`5.16`   | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: | `vscode` :green_circle: |
+
+
 
 ## Dependencies
 
 - `Python` ≥ 3.10 
 - `numpy` ≥ 1.21
-- `pillow` ≥ 8.3
+- `pillow` ≥ 10.2
 
 ### Optional
 - `matplotlib` ≥ 3.7

@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from numpy import ndarray
-from typing import Protocol, runtime_checkable
+from typing import Any, Protocol, runtime_checkable
 from abc import abstractmethod as abstract
 from numpy.typing import ArrayLike
 
@@ -63,7 +63,7 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def plot(self, x           : ArrayLike,
+    def plot(self, x           : ArrayLike | Any,
                    y           : ArrayLike | None = None,
                    z           : ArrayLike | None = None,
                    name        : str | None = None,
@@ -81,6 +81,7 @@ class IFigure(Protocol):
         ----------
         x, y, z : ArrayLike
             1D data arrays of the same size.
+            The x could be any object supported by a plugin.
 
         name : str or None, optional
             The plot name, which will appear as the legend item.
@@ -101,7 +102,8 @@ class IFigure(Protocol):
             Sets the opacity of the line(s).
 
         legend_group : str or None, optional
-            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+            Sets the legend group for this plot.
+            Plots from the same group will be combined in the legend.
 
         kwargs : dict
             Other keyword arguments are forwarded to the underlying engine.
@@ -114,7 +116,7 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def scatter(self, x           : ArrayLike,
+    def scatter(self, x           : ArrayLike | Any,
                       y           : ArrayLike | None = None,
                       z           : ArrayLike | None = None,
                       name        : str | None = None,
@@ -130,7 +132,7 @@ class IFigure(Protocol):
         Parameters
         ----------
         x, y, z : ArrayLike
-            1D data arrays of the same size.
+            1D data arrays of the same size. The x could be any object supported by a plugin.
 
         name : str or None, optional
             The plot name, which will appear as the legend item.
@@ -161,9 +163,9 @@ class IFigure(Protocol):
         ...
 
     @abstract
-    def surface3d(self, x            : ArrayLike,
-                        y            : ArrayLike,
-                        z            : ArrayLike,
+    def surface3d(self, x            : ArrayLike | Any,
+                        y            : ArrayLike | None = None,
+                        z            : ArrayLike | None = None,
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
@@ -182,7 +184,7 @@ class IFigure(Protocol):
         Parameters
         ----------
         x, y, z : ArrayLike
-            Data values.
+            Data values. The x could be any object supported by a plugin.
 
         name : str or None, optional
             The plot name, which will appear as the legend item.

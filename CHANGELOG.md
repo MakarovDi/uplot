@@ -1,5 +1,14 @@
 # Changelog
 
+## `[v0.5.0]` - 03.02.2024
+
+#### Added
+* `[plugin]` plugin system to support custom objects plotting
+
+#### Changed
+* `[interface]` API documentation improved
+
+
 ## `[v0.4.0]` - 21.12.2023
 
 #### Added

@@ -2,7 +2,7 @@
 
 ## Next Release
 
-- [ ] **API**: plugin system for plotting of a custom object: `fig.visualize(obj)`
+- [ ] **API**: `fig.hline()` and `fig.vline()`
 
 
 ## Backlog
@@ -11,6 +11,7 @@
 - [ ] `README` Add name, description and shortcuts for all engines
 - [ ] **API**: `fig.bar(...)` 
 - [ ] `README` API description: supported functions per engine
+- [ ] `README` example for non-gui (file) plotting
 - [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
 - [ ] **API**: `fig.click_event(...)`
 - [ ] **API**: `fig.hover_text(...)` 
@@ -22,6 +23,7 @@
 
 ## Done
 
+- [x] **API**: plugin system for plotting of a custom object
 - [x] **API**: `fig.legend_group(...)` or parameter `legend_group`
 - [x] **API**: return **IFigure** if possible to allow chaining
 - [x] Fixed size of the legend items for **matplotlib**

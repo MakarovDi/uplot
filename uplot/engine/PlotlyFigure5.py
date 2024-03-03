@@ -6,6 +6,7 @@ from numpy.typing import ArrayLike
 
 import uplot.color as ucolor
 import uplot.utool as utool
+import uplot.plugin as plugin
 
 from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
@@ -50,6 +51,19 @@ class PlotlyFigure5(IFigure):
                    **kwargs) -> IFigure:
         from uplot.engine.plotly.plot import plot_line_marker
 
+        # check if x is a custom object and a plugin is available
+        if plugin.plot(plot_method=self.plot,
+                       x=x, y=y, z=z,
+                       name=name,
+                       color=color,
+                       line_style=line_style,
+                       marker_style=marker_style,
+                       marker_size=marker_size,
+                       opacity=opacity,
+                       legend_group=legend_group,
+                       **kwargs):
+            return self
+
         self._is_3d = z is not None
 
         if color is None:
@@ -83,6 +97,18 @@ class PlotlyFigure5(IFigure):
                       **kwargs) -> IFigure:
         from uplot.engine.plotly.plot import plot_line_marker
 
+        # check if x is a custom object and a plugin is available
+        if plugin.plot(plot_method=self.scatter,
+                       x=x, y=y, z=z,
+                       name=name,
+                       color=color,
+                       marker_style=marker_style,
+                       marker_size=marker_size,
+                       opacity=opacity,
+                       legend_group=legend_group,
+                       **kwargs):
+            return self
+
         self._is_3d = z is not None
 
         if color is None:
@@ -115,6 +141,19 @@ class PlotlyFigure5(IFigure):
                         interpolation_range: int = 100,
                         legend_group : str | None = None,
                         **kwargs) -> IFigure:
+        # check if x is a custom object and a plugin is available
+        if plugin.plot(plot_method=self.surface3d,
+                       x=x, y=y, z=z,
+                       name=name,
+                       show_colormap=show_colormap,
+                       colormap=colormap,
+                       opacity=opacity,
+                       interpolation=interpolation,
+                       interpolation_range=interpolation_range,
+                       legend_group=legend_group,
+                       **kwargs):
+            return self
+
         x = np.asarray(x)
         y = np.asarray(y)
         z = np.asarray(z)
