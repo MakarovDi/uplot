@@ -7,6 +7,9 @@ import uplot.plugin as plugin
 
 
 class PlotData(NamedTuple):
+    """
+    Structure to hold plotting data.
+    """
     x: ArrayLike
     y: ArrayLike
     z: ArrayLike | None = None
@@ -14,6 +17,9 @@ class PlotData(NamedTuple):
 
 
 class PlotType(StrEnum):
+    """
+    Enumeration of plot types.
+    """
     PLOT = 'plot'
     SCATTER = 'scatter'
     SURFACE3D = 'surface3d'
@@ -21,20 +27,25 @@ class PlotType(StrEnum):
 
 class IPlotPlugin:
     """
-
+    Plugin interface to support plotting of custom objects
     """
 
     @abstract
     def extract_data(self, obj: Any) -> list[PlotData]:
         """
+        Extract plotting data (x,y,z) from the object.
+        This function must be implemented for minimal object plotting support.
+        To add more advanced support (style adjustment), implement `update_style` function.
 
         Parameters
         ----------
-        obj
+        obj:
+            The object for data extraction.
 
         Returns
         -------
-
+        list[PlotData]
+            List of extracted data from the object.
         """
         pass
 
@@ -45,14 +56,30 @@ class IPlotPlugin:
                            data_name : str | None,
                            **kwargs) -> dict:
         """
+        Fine-tunes plotting of the custom object.
 
         Parameters
         ----------
-        kwargs
+        plot_type:
+            Plotting type.
+
+        data_index:
+            Index of the data in list[PlotData], see extract_data.
+
+        data_count:
+            Size of list[PlotData], see extract_data.
+
+        data_name:
+            Name of the data.
+
+        kwargs:
+            Current plotting style.
+            Style parameters depend on plot_type.
 
         Returns
         -------
-
+        dict
+            Updated style (kwargs).
         """
         if data_name is not None:
             kwargs['name'] = data_name
@@ -66,10 +93,10 @@ def plot(plot_method : callable,
          z           : ArrayLike | None = None,
          **kwargs) -> bool:
     """
-    Returns True is x is recognized as a custom type with associated plugin.
-    In this case, the data will be automatically extracted from the object and visualized,
-    no need for further actions.
-    Otherwise, False and x, y, z are regular arrays.
+    Returns True if x is recognized as a custom type with an associated plugin.
+    In this case, the data will be automatically extracted from the object and visualized.
+    No further actions are needed.
+    Otherwise, returns False, and x, y, z are regular arrays.
     """
     # check if x is a custom object or regular arrays
     x_type = type(x)
