@@ -80,7 +80,7 @@ class IFigure(Protocol):
         Parameters
         ----------
         x, y, z : ArrayLike
-            1D data arrays of the same size.
+            1D data arrays of the same size. The x could be any object supported by a plugin.
 
         name : str or None, optional
             The plot name, which will appear as the legend item.
@@ -130,7 +130,7 @@ class IFigure(Protocol):
         Parameters
         ----------
         x, y, z : ArrayLike
-            1D data arrays of the same size.
+            1D data arrays of the same size. The x could be any object supported by a plugin.
 
         name : str or None, optional
             The plot name, which will appear as the legend item.
@@ -182,7 +182,7 @@ class IFigure(Protocol):
         Parameters
         ----------
         x, y, z : ArrayLike
-            Data values.
+            Data values. The x could be any object supported by a plugin.
 
         name : str or None, optional
             The plot name, which will appear as the legend item.
