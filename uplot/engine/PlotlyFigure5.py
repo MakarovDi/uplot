@@ -187,7 +187,6 @@ class PlotlyFigure5(IFigure):
                          legend_group=legend_group,
                          **kwargs)
 
-
     def surface3d(self, x            : ArrayLike,
                         y            : ArrayLike,
                         z            : ArrayLike,
