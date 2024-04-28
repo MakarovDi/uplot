@@ -163,6 +163,102 @@ class IFigure(Protocol):
         ...
 
     @abstract
+    def hline(self, y           : float,
+                    x_min       : float | None = None,
+                    x_max       : float | None = None,
+                    name        : str | None = None,
+                    color       : str | None = None,
+                    line_style  : LineStyle | None = None,
+                    opacity     : float = 1.0,
+                    legend_group: str | None = None,
+                    **kwargs) -> IFigure:
+        """
+        Plot horizontal line at y.
+        It supports 2d figures only.
+
+        Parameters
+        ----------
+        y : float
+            y coordinate where to plot the line.
+
+        x_min, x_max : float or None, optional
+            x range limit for the line, if None it will be estimated automatically.
+
+        name : str or None, optional
+            The plot name, which will appear as the legend item.
+
+        color : str or None, optional
+            The color of the line.
+
+        line_style : LineStyle or None, optional
+            The line style.
+
+        opacity : float, optional
+            Sets the opacity of the line(s).
+
+        legend_group : str or None, optional
+            Sets the legend group for this plot.
+            Plots from the same group will be combined in the legend.
+
+        kwargs : dict
+            Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
+        """
+        ...
+
+    @abstract
+    def vline(self, x           : float,
+                    y_min       : float | None = None,
+                    y_max       : float | None = None,
+                    name        : str | None = None,
+                    color       : str | None = None,
+                    line_style  : LineStyle | None = None,
+                    opacity     : float = 1.0,
+                    legend_group: str | None = None,
+                    **kwargs) -> IFigure:
+        """
+        Plot vertical line at x.
+        It supports 2d figures only.
+
+        Parameters
+        ----------
+        x : float
+            x coordinate where to plot the line.
+
+        y_min, y_max : float or None, optional
+            y range limit for the line, if None it will be estimated automatically.
+
+        name : str or None, optional
+            The plot name, which will appear as the legend item.
+
+        color : str or None, optional
+            The color of the line.
+
+        line_style : LineStyle or None, optional
+            The line style.
+
+        opacity : float, optional
+            Sets the opacity of the line(s).
+
+        legend_group : str or None, optional
+            Sets the legend group for this plot.
+            Plots from the same group will be combined in the legend.
+
+        kwargs : dict
+            Other keyword arguments are forwarded to the underlying engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
+        """
+        ...
+
+    @abstract
     def surface3d(self, x            : ArrayLike | Any,
                         y            : ArrayLike | None = None,
                         z            : ArrayLike | None = None,
