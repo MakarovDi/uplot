@@ -77,6 +77,28 @@ fig.show()
 <img src='asset/scatter.png' width='700'>
 
 
+### hline & vline
+
+```python
+import numpy as np
+import uplot
+
+fig = uplot.figure('mpl')
+fig.plot(x, y, name='cos')
+
+fig.hline(y=0.5, x_min=10, x_max=15, line_style='--')
+fig.hline(y=-0.3, line_style='--')
+
+fig.vline(x=np.pi+np.pi/2, y_min=-0.5, y_max=0.5, line_style='--')
+fig.vline(x=4*np.pi, line_style='--')
+
+fig.xlabel('X Axis')
+fig.ylabel('Y Axis')
+fig.show()
+```
+
+<img src='asset/hvline.png' width='700'>
+
 ### 3d
 
 ```python
