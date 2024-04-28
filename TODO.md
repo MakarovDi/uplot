@@ -2,7 +2,7 @@
 
 ## Next Release
 
-- [ ] **API**: `fig.hline()` and `fig.vline()`
+- [x] **API**: `fig.hline()` and `fig.vline()`
 
 
 ## Backlog
@@ -14,7 +14,6 @@
 - [ ] `README` example for non-gui (file) plotting
 - [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
 - [ ] **API**: `fig.click_event(...)`
-- [ ] **API**: `fig.hover_text(...)` 
 - [ ] Unified styling
   - [x] Engine independent config: `uplot.DEFAULT`
 - [ ] TeX support

@@ -130,6 +130,63 @@ class PlotlyFigure5(IFigure):
                          **kwargs)
         return self
 
+    def hline(self, y           : float,
+                    x_min       : float | None = None,
+                    x_max       : float | None = None,
+                    name        : str | None = None,
+                    color       : str | None = None,
+                    line_style  : LineStyle | None = None,
+                    opacity     : float = 1.0,
+                    legend_group: str | None = None,
+                    **kwargs) -> IFigure:
+
+        if self.is_3d:
+            raise RuntimeError('3D figure is not supported')
+
+        if x_min is None:
+            from uplot.engine.plotly.axis_range import estimate_axis_range
+            x_min = estimate_axis_range(self._fig, axis='x', mode='min')
+
+        if x_max is None:
+            from uplot.engine.plotly.axis_range import estimate_axis_range
+            x_max = estimate_axis_range(self._fig, axis='x', mode='max')
+
+        return self.plot([x_min, x_max], [y, y],
+                         color=color,
+                         name=name,
+                         line_style=line_style,
+                         opacity=opacity,
+                         legend_group=legend_group,
+                         **kwargs)
+
+    def vline(self, x           : float,
+                    y_min       : float | None = None,
+                    y_max       : float | None = None,
+                    name        : str | None = None,
+                    color       : str | None = None,
+                    line_style  : LineStyle | None = None,
+                    opacity     : float = 1.0,
+                    legend_group: str | None = None,
+                    **kwargs) -> IFigure:
+        if self.is_3d:
+            raise RuntimeError('3D figure is not supported')
+
+        if y_min is None:
+            from uplot.engine.plotly.axis_range import estimate_axis_range
+            y_min = estimate_axis_range(self._fig, axis='y', mode='min')
+
+        if y_max is None:
+            from uplot.engine.plotly.axis_range import estimate_axis_range
+            y_max = estimate_axis_range(self._fig, axis='y', mode='max')
+
+        return self.plot([x, x], [y_min, y_max],
+                         color=color,
+                         name=name,
+                         line_style=line_style,
+                         opacity=opacity,
+                         legend_group=legend_group,
+                         **kwargs)
+
     def surface3d(self, x            : ArrayLike,
                         y            : ArrayLike,
                         z            : ArrayLike,
@@ -281,11 +338,12 @@ class PlotlyFigure5(IFigure):
 
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None) -> IFigure:
-        from uplot.engine.plotly.axis_range import estimate_axis_range
-
         if min_value is None:
+            from uplot.engine.plotly.axis_range import estimate_axis_range
             min_value = estimate_axis_range(self._fig, axis='y', mode='min')
+
         if max_value is None:
+            from uplot.engine.plotly.axis_range import estimate_axis_range
             max_value = estimate_axis_range(self._fig, axis='y', mode='max')
 
         if self.is_3d:
@@ -299,11 +357,12 @@ class PlotlyFigure5(IFigure):
         if not self.is_3d:
             return self
 
-        from uplot.engine.plotly.axis_range import estimate_axis_range
-
         if min_value is None:
+            from uplot.engine.plotly.axis_range import estimate_axis_range
             min_value = estimate_axis_range(self._fig, axis='z', mode='min')
+
         if max_value is None:
+            from uplot.engine.plotly.axis_range import estimate_axis_range
             max_value = estimate_axis_range(self._fig, axis='z', mode='max')
 
         self._fig.update_layout(scene=dict(zaxis=dict(range=[min_value, max_value])))

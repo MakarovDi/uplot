@@ -81,7 +81,7 @@ fig.show()
 
 Recent stable version (without any plotting library):
 ```bash
-pip install "git+https://github.com/makarovdi/uplot.git@main"
+pip install "uplot @ git+https://github.com/makarovdi/uplot.git@main"
 ```
 To automatically install all optional dependencies (matplotlib, plotly, ...):
 ```bash
@@ -196,7 +196,7 @@ fig.show()
 
 ## Verified Versions
 
-|                      |                                                Standalone |                                    JupyterLab<br>`4.0.6` |                           Jupyter<br/>Notebook<br/>`7.0` |                     IDE |
+|                      |                                                Standalone |                           JupyterLab<br>`v4.0.6-v4.1.8 ` |                           Jupyter<br/>Notebook<br/>`7.0` |                     IDE |
 |:--------------------:|----------------------------------------------------------:|---------------------------------------------------------:|---------------------------------------------------------:|------------------------:|
 | matplotlib<br/>`3.7` |      `gui` :green_circle:<br/>`save image` :green_circle: | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `vscode` :green_circle: |
 |  plotly<br/>`5.16`   | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: | `vscode` :green_circle: |

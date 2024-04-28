@@ -134,6 +134,59 @@ class MatplotFigure(IFigure):
                          **kwargs)
         return self
 
+    def hline(self, y           : float,
+                    x_min       : float | None = None,
+                    x_max       : float | None = None,
+                    name        : str | None = None,
+                    color       : str | None = None,
+                    line_style  : LineStyle | None = None,
+                    opacity     : float = 1.0,
+                    legend_group: str | None = None,
+                    **kwargs) -> IFigure:
+
+        if self.is_3d:
+            raise RuntimeError('3D figure is not supported')
+
+        if x_min is None:
+            x_min, _ = self._axis.get_xlim()
+
+        if x_max is None:
+            _, x_max = self._axis.get_xlim()
+
+        return self.plot([x_min, x_max], [y, y],
+                         color=color,
+                         name=name,
+                         line_style=line_style,
+                         opacity=opacity,
+                         legend_group=legend_group,
+                         **kwargs)
+
+    def vline(self, x           : float,
+                    y_min       : float | None = None,
+                    y_max       : float | None = None,
+                    name        : str | None = None,
+                    color       : str | None = None,
+                    line_style  : LineStyle | None = None,
+                    opacity     : float = 1.0,
+                    legend_group: str | None = None,
+                    **kwargs) -> IFigure:
+        if self.is_3d:
+            raise RuntimeError('3D figure is not supported')
+
+        if y_min is None:
+            y_min, _ = self._axis.get_ylim()
+
+        if y_max is None:
+            _, y_max = self._axis.get_ylim()
+
+        return self.plot([x, x], [y_min, y_max],
+                         color=color,
+                         name=name,
+                         line_style=line_style,
+                         opacity=opacity,
+                         legend_group=legend_group,
+                         **kwargs)
+
     def surface3d(self, x            : ArrayLike | Any,
                         y            : ArrayLike | None = None,
                         z            : ArrayLike | None = None,
