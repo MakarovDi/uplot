@@ -1,5 +1,11 @@
 # Changelog
 
+## `[v0.6.0]` - 28.04.2024
+
+#### Added
+* `[interface] & [engine]` functions `hline()`, `vline()`
+
+
 ## `[v0.5.0]` - 03.02.2024
 
 #### Added
