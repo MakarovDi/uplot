@@ -7,7 +7,9 @@
 * `[engine.plotly5]` signature for `surface3d` fixed
 
 #### Changed
-* `[engine]` extra aliases for non-gui matplotlib: `mpl-io`, `mpl-file`
+
+* `[engine]` Added extra aliases for non-GUI Matplotlib: `mpl-io`, `mpl-file`
+* `[plugin]` Added `force` parameter for `register()` to allow plugin replacement
 
 
 ## `[v0.6.0]` - 28.04.2024
