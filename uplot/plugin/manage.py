@@ -31,6 +31,9 @@ def register(t: type, handler: IPlotPlugin, force: bool = False) -> bool:
     bool
         True if registration is successful, False otherwise.
     """
+    if isinstance(handler, type):
+        raise RuntimeError('handler must be instance not a type')
+
     if is_registered(t) and not force:
         # already registered
         return False

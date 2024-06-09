@@ -1,5 +1,6 @@
 from abc import abstractmethod as abstract
-from typing import Any, NamedTuple
+from typing import Any, NamedTuple, Sequence
+from types import GenericAlias
 from numpy.typing import ArrayLike
 
 from uplot.utool import StrEnum
@@ -99,7 +100,7 @@ def plot(plot_method : callable,
     Otherwise, returns False, and x, y, z are regular arrays.
     """
     # check if x is a custom object or regular arrays
-    x_type = type(x)
+    x_type = get_type(x)
     if y is not None or z is not None or not plugin.is_registered(x_type):
         return False
 
@@ -118,3 +119,34 @@ def plot(plot_method : callable,
         plot_method(x=data.x, y=data.y, z=data.z, **params)
 
     return True
+
+
+def get_type(obj: Any) -> type | GenericAlias:
+    """
+    Extended version of the type() function.
+
+    This function detects and returns the type of the given object.
+    It can also identify GenericAlias for homogeneous arrays, such as list[int] or tuple[float, ...].
+    """
+    obj_type = type(obj)
+
+    if obj_type == str:
+        return str
+
+    if not issubclass(obj_type, Sequence) or len(obj) == 0:
+        return obj_type
+
+    item0_type = type(obj[0])
+    is_homogeneous = all([type(i) == item0_type for i in obj])
+
+    if not is_homogeneous:
+        return obj_type
+
+    if obj_type == list:
+        # homogeneous list
+        return GenericAlias(list, item0_type)
+    elif obj_type == tuple:
+        # homogeneous tuple
+        return GenericAlias(tuple, (item0_type, ...))
+    else:
+        raise NotImplementedError(obj_type)
