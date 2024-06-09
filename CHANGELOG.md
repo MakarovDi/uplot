@@ -4,7 +4,7 @@
 
 #### Fixed
 * `[engine]` fixed returning `IFigure` for `reset_color()`
-
+* `[engine.plotly5]` signature for `surface3d` fixed
 
 ## `[v0.6.0]` - 28.04.2024
 

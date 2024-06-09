@@ -188,8 +188,8 @@ class PlotlyFigure5(IFigure):
                          **kwargs)
 
     def surface3d(self, x            : ArrayLike,
-                        y            : ArrayLike,
-                        z            : ArrayLike,
+                        y            : ArrayLike = None,
+                        z            : ArrayLike = None,
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
