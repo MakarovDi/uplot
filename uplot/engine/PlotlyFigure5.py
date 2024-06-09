@@ -188,8 +188,8 @@ class PlotlyFigure5(IFigure):
                          **kwargs)
 
     def surface3d(self, x            : ArrayLike,
-                        y            : ArrayLike,
-                        z            : ArrayLike,
+                        y            : ArrayLike = None,
+                        z            : ArrayLike = None,
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
@@ -375,8 +375,9 @@ class PlotlyFigure5(IFigure):
     def scroll_color(self, count: int=1) -> str:
         return self._color_scroller.scroll_color(count)
 
-    def reset_color(self):
+    def reset_color(self) -> IFigure:
         self._color_scroller.reset()
+        return self
 
     def axis_aspect(self, mode: AspectMode) -> IFigure:
         if self.is_3d:

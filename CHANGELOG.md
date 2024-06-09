@@ -1,5 +1,23 @@
 # Changelog
 
+## `[v0.6.1]` - 09.06.2024
+
+#### Fixed
+* `[engine]` fixed returning `IFigure` for `reset_color()`
+* `[engine.plotly5]` signature for `surface3d` fixed
+
+#### Changed
+* `[engine]` added extra aliases for non-GUI Matplotlib: `mpl-io`, `mpl-file`
+* `[plugin]` added `force` parameter for `register()` to allow plugin replacement
+* `[plugin]` plugin can be registered for homogeneous arrays like `list[T]` or `tuple[T, ...]`
+
+
+## `[v0.6.0]` - 28.04.2024
+
+#### Added
+* `[interface] & [engine]` functions `hline()`, `vline()`
+
+
 ## `[v0.5.0]` - 03.02.2024
 
 #### Added

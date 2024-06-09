@@ -9,11 +9,14 @@ if MatplotEngine.is_available():
     mpl_gui = MatplotEngine()
     register(engine=mpl_gui, name='matplotlib')
     register(engine=mpl_gui, name='mpl')
+
     # matplotlib without GUI (save to file only)
     mpl_no_gui = MatplotEngine(backend='agg')
     register(mpl_no_gui, name='matplotlib-nogui')
     register(mpl_no_gui, name='mpl-nogui')
     register(mpl_no_gui, name='mpl-ng')
+    register(mpl_no_gui, name='mpl-io')
+    register(mpl_no_gui, name='mpl-file')
 
 if PlotlyEngine5.is_available():
     plotly5 = PlotlyEngine5()
