@@ -1,5 +1,11 @@
 # Changelog
 
+## `[v0.6.1]` - 09.06.2024
+
+#### Fixed
+* `[engine]` fixed returning `IFigure` for `reset_color()`
+
+
 ## `[v0.6.0]` - 28.04.2024
 
 #### Added

@@ -352,8 +352,9 @@ class MatplotFigure(IFigure):
     def scroll_color(self, count: int=1) -> str:
         return self._color_scroller.scroll_color(count)
 
-    def reset_color(self):
+    def reset_color(self) -> IFigure:
         self._color_scroller.reset()
+        return self
 
     def axis_aspect(self, mode: AspectMode) -> IFigure:
         # https://stackoverflow.com/questions/8130823/set-matplotlib-3d-plot-aspect-ratio
