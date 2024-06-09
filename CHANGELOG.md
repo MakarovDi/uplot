@@ -6,6 +6,10 @@
 * `[engine]` fixed returning `IFigure` for `reset_color()`
 * `[engine.plotly5]` signature for `surface3d` fixed
 
+#### Changed
+* `[engine]` extra aliases for non-gui matplotlib: `mpl-io`, `mpl-file`
+
+
 ## `[v0.6.0]` - 28.04.2024
 
 #### Added
