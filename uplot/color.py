@@ -94,9 +94,9 @@ class ColorScroller:
     """
 
     DEFAULT_COLOR_LIST = (
-        name_to_hex('blue'),
         name_to_hex('orange'),
         name_to_hex('green'),
+        name_to_hex('blue'),
         name_to_hex('red'),
         name_to_hex('purple'),
         name_to_hex('brown'),

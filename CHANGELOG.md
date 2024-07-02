@@ -7,8 +7,8 @@
 
 #### Changed
 * numpy v2.0 support verified
+* `[color]` color order updated, the first three colors are orange, green and blue now ~ RGB
 * `[plugin]` new filed for PlotData: `group_name`
-
 
 
 ## `[v0.6.1]` - 09.06.2024
