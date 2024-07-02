@@ -206,7 +206,7 @@ fig.show()
 ## Dependencies
 
 - `Python` ≥ 3.10 
-- `numpy` ≥ 1.21
+- `numpy` ≥ 1.21 `v2.0 supported`
 - `pillow` ≥ 10.2
 
 ### Optional

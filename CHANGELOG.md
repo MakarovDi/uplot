@@ -1,5 +1,14 @@
 # Changelog
 
+## `[v0.6.2]` - ??.07.2024
+
+#### Fixed
+
+#### Changed
+* numpy v2.0 support verified
+
+
+
 ## `[v0.6.1]` - 09.06.2024
 
 #### Fixed
