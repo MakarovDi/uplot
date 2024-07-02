@@ -15,6 +15,7 @@ class PlotData(NamedTuple):
     y: ArrayLike
     z: ArrayLike | None = None
     name: str | None = None
+    group_name: str | None = None
 
 
 class PlotType(StrEnum):
@@ -55,6 +56,7 @@ class IPlotPlugin:
                            data_index: int,
                            data_count: int,
                            data_name : str | None,
+                           group_name: str | None,
                            **kwargs) -> dict:
         """
         Fine-tunes plotting of the custom object.
@@ -73,6 +75,9 @@ class IPlotPlugin:
         data_name:
             Name of the data.
 
+        group_name:
+            Name of the data group (interpretation depends on plugin).
+
         kwargs:
             Current plotting style.
             Style parameters depend on plot_type.
@@ -88,10 +93,10 @@ class IPlotPlugin:
         return kwargs
 
 
-def plot(plot_method : callable,
-         x           : ArrayLike | Any,
-         y           : ArrayLike | None = None,
-         z           : ArrayLike | None = None,
+def plot(plot_method: callable,
+         x          : ArrayLike | Any,
+         y          : ArrayLike | None = None,
+         z          : ArrayLike | None = None,
          **kwargs) -> bool:
     """
     Returns True if x is recognized as a custom type with an associated plugin.
@@ -115,6 +120,7 @@ def plot(plot_method : callable,
                                       data_index=i,
                                       data_count=len(data_list),
                                       data_name=data.name,
+                                      group_name=data.group_name,
                                       **kwargs)
         plot_method(x=data.x, y=data.y, z=data.z, **params)
 

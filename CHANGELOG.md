@@ -7,6 +7,7 @@
 
 #### Changed
 * numpy v2.0 support verified
+* `[plugin]` new filed for PlotData: `group_name`
 
 
 

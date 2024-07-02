@@ -50,6 +50,7 @@ class DataFramePluginAdvanced(plugin.IPlotPlugin):
                            data_index: int,
                            data_count: int,
                            data_name : str | None,
+                           group_name: str | None,
                            **kwargs) -> dict:
         name = kwargs.get('name', None)
         if name is not None:
