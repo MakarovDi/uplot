@@ -229,7 +229,7 @@ class MatplotFigure(IFigure):
 
         axis = self._init_axis(is_3d=True)
 
-        cmap = self.engine.mpl.cm.get_cmap(colormap.lower())
+        cmap = self.engine.mpl.colormaps[colormap.lower()]
 
         surf = axis.plot_surface(x, y, z,
                                  label=name,

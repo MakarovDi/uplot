@@ -24,15 +24,13 @@ import uplot
 x = np.linspace(0, np.pi*4, num=100)
 phi = np.pi/4
 
-fig = uplot.figure('plotly5')
+fig = uplot.figure('plotly')
 fig.plot(x, np.sin(x - 0*phi), name='#1')
 fig.plot(x, np.sin(x - 1*phi), name='#2')
 fig.plot(x, np.sin(x - 2*phi), name='#3')
 fig.plot(x, np.sin(x - 3*phi), name='#4')
-fig.xlabel('X')
-fig.ylabel('Y')
-fig.legend()
-fig.show()
+fig.xlabel('X').ylabel('Y')
+fig.legend().show()
 ```
 
 </td>
@@ -50,10 +48,8 @@ fig.plot(x, np.sin(x - 0*phi), name='#1')
 fig.plot(x, np.sin(x - 1*phi), name='#2')
 fig.plot(x, np.sin(x - 2*phi), name='#3')
 fig.plot(x, np.sin(x - 3*phi), name='#4')
-fig.xlabel('X')
-fig.ylabel('Y')
-fig.legend()
-fig.show()
+fig.xlabel('X').ylabel('Y')
+fig.legend().show()
 ```
 
 </td>
@@ -196,17 +192,17 @@ fig.show()
 
 ## Verified Versions
 
-|                      |                                                Standalone |                           JupyterLab<br>`v4.0.6-v4.1.8 ` |                           Jupyter<br/>Notebook<br/>`7.0` |                     IDE |
-|:--------------------:|----------------------------------------------------------:|---------------------------------------------------------:|---------------------------------------------------------:|------------------------:|
-| matplotlib<br/>`3.7` |      `gui` :green_circle:<br/>`save image` :green_circle: | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `vscode` :green_circle: |
-|  plotly<br/>`5.16`   | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: | `vscode` :green_circle: |
+|                          |                                                Standalone |                           JupyterLab<br>`v4.0.6-v4.2.3 ` |                       Jupyter<br/>Notebook<br/>`7.0-7.2` |
+|:------------------------:|----------------------------------------------------------:|---------------------------------------------------------:|---------------------------------------------------------:|
+| matplotlib<br/>`3.7-3.9` |      `gui` :green_circle:<br/>`save image` :green_circle: | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> |
+|  plotly<br/>`5.16-5.22`  | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: |
 
 
 
 ## Dependencies
 
 - `Python` ≥ 3.10 
-- `numpy` ≥ 1.21
+- `numpy` ≥ 1.21 `v2.0 supported`
 - `pillow` ≥ 10.2
 
 ### Optional

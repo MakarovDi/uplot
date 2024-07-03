@@ -1,5 +1,17 @@
 # Changelog
 
+## `[v0.6.2]` - 03.07.2024
+
+#### Fixed
+* `[engine.matplot]` update to v3.9: `get_cm -> colormaps`
+* `[engine.plotly5]` range estimation with considering `xlim/ylim`
+
+#### Changed
+* numpy v2.0 support verified
+* `[color]` color order updated, the first three colors are orange, green and blue now ~ RGB
+* `[plugin]` new filed for PlotData: `group_name`
+
+
 ## `[v0.6.1]` - 09.06.2024
 
 #### Fixed
