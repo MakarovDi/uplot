@@ -1,6 +1,6 @@
 # Changelog
 
-## `[v0.6.2]` - ??.07.2024
+## `[v0.6.2]` - 03.07.2024
 
 #### Fixed
 * `[engine.matplot]` update to v3.9: `get_cm -> colormaps`
