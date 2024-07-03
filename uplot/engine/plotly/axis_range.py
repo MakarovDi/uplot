@@ -7,29 +7,36 @@ def estimate_axis_range(figure,
                         mode: Literal['min', 'max']) -> float:
     """
     Setting only min or only max is not implemented in plotly,
-    so manual estimation of min/max is required.
+    so manual estimation of min/max is required:
 
-    https://github.com/plotly/plotly.js/issues/400
-    https://github.com/plotly/plotly.py/issues/3634
+        https://github.com/plotly/plotly.js/issues/400
+        https://github.com/plotly/plotly.py/issues/3634
     """
     if figure.data is None:
         raise RuntimeError('there is no any graph, use xlim/ylim after plotting or '
                            'specify both range_min and range_max')
-
-    get_axis_data = {
-        'x': lambda trace: trace.x,
-        'y': lambda trace: trace.y,
-        'z': lambda trace: trace.z,
-    }[axis]
 
     minmax_estimate = {
         'min': np.min,
         'max': np.max,
     }[mode]
 
-    minmax = []
+    # estimate min/max from data
+    data_minmax = []
     for trace_data in figure.data:
-        values = get_axis_data(trace_data)
-        minmax.append(minmax_estimate(values))
+        values = trace_data[axis]
+        data_minmax.append(minmax_estimate(values))
 
-    return minmax_estimate(minmax)
+    minmax = minmax_estimate(data_minmax)
+
+    # estimate min/max from range
+    axis = {
+        'x': 'xaxis',
+        'y': 'yaxis'
+    }[axis]
+
+    axis_range = figure.layout[axis]['range']
+    if axis_range is not None:
+        minmax = minmax_estimate([ minmax, *axis_range ])
+
+    return minmax
