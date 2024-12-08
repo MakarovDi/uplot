@@ -257,8 +257,8 @@ class PlotlyFigure5(IFigure):
 
         self._fig.add_trace(self.engine.go.Image(
             z=image,
-            zmax=utool.kwargs_extract(kwargs, name='zmax', default=[value_range]*4),
-            zmin=utool.kwargs_extract(kwargs, name='zmin', default=[0]*4),
+            zmax=kwargs.pop('zmax', [value_range]*4),
+            zmin=kwargs.pop('zmin', [0]*4),
             **kwargs,
         ))
 
@@ -281,9 +281,9 @@ class PlotlyFigure5(IFigure):
 
         self._fig.update_layout(legend=self.engine.go.layout.Legend(
             visible=show,
-            bgcolor=utool.kwargs_extract(kwargs, name='bgcolor', default='rgba(255,255,255,0.8)'),
-            itemsizing=utool.kwargs_extract(kwargs, name='itemsizing', default=itemsizing),
-            itemwidth=utool.kwargs_extract(kwargs, name='itemwidth', default=50),
+            bgcolor=kwargs.pop('bgcolor', 'rgba(255,255,255,0.8)'),
+            itemsizing=kwargs.pop('itemsizing', itemsizing),
+            itemwidth=kwargs.pop('itemwidth', 50),
             **kwargs,
         ))
         return self

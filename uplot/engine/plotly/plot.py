@@ -53,7 +53,7 @@ def plot_line_marker(figure      : Figure,
         name = ''
         show_legend = False
     else:
-        show_legend = utool.kwargs_extract(kwargs, name='showlegend', default=True)
+        show_legend = kwargs.pop('showlegend', True)
 
     if isinstance(color, str):
         color = ucolor.name_to_hex(color)
@@ -65,8 +65,8 @@ def plot_line_marker(figure      : Figure,
     line_style = LINE_STYLE_MAPPING[line_style]
     marker_style = MARKER_STYLE_MAPPING[marker_style]
 
-    line = utool.kwargs_extract(kwargs, name='line', default= {})
-    marker = utool.kwargs_extract(kwargs, name='marker', default= {})
+    line = kwargs.pop('line', {})
+    marker = kwargs.pop('marker', {})
 
     mode = 'lines' if marker_style is None else 'lines+markers'
     if line_style == ' ': # no lines = scatter mode
@@ -83,7 +83,7 @@ def plot_line_marker(figure      : Figure,
     marker['symbol'] = marker_style
     marker['size'] = marker_size
 
-    hoverlabel = utool.kwargs_extract(kwargs, name='hoverlabel', default= {})
+    hoverlabel = kwargs.pop('hoverlabel', {})
     hoverlabel.setdefault('namelength', -1)
 
     if z is None:

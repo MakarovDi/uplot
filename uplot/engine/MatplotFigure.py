@@ -311,7 +311,7 @@ class MatplotFigure(IFigure):
             return self
 
         # create legend
-        loc = utool.kwargs_extract(kwargs, name='loc', default='outside right upper')
+        loc = kwargs.pop('loc', 'outside right upper')
         if 'outside' in loc:
             # outside works only for the figure
             # "outside right upper" works correctly with "constrained" or "compressed" layout only
