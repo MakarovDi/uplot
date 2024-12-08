@@ -2,20 +2,21 @@
 
 ## Next Release
 
-- [ ] **API**: `fig.bar(...)` 
-- [ ] `README` example for non-gui (file) plotting
+- [ ] **API**: `fig.bar(...)`
+- [ ] **API**: switching log vs normal scale: `xscale()`, `yscale()`
+- [ ] `README` API description: supported functions per engine
 
 ## Backlog
 - [ ] **API**: `line_width` parameter for `fig.plot(...)`
 - [ ] **API**: `fig.legend`: param for the legend location
 - [ ] `README` Add name, description and shortcuts for all engines
-- [ ] `README` API description: supported functions per engine
+- [ ] `README` example for non-gui (file) plotting
 - [ ] **API**: `opacity: float` -> `opacity: float | list[float]`
 - [ ] **API**: `fig.click_event(...)`
 - [ ] Unified styling
   - [x] Engine independent config: `uplot.DEFAULT`
 - [ ] TeX support
-- [ ] `DataFrame` support
+- [ ] `DataFrame` basic support
 - [ ] `Bokeh` engine
 
 ## Done
