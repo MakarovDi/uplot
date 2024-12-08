@@ -246,14 +246,23 @@ class MatplotFigure(IFigure):
 
     def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
         image = np.asarray(image)
-        value_range = utool.image_range(image)
+
+        if 'vmin' in kwargs or 'vmax' in kwargs:
+            # fallback to matplotlib behaviour if
+            # the image range provided directly
+            vmin = kwargs.pop('vmin', None)
+            vmax = kwargs.pop('vmax', None)
+        else:
+            # test the image for type and convert to [0, 1] range
+            image = image / utool.image_range(image)
+            vmin = 0.0
+            vmax = 1.0
 
         axis = self._init_axis(is_3d=False)
-        axis.imshow(image / value_range,
-            cmap=utool.kwargs_extract(kwargs, name='cmap', default=self.engine.plt.get_cmap('gray')),
-            vmin=utool.kwargs_extract(kwargs, name='vmin', default=0),
-            vmax=utool.kwargs_extract(kwargs, name='vmax', default=1.0),
-            interpolation=utool.kwargs_extract(kwargs, name='interpolation', default='none')
+        axis.imshow(image,
+            cmap=kwargs.pop('cmap', self.engine.plt.get_cmap('gray')),
+            vmin=vmin, vmax=vmax,
+            interpolation=kwargs.pop('interpolation', 'none')
         )
 
         # hide grid, frame, ticks and labels
