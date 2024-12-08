@@ -16,7 +16,7 @@ def image_range(image: ndarray) -> int | float:
     # float image
     max_value = np.max(image)
 
-    if max_value < 1.05:
+    if max_value < 1.01:
         return 1.0
 
     if max_value < 255:
