@@ -253,6 +253,11 @@ class PlotlyFigure5(IFigure):
         image = np.asarray(image)
         value_range = utool.image_range(image)
 
+        if image.ndim == 2 or image.shape[2] == 1:
+            # workaround for a grayscale image
+            # https://github.com/plotly/plotly.py/issues/2885  # issuecomment-724679904
+            image = np.stack([image, image, image], axis=2)
+
         self._is_3d = False
 
         self._fig.add_trace(self.engine.go.Image(
