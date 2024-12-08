@@ -4,7 +4,7 @@
 
 - [ ] **API**: `fig.bar(...)`
 - [ ] **API**: switching log vs normal scale: `xscale()`, `yscale()`
-- [ ] `README` API description: supported functions per engine
+- [x] `README` API description: supported functions per engine
 
 ## Backlog
 - [ ] **API**: `line_width` parameter for `fig.plot(...)`
