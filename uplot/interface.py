@@ -314,6 +314,48 @@ class IFigure(Protocol):
         ...
 
     @abstract
+    def bar(self, x           : ArrayLike,
+                  y           : ArrayLike | None = None,
+                  name        : str | None = None,
+                  color       : str | None = None,
+                  opacity     : float = 1.0,
+                  legend_group: str | None = None,
+                  **kwargs) -> IFigure:
+        """
+        Create a bar plot using the provided data.
+
+        Parameters
+        ----------
+        x : ArrayLike
+            The x-coordinates of the bars. This can represent categories or numeric values.
+
+        y : ArrayLike or None, optional
+            The heights of the bars. If not provided, the values in `x` are assumed to be the heights,
+            and the bars will be positioned sequentially on the x-axis.
+
+        name : str or None, optional
+            The name of the bar plot, which will appear as the legend item.
+
+        color : str or None, optional
+            The color of the bars.
+
+        opacity : float, optional
+            Sets the opacity of the bars. Default is 1.0 (fully opaque).
+
+        legend_group : str or None, optional
+            Sets the legend group for this plot. Plots from the same group will be combined in the legend.
+
+        kwargs : dict
+            Additional keyword arguments forwarded to the underlying plotting engine.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
+        """
+        ...
+
+    @abstract
     def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
         """
         Display an image.
