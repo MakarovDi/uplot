@@ -16,15 +16,17 @@ def estimate_axis_range(figure,
         raise RuntimeError('there is no any graph, use xlim/ylim after plotting or '
                            'specify both range_min and range_max')
 
-    minmax_estimate = {
-        'min': np.min,
-        'max': np.max,
-    }[mode]
-
     # estimate min/max from data
     data_minmax = []
     for trace_data in figure.data:
         values = trace_data[axis]
+        if np.issubdtype(values.dtype, np.number):
+            # array of numbers
+            minmax_estimate = { 'min': np.min, 'max': np.max }[mode]
+        else:
+            # array of str or other objects
+            minmax_estimate = { 'min': lambda x: x[0], 'max': lambda x: x[-1] }[mode]
+
         data_minmax.append(minmax_estimate(values))
 
     minmax = minmax_estimate(data_minmax)
