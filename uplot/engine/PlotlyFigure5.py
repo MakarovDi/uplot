@@ -249,6 +249,45 @@ class PlotlyFigure5(IFigure):
                               **kwargs)
         return self
 
+    def bar(self, x           : ArrayLike,
+                  y           : ArrayLike | None = None,
+                  name        : str | None = None,
+                  color       : str | None = None,
+                  opacity     : float = 1.0,
+                  legend_group: str | None = None,
+                  **kwargs) -> IFigure:
+
+        self._is_3d = False
+
+        x = np.asarray(x)
+        if y is None:
+            # y is provided via x
+            y = x
+            x = np.arange(len(y))
+        else:
+            assert len(x) == len(y), 'the length of the input arrays must be the same'
+            y = np.asarray(y)
+
+        if color is None:
+            color = self.scroll_color()
+
+        self._update_group_counter(plot_name=name, legend_group=legend_group)
+
+        if name is None:
+            name = ''
+            show_legend = False
+        else:
+            show_legend = kwargs.pop('showlegend', True)
+
+        self._fig.add_bar(x=x, y=y,
+                          marker_color=ucolor.name_to_hex(color),
+                          name=name,
+                          showlegend=show_legend,
+                          legendgroup=legend_group,
+                          opacity=opacity,
+                          legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 0 else None)
+        return self
+
     def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
         image = np.asarray(image)
         value_range = utool.image_range(image)
