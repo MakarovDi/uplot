@@ -81,7 +81,7 @@ class PlotlyFigure5(IFigure):
                          marker_size=marker_size,
                          opacity=opacity,
                          legend_group=legend_group,
-                         legend_group_title=legend_group if self._group_counter[legend_group] > 1 else None,
+                         legend_group_title=legend_group if self._group_counter[legend_group] > 0 else None,
                          **kwargs)
         return self
 
@@ -126,7 +126,7 @@ class PlotlyFigure5(IFigure):
                          marker_size=marker_size,
                          opacity=opacity,
                          legend_group=legend_group,
-                         legend_group_title=legend_group if self._group_counter[legend_group] > 1 else None,
+                         legend_group_title=legend_group if self._group_counter[legend_group] > 0 else None,
                          **kwargs)
         return self
 
@@ -245,7 +245,7 @@ class PlotlyFigure5(IFigure):
                               colorbar=colorbar,
                               opacity=opacity,
                               legendgroup=legend_group,
-                              legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 1 else None,
+                              legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 0 else None,
                               **kwargs)
         return self
 
