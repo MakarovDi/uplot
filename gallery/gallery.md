@@ -118,6 +118,26 @@ fig.show()
 
 <img src='asset/scatter-3d.png' width='700'>
 
+
+## bar
+
+```python
+y1 = np.arange(5) + 1
+y2 = y1[::-1]
+x = [ 'A', 'B', 'C', 'AABB', 'D' ]
+
+fig = uplot.figure(engine)
+fig.bar(x, y1, name='T1')
+fig.bar(x, y2, name='T2')
+fig.bar(x, [1, 1, 1, 1, 1], opacity=0.5, name='T3')
+fig.ylim(0, 8)
+fig.hline(3, color='r', line_style='--')
+fig.legend()
+fig.show()
+```
+
+<img src='asset/bar.png' width='700'>
+
 ## surface3d
 
 ```python

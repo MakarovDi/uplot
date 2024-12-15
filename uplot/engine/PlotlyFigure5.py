@@ -81,7 +81,7 @@ class PlotlyFigure5(IFigure):
                          marker_size=marker_size,
                          opacity=opacity,
                          legend_group=legend_group,
-                         legend_group_title=legend_group if self._group_counter[legend_group] > 1 else None,
+                         legend_group_title=legend_group if self._group_counter[legend_group] > 0 else None,
                          **kwargs)
         return self
 
@@ -126,7 +126,7 @@ class PlotlyFigure5(IFigure):
                          marker_size=marker_size,
                          opacity=opacity,
                          legend_group=legend_group,
-                         legend_group_title=legend_group if self._group_counter[legend_group] > 1 else None,
+                         legend_group_title=legend_group if self._group_counter[legend_group] > 0 else None,
                          **kwargs)
         return self
 
@@ -188,8 +188,8 @@ class PlotlyFigure5(IFigure):
                          **kwargs)
 
     def surface3d(self, x            : ArrayLike,
-                        y            : ArrayLike = None,
-                        z            : ArrayLike = None,
+                        y            : ArrayLike | None = None,
+                        z            : ArrayLike | None = None,
                         name         : str | None = None,
                         show_colormap: bool = False,
                         colormap     : Colormap = 'viridis',
@@ -245,20 +245,65 @@ class PlotlyFigure5(IFigure):
                               colorbar=colorbar,
                               opacity=opacity,
                               legendgroup=legend_group,
-                              legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 1 else None,
+                              legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 0 else None,
                               **kwargs)
+        return self
+
+    def bar(self, x           : ArrayLike,
+                  y           : ArrayLike | None = None,
+                  name        : str | None = None,
+                  color       : str | None = None,
+                  opacity     : float = 1.0,
+                  legend_group: str | None = None,
+                  **kwargs) -> IFigure:
+
+        self._is_3d = False
+
+        x = np.asarray(x)
+        if y is None:
+            # y is provided via x
+            y = x
+            x = np.arange(len(y))
+        else:
+            assert len(x) == len(y), 'the length of the input arrays must be the same'
+            y = np.asarray(y)
+
+        if color is None:
+            color = self.scroll_color()
+
+        self._update_group_counter(plot_name=name, legend_group=legend_group)
+
+        if name is None:
+            name = ''
+            show_legend = False
+        else:
+            show_legend = kwargs.pop('showlegend', True)
+
+        self._fig.add_bar(x=x, y=y,
+                          marker_color=ucolor.name_to_hex(color),
+                          name=name,
+                          showlegend=show_legend,
+                          legendgroup=legend_group,
+                          opacity=opacity,
+                          legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 0 else None,
+                          **kwargs)
         return self
 
     def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
         image = np.asarray(image)
         value_range = utool.image_range(image)
 
+        if image.ndim == 2 or image.shape[2] == 1:
+            # workaround for a grayscale image
+            # https://github.com/plotly/plotly.py/issues/2885  # issuecomment-724679904
+            image = np.stack([image, image, image], axis=2)
+
         self._is_3d = False
 
         self._fig.add_trace(self.engine.go.Image(
             z=image,
-            zmax=utool.kwargs_extract(kwargs, name='zmax', default=[value_range]*4),
-            zmin=utool.kwargs_extract(kwargs, name='zmin', default=[0]*4),
+            zmax=kwargs.pop('zmax', [value_range]*4),
+            zmin=kwargs.pop('zmin', [0]*4),
             **kwargs,
         ))
 
@@ -281,9 +326,9 @@ class PlotlyFigure5(IFigure):
 
         self._fig.update_layout(legend=self.engine.go.layout.Legend(
             visible=show,
-            bgcolor=utool.kwargs_extract(kwargs, name='bgcolor', default='rgba(255,255,255,0.8)'),
-            itemsizing=utool.kwargs_extract(kwargs, name='itemsizing', default=itemsizing),
-            itemwidth=utool.kwargs_extract(kwargs, name='itemwidth', default=50),
+            bgcolor=kwargs.pop('bgcolor', 'rgba(255,255,255,0.8)'),
+            itemsizing=kwargs.pop('itemsizing', itemsizing),
+            itemwidth=kwargs.pop('itemwidth', 50),
             **kwargs,
         ))
         return self

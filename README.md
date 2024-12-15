@@ -117,6 +117,29 @@ pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main
 :red_circle: Some expected API functions are missing (e.g. imshow).  
 :red_circle: 3D and 2D axis parameters are not unified (e.g. layout.xaxis doesn't work for 3D).   
 
+## Functions
+
+| Function                                                            | Description                                                                                                                                                   |
+|:--------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `plot(x, y, z)` <br/> `plot(obj)`                                   | Plot 2D or 3D line. <br/>Line plot for custom class (supported by a plugin).                                                                                  |
+| `scatter(x, y, z)` <br/> `scatter(obj)`                             | Scatter plot for 2D or 3D data points. <br/> Scatter plot for custom class (supported by a plugin).                                                           |
+| `surface3d(x, y, z)`                                                | Plot a surface in 3D space where the color scale corresponds to the z-values.                                                                                 |
+| `bar(x, y)`                                                         | Create a bar plot.                                                                                                                                            |
+| `imshow(image)`                                                     | Display an image.                                                                                                                                             |
+| `hline(y)` <br/> `vline(x)`                                         | Plot horizontal or vertical line. `2D only`                                                                                                                   |
+| `title(text)`                                                       | Set the title of the figure.                                                                                                                                  |
+| `legend(show)`                                                      | Show or hide the legend on the figure.                                                                                                                        |
+| `grid(show)`                                                        | Show or hide the grid on the figure.                                                                                                                          |
+| `xlabel(text)` <br/> `ylabel(text)` <br/> `zlabel(text)`            | Set the label for the x, y, z-axis.                                                                                                                           |
+| `xlim(min, max)` <br/> `ylim(min, max)` <br/> `zlim(min, max)`      | Set limits for the x, y, z-axis.                                                                                                                              |
+| `current_color()` <br/> `scroll_color(count)` <br/> `reset_color()` | Get the color which will be used for the next plot. <br/> Scroll a list of predefined colors for plots. <br/> Set the current color to the start of the list. |
+| `axis_aspect(mode)`                                                 | Set the aspect ratio of the axis.                                                                                                                             |
+| `as_image()`                                                        | Get the figure as a numpy array.                                                                                                                              |
+| `save(filename)`                                                    | Save the figure to a file.                                                                                                                                    |
+| `close()`                                                           | Close the figure. Free allocated resources.                                                                                                                   |
+| `show(block)`                                                       | Display the figure.                                                                                                                                           |
+
+
 ## Extending
 
 
@@ -189,15 +212,6 @@ fig = uplot.figure(engine='test')
 fig.plot(...)
 fig.show()
 ```
-
-## Verified Versions
-
-|                          |                                                Standalone |                           JupyterLab<br>`v4.0.6-v4.2.3 ` |                       Jupyter<br/>Notebook<br/>`7.0-7.2` |
-|:------------------------:|----------------------------------------------------------:|---------------------------------------------------------:|---------------------------------------------------------:|
-| matplotlib<br/>`3.7-3.9` |      `gui` :green_circle:<br/>`save image` :green_circle: | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> | `inline` :green_circle:<br/>`ipympl` :green_circle:<br/> |
-|  plotly<br/>`5.16-5.22`  | `chromium` :green_circle:<br/>`save image` :green_circle: |                                           :green_circle: |                                           :green_circle: |
-
-
 
 ## Dependencies
 

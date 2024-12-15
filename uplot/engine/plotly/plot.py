@@ -2,7 +2,6 @@ import numpy as np
 from numpy.typing import ArrayLike
 
 import uplot.color as ucolor
-import uplot.utool as utool
 
 from uplot.interface import LineStyle, MarkerStyle
 from uplot.default import DEFAULT
@@ -53,20 +52,20 @@ def plot_line_marker(figure      : Figure,
         name = ''
         show_legend = False
     else:
-        show_legend = utool.kwargs_extract(kwargs, name='showlegend', default=True)
+        show_legend = kwargs.pop('showlegend', True)
 
     if isinstance(color, str):
         color = ucolor.name_to_hex(color)
     else:
         # color specified for each point (x, y)
-        color = [ ucolor.name_to_hex(c) for c in color]
+        color = [ ucolor.name_to_hex(c) for c in color ]
 
     from uplot.engine.plotly.mapping import LINE_STYLE_MAPPING, MARKER_STYLE_MAPPING
     line_style = LINE_STYLE_MAPPING[line_style]
     marker_style = MARKER_STYLE_MAPPING[marker_style]
 
-    line = utool.kwargs_extract(kwargs, name='line', default= {})
-    marker = utool.kwargs_extract(kwargs, name='marker', default= {})
+    line = kwargs.pop('line', {})
+    marker = kwargs.pop('marker', {})
 
     mode = 'lines' if marker_style is None else 'lines+markers'
     if line_style == ' ': # no lines = scatter mode
@@ -83,7 +82,7 @@ def plot_line_marker(figure      : Figure,
     marker['symbol'] = marker_style
     marker['size'] = marker_size
 
-    hoverlabel = utool.kwargs_extract(kwargs, name='hoverlabel', default= {})
+    hoverlabel = kwargs.pop('hoverlabel', {})
     hoverlabel.setdefault('namelength', -1)
 
     if z is None:

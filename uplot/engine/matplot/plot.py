@@ -49,7 +49,7 @@ def plot_line_marker(axis,
         color = ucolor.name_to_hex(color)
     else:
         # color specified for each point (x, y)
-        color = [ ucolor.name_to_hex(c) for c in color]
+        color = [ ucolor.name_to_hex(c) for c in color ]
 
     if line_style == ' ':  # only markers (scatter mode)
         axis.scatter(*plot_data,

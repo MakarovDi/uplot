@@ -1,5 +1,18 @@
 # Changelog
 
+## `[v0.7.0]` - 15.12.2024
+
+#### New
+* `[interface]` bar() plot.
+
+#### Changed
+* `[engine.matplot]` imshow: disable normalization if vmin/vmax provided.
+* `[ci]` update to non-vulnerable `pillow` version (>10.3).
+
+#### Fixed
+* `[engine.plotly5]` imshow: fixed issue with grayscale images.
+
+
 ## `[v0.6.2]` - 03.07.2024
 
 #### Fixed
@@ -19,20 +32,20 @@
 * `[engine.plotly5]` signature for `surface3d` fixed
 
 #### Changed
-* `[engine]` added extra aliases for non-GUI Matplotlib: `mpl-io`, `mpl-file`
-* `[plugin]` added `force` parameter for `register()` to allow plugin replacement
+* `[engine]` New extra aliases for non-GUI Matplotlib: `mpl-io`, `mpl-file`
+* `[plugin]` New `force` parameter for `register()` to allow plugin replacement
 * `[plugin]` plugin can be registered for homogeneous arrays like `list[T]` or `tuple[T, ...]`
 
 
 ## `[v0.6.0]` - 28.04.2024
 
-#### Added
+#### New
 * `[interface] & [engine]` functions `hline()`, `vline()`
 
 
 ## `[v0.5.0]` - 03.02.2024
 
-#### Added
+#### New
 * `[plugin]` plugin system to support custom objects plotting
 
 #### Changed
@@ -41,8 +54,8 @@
 
 ## `[v0.4.0]` - 21.12.2023
 
-#### Added
-* `[interface] & [engine]` parameter `legend_group` added
+#### New
+* `[interface] & [engine]` parameter `legend_group` New
 
 #### Changed
 * `[interface]` return `IFigure` when possible to support chaining
@@ -60,7 +73,7 @@
 
 ## `[v0.3.0]` - 06.12.2023
 
-#### Added
+#### New
 * `[interface]` singleton `DEFAULT` for storing and controlling default parameters.
 * `[interface]` 3d surface plotting: `figure.surface3d(...)`
 * `[color]` class `ColorScroller` for maintaining automatic color switching for plotting.
@@ -81,7 +94,7 @@
 
 ## `[v0.2.0]` - 12.11.2023
 
-#### Added
+#### New
 * `[interface]` `[engine]` 3d plot & scatter.
 * `[interface]` `[engine]` 3d plot support: `zlim()`, `zlabel()`.
 * `[interface]` `[engine]` engine-specific parameters via `kwargs`: `plot()`, `scatter()`, `legend()`.
