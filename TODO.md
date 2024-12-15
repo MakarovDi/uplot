@@ -2,9 +2,7 @@
 
 ## Next Release
 
-- [ ] **API**: `fig.bar(...)`
 - [ ] **API**: switching log vs normal scale: `xscale()`, `yscale()`
-- [x] `README` API description: supported functions per engine
 
 ## Backlog
 - [ ] **API**: `line_width` parameter for `fig.plot(...)`
@@ -21,6 +19,8 @@
 
 ## Done
 
+- [x] `README` API description: supported functions per engine
+- [x] **API**: `fig.bar(...)`
 - [x] **API**: `fig.hline()` and `fig.vline()`
 - [x] **API**: plugin system for plotting of a custom object
 - [x] **API**: `fig.legend_group(...)` or parameter `legend_group`
