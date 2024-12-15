@@ -47,6 +47,7 @@ class MatplotFigure(IFigure):
 
         self._color_scroller = ucolor.ColorScroller()
         self._init_axis(is_3d=False)
+        self._bars = [ ]
 
     def plot(self, x           : ArrayLike,
                    y           : ArrayLike | None = None,
@@ -241,6 +242,63 @@ class MatplotFigure(IFigure):
                                  **kwargs)
         if show_colormap:
             self._fig.colorbar(surf, shrink=0.5, aspect=10)
+
+        return self
+
+    def bar(self, x           : ArrayLike,
+                  y           : ArrayLike | None = None,
+                  name        : str | None = None,
+                  color       : str | None = None,
+                  opacity     : float = 1.0,
+                  legend_group: str | None = None,
+                  **kwargs) -> IFigure:
+        # get or init axis
+        axis = self._init_axis(is_3d=False)
+
+        x = np.asarray(x)
+        if y is None:
+            # y is provided via x
+            y = x
+            x = np.arange(len(y))
+        else:
+            assert len(x) == len(y), 'the length of the input arrays must be the same'
+            y = np.asarray(y)
+
+        # init color
+        if color is None:
+            color = self.scroll_color()
+
+        # update bar params
+        total_width = kwargs.pop('width', 0.8)
+        bar_ofs = (1 - total_width) / 2
+
+        bar_idx = len(self._bars)
+        bar_width = total_width / (bar_idx + 1)
+
+        # adjust pos and widths of existing bars
+        for idx, bar_i in enumerate(self._bars):
+            x_idx = np.arange(len(bar_i.patches))
+            bar_pos = x_idx + bar_ofs + idx*bar_width
+            for j in range(len(bar_i.patches)):
+                bar_i.patches[j].set_x(bar_pos[j] - bar_width/2)
+                bar_i.patches[j].set_width(bar_width)
+
+        # add new bar
+        x_idx = np.arange(len(y))
+        bar_pos = x_idx + bar_ofs + bar_idx*bar_width
+
+        rects = axis.bar(bar_pos, y,
+                         width=bar_width,
+                         color=ucolor.name_to_hex(color),
+                         alpha=opacity,
+                         label=name,
+                         **kwargs)
+
+        # set ticks names: str or numbers
+        axis.set_xticks(x_idx - bar_width/2 + 0.5, x)
+
+        # save bar for future adjustments
+        self._bars.append(rects)
 
         return self
 
