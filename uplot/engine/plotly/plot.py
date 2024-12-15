@@ -2,7 +2,6 @@ import numpy as np
 from numpy.typing import ArrayLike
 
 import uplot.color as ucolor
-import uplot.utool as utool
 
 from uplot.interface import LineStyle, MarkerStyle
 from uplot.default import DEFAULT
@@ -59,7 +58,7 @@ def plot_line_marker(figure      : Figure,
         color = ucolor.name_to_hex(color)
     else:
         # color specified for each point (x, y)
-        color = [ ucolor.name_to_hex(c) for c in color]
+        color = [ ucolor.name_to_hex(c) for c in color ]
 
     from uplot.engine.plotly.mapping import LINE_STYLE_MAPPING, MARKER_STYLE_MAPPING
     line_style = LINE_STYLE_MAPPING[line_style]
