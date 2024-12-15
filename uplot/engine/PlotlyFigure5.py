@@ -285,7 +285,8 @@ class PlotlyFigure5(IFigure):
                           showlegend=show_legend,
                           legendgroup=legend_group,
                           opacity=opacity,
-                          legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 0 else None)
+                          legendgrouptitle_text=legend_group if self._group_counter[legend_group] > 0 else None,
+                          **kwargs)
         return self
 
     def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
