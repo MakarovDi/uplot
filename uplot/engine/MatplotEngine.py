@@ -1,3 +1,4 @@
+import importlib.util
 from uplot.interface import IPlotEngine, IFigure
 
 
@@ -16,11 +17,7 @@ class MatplotEngine(IPlotEngine):
 
     @classmethod
     def is_available(cls) -> bool:
-        try:
-            import matplotlib
-            return True
-        except ImportError:
-            return False
+        return importlib.util.find_spec("matplotlib") is not None
 
     @property
     def plt(self):
