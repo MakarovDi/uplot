@@ -27,6 +27,7 @@ color_short_name = {
     'y': color_long_name['yellow'],
     'k': color_long_name['black'],
     'w': color_long_name['white'],
+    'o': color_long_name['orange'],
 }
 
 
