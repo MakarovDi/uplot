@@ -1,11 +1,12 @@
 import numpy as np
-from uplot.utool import StrEnum
+from typing import Literal
 
 
-class Interpolator(StrEnum):
-    NEAREST = 'nearest'
-    LINEAR = 'linear'
-    CUBIC = 'cubic'
+Interpolator = Literal[
+    'nearest',
+    'linear',
+    'cubic',
+]
 
 
 def array_to_grid(x: np.ndarray,

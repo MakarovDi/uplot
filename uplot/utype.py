@@ -1,10 +1,10 @@
 from typing import Literal
-from uplot.utool import StrEnum
 
 
-class AspectMode(StrEnum):
-    AUTO = 'auto'
-    EQUAL = 'equal' # equal scale for all axis
+AspectMode = Literal[
+    'auto',
+    'equal' # equal scale for all axis
+]
 
 
 LineStyle = Literal[
