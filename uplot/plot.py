@@ -7,7 +7,7 @@ CURRENT_ENGINE: IPlotEngine | None = None
 
 
 def figure(engine      : str | IPlotEngine | None = None,
-           width       : int | None = DEFAULT.figure_width,
+           width       : int = DEFAULT.figure_width,
            aspect_ratio: float = DEFAULT.figure_aspect_ratio) -> IFigure:
     """
     Create a new figure using the specified plotting engine or the default engine.

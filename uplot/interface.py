@@ -32,7 +32,6 @@ class IFigure(Protocol):
         IPlotEngine
             The plotting engine.
         """
-        ...
 
     @property
     @abstract
@@ -47,7 +46,6 @@ class IFigure(Protocol):
         Any
             An engine-specific figure object.
         """
-        ...
 
     @property
     @abstract
@@ -60,7 +58,6 @@ class IFigure(Protocol):
         bool
             True if the figure is in 3D mode, False otherwise.
         """
-        ...
 
     @abstract
     def plot(self, x           : ArrayLike | Any,
@@ -113,7 +110,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def scatter(self, x           : ArrayLike | Any,
@@ -160,7 +156,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def hline(self, y           : float,
@@ -208,7 +203,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def vline(self, x           : float,
@@ -256,7 +250,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def surface3d(self, x            : ArrayLike | Any,
@@ -311,7 +304,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def bar(self, x           : ArrayLike,
@@ -353,7 +345,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
@@ -373,7 +364,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def title(self, text: str) -> IFigure:
@@ -390,7 +380,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def legend(self, show: bool = True,
@@ -415,7 +404,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def grid(self, show: bool = True) -> IFigure:
@@ -432,7 +420,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def xlabel(self, text: str) -> IFigure:
@@ -449,7 +436,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def ylabel(self, text: str) -> IFigure:
@@ -466,7 +452,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def zlabel(self, text: str) -> IFigure:
@@ -483,7 +468,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def xlim(self, min_value: float | None = None,
@@ -504,7 +488,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def ylim(self, min_value: float | None = None,
@@ -525,7 +508,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def zlim(self, min_value: float | None = None,
@@ -546,7 +528,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def current_color(self) -> str:
@@ -558,7 +539,6 @@ class IFigure(Protocol):
         str
             The current color.
         """
-        ...
 
     @abstract
     def scroll_color(self, count: int = 1) -> str:
@@ -575,7 +555,6 @@ class IFigure(Protocol):
         str
             The current color before scrolling.
         """
-        ...
 
     @abstract
     def reset_color(self) -> IFigure:
@@ -587,7 +566,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def axis_aspect(self, mode: AspectMode) -> IFigure:
@@ -604,7 +582,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def as_image(self) -> ndarray:
@@ -616,7 +593,6 @@ class IFigure(Protocol):
         ndarray
             The figure as an image.
         """
-        ...
 
     @abstract
     def save(self, filename: str):
@@ -628,14 +604,12 @@ class IFigure(Protocol):
         filename : str
             The filename for saving the figure.
         """
-        ...
 
     @abstract
     def close(self):
         """
         Close the figure. Free allocated resources.
         """
-        ...
 
     @abstract
     def show(self, block: bool = True):
@@ -647,7 +621,6 @@ class IFigure(Protocol):
         block : bool, optional
             Whether to block further execution until the figure window is closed.
         """
-        ...
 
 
 @runtime_checkable
@@ -667,7 +640,6 @@ class IPlotEngine(Protocol):
         str
             The name of the plotting engine.
         """
-        ...
 
     @classmethod
     @abstract
@@ -680,7 +652,6 @@ class IPlotEngine(Protocol):
         bool
             True if the plotting engine is available, False otherwise.
         """
-        ...
 
     @abstract
     def figure(self, width: int, aspect_ratio: float) -> IFigure:
@@ -700,4 +671,4 @@ class IPlotEngine(Protocol):
         IFigure
             A new figure instance.
         """
-        ...
+        
