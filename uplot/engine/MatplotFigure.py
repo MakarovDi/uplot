@@ -9,7 +9,7 @@ import uplot.color as ucolor
 import uplot.utool as utool
 import uplot.plugin as plugin
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, AxisScale, Colormap
 from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.utool import Interpolator
 from uplot.default import DEFAULT
@@ -388,7 +388,7 @@ class MatplotFigure(IFigure):
         return self
 
     def grid(self, show: bool = True) -> IFigure:
-        self._axis.grid(visible=show)
+        self._axis.grid(visible=show, which='both')
         return self
 
     def xlabel(self, text: str) -> IFigure:
@@ -422,6 +422,20 @@ class MatplotFigure(IFigure):
             from mpl_toolkits.mplot3d import Axes3D
             assert isinstance(self._axis, Axes3D)
             self._axis.set_zlim(bottom=min_value, top=max_value)
+        return self
+
+    def xscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        if scale == 'linear':
+            self._axis.set_xscale(scale)
+        elif scale == 'log':
+            self._axis.set_xscale(scale, base=base)
+        return self
+
+    def yscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        if scale == 'linear':
+            self._axis.set_yscale(scale)
+        elif scale == 'log':
+            self._axis.set_yscale(scale, base=base)
         return self
 
     def current_color(self) -> str:
@@ -503,7 +517,7 @@ class MatplotFigure(IFigure):
             self._axis = self._fig.add_subplot(projection=projection)
 
         self._is_3d = is_3d
-        self._axis.grid(visible=True) # show grid by default
+        self._axis.grid(visible=True, which='both') # show grid by default
 
         if is_3d:
             # sync axis and figure color
