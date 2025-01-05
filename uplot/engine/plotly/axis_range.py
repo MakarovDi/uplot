@@ -32,12 +32,12 @@ def estimate_axis_range(figure,
     minmax = minmax_estimate(data_minmax)
 
     # estimate min/max from range
-    axis = {
+    axis_name: str = {
         'x': 'xaxis',
         'y': 'yaxis'
     }[axis]
 
-    axis_range = figure.layout[axis]['range']
+    axis_range = figure.layout[axis_name]['range']
     if axis_range is not None:
         minmax = minmax_estimate([ minmax, *axis_range ])
 

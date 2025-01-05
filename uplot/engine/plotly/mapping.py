@@ -1,7 +1,8 @@
 from uplot.interface import LineStyle, MarkerStyle
+from typing import Literal
 
 
-LINE_STYLE_MAPPING: dict[LineStyle | None, str | None] = {
+LINE_STYLE_MAPPING: dict[LineStyle | Literal[''] | None, str | None] = {
     '-' : 'solid',
     '--': 'dash',
     ':' : 'dot',
