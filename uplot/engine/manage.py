@@ -56,7 +56,7 @@ def register(engine: IPlotEngine, name: str) -> bool:
     return True
 
 
-def get(name: str | None = None) -> IPlotEngine:
+def get(name: str | None = None) -> IPlotEngine | None:
     """
     Retrieve a registered plot engine object by its specified name.
 

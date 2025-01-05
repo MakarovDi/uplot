@@ -1,8 +1,8 @@
 from uplot.interface import IFigure, IPlotEngine
-from uplot import engine as e
+from uplot import engine as uengine
 from uplot.default import DEFAULT
 
-
+# cache variable to store last used engine
 CURRENT_ENGINE: IPlotEngine | None = None
 
 
@@ -41,10 +41,18 @@ def figure(engine      : str | IPlotEngine | None = None,
     global CURRENT_ENGINE
 
     if engine is None:
-        engine = CURRENT_ENGINE
+        if CURRENT_ENGINE is not None:
+            # use the previously used engine
+            engine = CURRENT_ENGINE
+        else:
+            # use the first available engine
+            engine = uengine.get()
+            if engine is None:
+                raise RuntimeError('No plotting engines are registered.')
+    elif isinstance(engine, str):
+        # get the engine object by name
+        engine = uengine.get(engine)
+        if engine is None:
+            raise RuntimeError(f'Plotting engine "{engine}" is not registered.')
 
-    if isinstance(engine, IPlotEngine):
-        return engine.figure(width=width, aspect_ratio=aspect_ratio)
-
-    CURRENT_ENGINE = e.get(engine)
-    return CURRENT_ENGINE.figure(width=width, aspect_ratio=aspect_ratio)
+    return engine.figure(width=width, aspect_ratio=aspect_ratio)
