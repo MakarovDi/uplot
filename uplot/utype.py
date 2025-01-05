@@ -1,6 +1,12 @@
 from typing import Literal
 
 
+AxisScale = Literal[
+    'linear',
+    'log',
+]
+
+
 AspectMode = Literal[
     'auto',
     'equal' # equal scale for all axis

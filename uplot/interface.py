@@ -5,7 +5,7 @@ from typing import Any, Protocol, runtime_checkable
 from abc import abstractmethod as abstract
 from numpy.typing import ArrayLike
 
-from uplot.utype import LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.utype import LineStyle, MarkerStyle, AspectMode, AxisScale, Colormap
 from uplot.utool import Interpolator
 
 
@@ -529,6 +529,44 @@ class IFigure(Protocol):
             The figure object representing the plot.
         """
 
+    @abstract
+    def xscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        """
+        Set the scale for the x-axis.
+
+        Parameters
+        ----------
+        scale : AxisScale
+            The scale for the x-axis: 'linear' or 'log'.
+
+        base : float, optional
+            The base for the logarithmic scale, default is 10.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
+        """
+
+    @abstract
+    def yscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        """
+        Set the scale for the y-axis.
+
+        Parameters
+        ----------
+        scale : AxisScale
+            The scale for the y-axis: 'linear' or 'log'.
+
+        base : float, optional
+            The base for the logarithmic scale, default is 10.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
+        """
+        
     @abstract
     def current_color(self) -> str:
         """

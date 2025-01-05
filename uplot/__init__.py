@@ -13,7 +13,7 @@ from uplot.plot import figure
 import uplot.color as color
 
 # common types
-from uplot.utype import LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.utype import LineStyle, MarkerStyle, AspectMode, AxisScale, Colormap
 
 # settings
 from uplot.default import DEFAULT
@@ -39,7 +39,8 @@ __all__ = [
    
     'LineStyle', 
     'MarkerStyle', 
-    'AspectMode', 
+    'AspectMode',
+    'AxisScale', 
     'Colormap',
 
     # variables / constants
