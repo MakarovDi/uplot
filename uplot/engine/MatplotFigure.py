@@ -447,10 +447,14 @@ class MatplotFigure(IFigure):
         fig.set_dpi(self.engine.SAVING_DPI)
 
         fig.canvas.draw()
-        image = np.frombuffer(fig.canvas.tostring_rgb(), dtype=np.uint8)
+
+        from matplotlib.backends.backend_agg import FigureCanvasAgg
+        assert isinstance(fig.canvas, FigureCanvasAgg)
+
+        image = np.frombuffer(fig.canvas.buffer_rgba(), dtype=np.uint8)
 
         w, h = fig.canvas.get_width_height()
-        return image.reshape([h, w, 3])
+        return image.reshape([h, w, 4])
 
     def save(self, filename: str):
         assert self._fig is not None, 'figure is closed'
