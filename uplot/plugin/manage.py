@@ -1,17 +1,18 @@
+from types import GenericAlias
 from uplot.plugin.IPlotPlugin import IPlotPlugin
 
 
-REGISTERED_TYPES: dict[type, IPlotPlugin] = {}
+REGISTERED_TYPES: dict[type | GenericAlias, IPlotPlugin] = {}
 
 
-def is_registered(t: type) -> bool:
+def is_registered(t: type | GenericAlias) -> bool:
     """
     Checks whether type **t** is registered and has a handler.
     """
     return t in REGISTERED_TYPES
 
 
-def register(t: type, handler: IPlotPlugin, force: bool = False) -> bool:
+def register(t: type | GenericAlias, handler: IPlotPlugin, force: bool = False) -> bool:
     """
     Register a handler for the specified type **t**.
 
@@ -42,7 +43,7 @@ def register(t: type, handler: IPlotPlugin, force: bool = False) -> bool:
     return True
 
 
-def get_handler(t: type) -> IPlotPlugin | None:
+def get_handler(t: type | GenericAlias) -> IPlotPlugin | None:
     """
     Get plotting plugin(handler) for the registered type.
     """

@@ -1,8 +1,8 @@
 from abc import abstractmethod as abstract
-from typing import Any, NamedTuple, Sequence
+from typing import Any, NamedTuple, Sequence, Callable, Literal
+from typing import cast, get_args
 from types import GenericAlias
 from numpy.typing import ArrayLike
-from typing import Literal
 
 import uplot.plugin as plugin
 
@@ -87,7 +87,7 @@ class IPlotPlugin:
         return kwargs
 
 
-def plot(plot_method: callable,
+def plot(plot_method: Callable,
          x          : ArrayLike | Any,
          y          : ArrayLike | None = None,
          z          : ArrayLike | None = None,
@@ -100,17 +100,25 @@ def plot(plot_method: callable,
     """
     # check if x is a custom object or regular arrays
     x_type = get_type(x)
-    if y is not None or z is not None or not plugin.is_registered(x_type):
+    if y is not None or z is not None:
+        return False
+    
+    if not plugin.is_registered(x_type):
         return False
 
     # get registered plugin for x
     handler = plugin.get_handler(x_type)
+    assert handler is not None, f'plugin for {x_type} is not registered'
+
     # extract x,y,z from the object
     data_list = handler.extract_data(x)
 
     # plot all extracted data
     for i, data in enumerate(data_list):
-        params = handler.update_style(plot_type=plot_method.__name__,
+        plot_method_name = plot_method.__name__
+        assert plot_method.__name__ in get_args(PlotType), f'unsupported plot method: {plot_method.__name__}'
+
+        params = handler.update_style(plot_type=cast(PlotType, plot_method_name),
                                       data_index=i,
                                       data_count=len(data_list),
                                       data_name=data.name,
@@ -130,22 +138,22 @@ def get_type(obj: Any) -> type | GenericAlias:
     """
     obj_type = type(obj)
 
-    if obj_type == str:
+    if obj_type is str:
         return str
 
     if not issubclass(obj_type, Sequence) or len(obj) == 0:
         return obj_type
 
     item0_type = type(obj[0])
-    is_homogeneous = all([type(i) == item0_type for i in obj])
+    is_homogeneous = all([type(i) is item0_type for i in obj])
 
     if not is_homogeneous:
         return obj_type
 
-    if obj_type == list:
+    if obj_type is list:
         # homogeneous list
         return GenericAlias(list, item0_type)
-    elif obj_type == tuple:
+    elif obj_type is tuple:
         # homogeneous tuple
         return GenericAlias(tuple, (item0_type, ...))
     else:
