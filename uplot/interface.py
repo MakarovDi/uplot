@@ -67,7 +67,7 @@ class IFigure(Protocol):
                    color       : str | None = None,
                    line_style  : LineStyle | None = None,
                    marker_style: MarkerStyle | None = None,
-                   marker_size : int | None = None,
+                   marker_size : float | None = None,
                    opacity     : float = 1.0,
                    legend_group: str | None = None,
                    **kwargs) -> IFigure:
@@ -92,7 +92,7 @@ class IFigure(Protocol):
         marker_style : MarkerStyle or None, optional
             The marker style.
 
-        marker_size : int or None, optional
+        marker_size : float or None, optional
             The size of the marker.
 
         opacity : float, optional
@@ -118,7 +118,7 @@ class IFigure(Protocol):
                       name        : str | None = None,
                       color       : str | list[str] | None = None,
                       marker_style: MarkerStyle | None = None,
-                      marker_size : int | None = None,
+                      marker_size : float | None = None,
                       opacity     : float = 1.0,
                       legend_group: str | None = None,
                       **kwargs) -> IFigure:
@@ -139,7 +139,7 @@ class IFigure(Protocol):
         marker_style : MarkerStyle or None, optional
             The marker style.
 
-        marker_size : int or None, optional
+        marker_size : float or None, optional
             The size of the markers.
 
         opacity : float, optional

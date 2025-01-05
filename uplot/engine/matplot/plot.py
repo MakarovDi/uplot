@@ -15,7 +15,7 @@ def plot_line_marker(axis,
                      name        : str | None = None,
                      line_style  : LineStyle | list[LineStyle] | None = None,
                      marker_style: MarkerStyle | list[MarkerStyle] | None = None,
-                     marker_size : int | None = None,
+                     marker_size : float | None = None,
                      opacity     : float = 1.0,
                      **kwargs):
     """
