@@ -35,11 +35,11 @@ def image_encode_base64(image: ndarray, value_range: float) -> str:
 
     image_u8 = (255 * (image / value_range)).astype(np.uint8)
 
-    image = Image.fromarray(image_u8)
+    pil_image = Image.fromarray(image_u8)
     prefix = 'data:image/png;base64,'
 
     with BytesIO() as stream:
-        image.save(stream, format='png')
+        pil_image.save(stream, format='png')
         image_base64 = prefix + base64.b64encode(stream.getvalue()).decode('utf-8')
 
     return image_base64
