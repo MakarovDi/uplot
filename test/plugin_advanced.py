@@ -14,8 +14,9 @@ class DataFramePlugin(plugin.IPlotPlugin):
     def extract_data(self, obj: pd.DataFrame) -> list[plugin.PlotData]:
         data = []
         for name in obj.columns:
-            if not np.issubdtype(obj.dtypes[name], np.number): continue
-            y = obj[name].values
+            if not np.issubdtype(obj.dtypes[name], np.number): 
+                continue
+            y = np.asarray(obj[name].values)
             x = np.arange(len(y))
             name = name.replace('_', ' ').title()
             data.append(plugin.PlotData(x=x, y=y, name=name))
@@ -36,8 +37,9 @@ class DataFramePluginAdvanced(plugin.IPlotPlugin):
         data = []
         joined_name = []
         for name in obj.columns:
-            if not np.issubdtype(obj.dtypes[name], np.number): continue
-            y = obj[name].values
+            if not np.issubdtype(obj.dtypes[name], np.number): 
+                continue
+            y = np.asarray(obj[name].values)
             x = np.arange(len(y))
             name = name.replace('_', ' ').title()
             joined_name.append(name)
