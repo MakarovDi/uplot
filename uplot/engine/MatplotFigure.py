@@ -30,14 +30,12 @@ class MatplotFigure(IFigure):
         return self._is_3d
 
     def __init__(self, engine: MatplotEngine, width: int, aspect_ratio: float):
-        self._engine = engine
-        self._is_3d = None
-        self._axis: engine.plt.Axes = None
+        from matplotlib.figure import Figure
 
         # temporary styling (no global effect):
         # https://matplotlib.org/stable/users/explain/customizing.html
         with engine.plt.style.context(DEFAULT.style):
-            self._fig: engine.plt.Figure = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
+            self._fig: Figure | None = engine.plt.figure(dpi=engine.SHOWING_DPI, layout='constrained')
             # constrained layout automatically adjusts subplots so that decorations like tick labels,
             # legends, and colorbars do not overlap, while still preserving the logical layout requested by the user.
             # constrained layout is similar to Tight layout, but is substantially more flexible.
@@ -45,7 +43,9 @@ class MatplotFigure(IFigure):
             self._fig.set_figwidth(width / engine.SHOWING_DPI)
             self._fig.set_figheight(aspect_ratio*(width / engine.SHOWING_DPI))
 
+        self._engine = engine
         self._color_scroller = ucolor.ColorScroller()
+        self._is_3d = None
         self._init_axis(is_3d=False)
         self._bars = [ ]
 
@@ -199,6 +199,8 @@ class MatplotFigure(IFigure):
                         interpolation_range: int = 100,
                         legend_group : str | None = None,
                         **kwargs) -> IFigure:
+        assert self._fig is not None, 'figure is closed'
+
         # check if x is a custom object and a plugin is available
         if plugin.plot(plot_method=self.surface3d,
                        x=x, y=y, z=z,
@@ -229,6 +231,9 @@ class MatplotFigure(IFigure):
                                           interpolation_range=interpolation_range)
 
         axis = self._init_axis(is_3d=True)
+
+        from mpl_toolkits.mplot3d import Axes3D
+        assert isinstance(axis, Axes3D)
 
         cmap = self.engine.mpl.colormaps[colormap.lower()]
 
@@ -261,8 +266,8 @@ class MatplotFigure(IFigure):
             y = x
             x = np.arange(len(y))
         else:
-            assert len(x) == len(y), 'the length of the input arrays must be the same'
             y = np.asarray(y)
+            assert len(x) == len(y), 'the length of the input arrays must be the same'
 
         # init color
         if color is None:
@@ -338,6 +343,8 @@ class MatplotFigure(IFigure):
     def legend(self, show: bool = True,
                      equal_marker_size: bool = True,
                      **kwargs) -> IFigure:
+        assert self._fig is not None, 'figure is closed'
+
         if not self._axis:
             return self
 
@@ -349,7 +356,7 @@ class MatplotFigure(IFigure):
         if equal_marker_size:
             from matplotlib.legend_handler import HandlerPathCollection, HandlerLine2D
             from matplotlib.collections import PathCollection
-            from matplotlib.pyplot import Line2D
+            from matplotlib.lines import Line2D
 
             def updatescatter(handle, orig):
                 handle.update_from(orig)
@@ -394,6 +401,8 @@ class MatplotFigure(IFigure):
 
     def zlabel(self, text: str) -> IFigure:
         if self.is_3d:
+            from mpl_toolkits.mplot3d import Axes3D
+            assert isinstance(self._axis, Axes3D)
             self._axis.set_zlabel(zlabel=text)
         return self
 
@@ -410,6 +419,8 @@ class MatplotFigure(IFigure):
     def zlim(self, min_value: float | None = None,
                    max_value: float | None = None) -> IFigure:
         if self.is_3d:
+            from mpl_toolkits.mplot3d import Axes3D
+            assert isinstance(self._axis, Axes3D)
             self._axis.set_zlim(bottom=min_value, top=max_value)
         return self
 
@@ -429,6 +440,8 @@ class MatplotFigure(IFigure):
         return self
 
     def as_image(self) -> ndarray:
+        assert self._fig is not None, 'figure is closed'
+
         fig = self._fig
 
         fig.set_dpi(self.engine.SAVING_DPI)
@@ -440,6 +453,7 @@ class MatplotFigure(IFigure):
         return image.reshape([h, w, 3])
 
     def save(self, filename: str):
+        assert self._fig is not None, 'figure is closed'
         self._fig.savefig(filename, dpi=self.engine.SAVING_DPI)
 
     def close(self):
@@ -447,6 +461,8 @@ class MatplotFigure(IFigure):
         self._fig = None
 
     def show(self, block: bool=True):
+        assert self._fig is not None, 'figure is closed'
+
         if self.engine.is_ipython_backend:
             # there are two ways for consistent figure visualization in jupyter
             #    1. call `%matplotlib ...` at the notebook start.
@@ -468,6 +484,8 @@ class MatplotFigure(IFigure):
 
 
     def _init_axis(self, is_3d: bool):
+        assert self._fig is not None, 'figure is closed'
+
         if self.is_3d == is_3d:
             # axis already initialized
             return self._axis

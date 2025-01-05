@@ -28,10 +28,12 @@ class PlotlyFigure5(IFigure):
         return self._is_3d
 
     def __init__(self, engine: PlotlyEngine5):
+        from plotly.graph_objs import Figure
+
         self._engine = engine
         self._color_scroller = ucolor.ColorScroller()
 
-        self._fig: engine.go.Figure = engine.go.Figure()
+        self._fig: Figure = engine.go.Figure()
         self._is_3d = None
         self._colorbar_x_pos = 1.0
 
@@ -265,8 +267,8 @@ class PlotlyFigure5(IFigure):
             y = x
             x = np.arange(len(y))
         else:
-            assert len(x) == len(y), 'the length of the input arrays must be the same'
             y = np.asarray(y)
+            assert len(x) == len(y), 'the length of the input arrays must be the same'
 
         if color is None:
             color = self.scroll_color()
@@ -464,7 +466,9 @@ class PlotlyFigure5(IFigure):
         """
         Count visible legend's items for the same group
         """
-        if legend_group is None or len(legend_group) == 0: return
+        if legend_group is None or len(legend_group) == 0: 
+            return
+        
         group_size = self._group_counter.get(legend_group, 0)
 
         if plot_name is not None and len(plot_name) > 0:
