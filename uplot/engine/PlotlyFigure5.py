@@ -453,7 +453,8 @@ class PlotlyFigure5(IFigure):
             self._fig.write_image(filename)
 
     def close(self):
-        self._fig = None
+        self._fig.data = []
+        self._fig.layout = {}
 
     def show(self, block: bool=True):
         self.engine.pio.show(self._fig)
