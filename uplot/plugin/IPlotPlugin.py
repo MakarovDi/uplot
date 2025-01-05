@@ -2,8 +2,8 @@ from abc import abstractmethod as abstract
 from typing import Any, NamedTuple, Sequence
 from types import GenericAlias
 from numpy.typing import ArrayLike
+from typing import Literal
 
-from uplot.utool import StrEnum
 import uplot.plugin as plugin
 
 
@@ -18,13 +18,7 @@ class PlotData(NamedTuple):
     group_name: str | None = None
 
 
-class PlotType(StrEnum):
-    """
-    Enumeration of plot types.
-    """
-    PLOT = 'plot'
-    SCATTER = 'scatter'
-    SURFACE3D = 'surface3d'
+PlotType = Literal['plot', 'scatter', 'surface3d']
 
 
 class IPlotPlugin:

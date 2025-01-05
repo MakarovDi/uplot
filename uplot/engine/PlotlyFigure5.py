@@ -426,11 +426,10 @@ class PlotlyFigure5(IFigure):
 
     def axis_aspect(self, mode: AspectMode) -> IFigure:
         if self.is_3d:
-            if mode == AspectMode.EQUAL:
-                aspectmode = 'cube' if mode == AspectMode.EQUAL else 'auto'
-                self._fig.update_scenes(aspectmode=aspectmode)
+            aspectmode = 'cube' if mode == 'equal' else 'auto'
+            self._fig.update_scenes(aspectmode=aspectmode)
         else:
-            scaleanchor = 'x' if mode == AspectMode.EQUAL else None
+            scaleanchor = 'x' if mode == 'equal' else None
             self._fig.update_yaxes(scaleanchor=scaleanchor)
         return self
 
