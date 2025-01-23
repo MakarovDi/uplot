@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
+from typing import Literal
 from numpy import ndarray
 from numpy.typing import ArrayLike
 
@@ -8,7 +9,8 @@ import uplot.color as ucolor
 import uplot.utool as utool
 import uplot.plugin as plugin
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.interface import IFigure
+from uplot.interface import LineStyle, MarkerStyle, AspectMode, AxisScale, Colormap
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
 from uplot.utool import Interpolator
 
@@ -36,6 +38,8 @@ class PlotlyFigure5(IFigure):
         self._fig: Figure = engine.go.Figure()
         self._is_3d = None
         self._colorbar_x_pos = 1.0
+        self._scale: dict[str, AxisScale] = { 'x': 'linear', 'y': 'linear' }
+        self._show_grid = True
 
         self._group_counter: dict[str | None, int] = { None: 0 }
 
@@ -336,6 +340,8 @@ class PlotlyFigure5(IFigure):
         return self
 
     def grid(self, show: bool = True) -> IFigure:
+        show_minor_x = show and self._scale['x'] == 'log'
+        show_minor_y = show and self._scale['y'] == 'log'
         if self.is_3d:
             Scene = self.engine.go.layout.Scene
             XAxis = self.engine.go.layout.scene.XAxis
@@ -343,11 +349,15 @@ class PlotlyFigure5(IFigure):
             ZAxis = self.engine.go.layout.scene.ZAxis
             self._fig.update_layout(scene=Scene(xaxis=XAxis(showgrid=show),
                                                 yaxis=YAxis(showgrid=show),
-                                                zaxis=ZAxis(showgrid=show))
-            )
+                                                zaxis=ZAxis(showgrid=show)))
         else:
             self._fig.update_xaxes(showgrid=show)
+            self._fig.update_xaxes(minor=dict(ticks='inside' if show_minor_x else '',
+                                              showgrid=show_minor_x))
             self._fig.update_yaxes(showgrid=show)
+            self._fig.update_yaxes(minor=dict(ticks='inside' if show_minor_y else '',
+                                              showgrid=show_minor_y))
+        self._show_grid = show
         return self
 
     def xlabel(self, text: str) -> IFigure:
@@ -413,7 +423,16 @@ class PlotlyFigure5(IFigure):
             max_value = estimate_axis_range(self._fig, axis='z', mode='max')
 
         self._fig.update_layout(scene=dict(zaxis=dict(range=[min_value, max_value])))
+        return self
 
+    def xscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        self._set_scale('x', scale=scale, base=base)
+        self.grid(self._show_grid) # update grid if visible
+        return self
+
+    def yscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        self._set_scale('y', scale=scale, base=base)
+        self.grid(self._show_grid) # update grid if visible
         return self
 
     def current_color(self) -> str:
@@ -461,14 +480,33 @@ class PlotlyFigure5(IFigure):
     def show(self, block: bool=True):
         self.engine.pio.show(self._fig)
 
+    ## Protected ##
+
+    def _set_scale(self, axis: Literal['x', 'y'], scale: AxisScale, base: float):
+        if axis == 'x':
+            update_axes = self._fig.update_xaxes
+        elif axis == 'y':
+            update_axes = self._fig.update_yaxes
+        else:
+            raise ValueError(f'unsupported axis: {axis}')
+
+        update_axes(type=scale)
+        if scale == 'log':
+            update_axes(dtick=np.log10(base))
+        elif scale == 'linear':
+            update_axes(dtick=None)
+        else:
+            raise ValueError(f'unsupported scale: {scale}')
+
+        self._scale[axis] = scale
 
     def _update_group_counter(self, plot_name: str | None, legend_group: str | None):
         """
         Count visible legend's items for the same group
         """
-        if legend_group is None or len(legend_group) == 0: 
+        if legend_group is None or len(legend_group) == 0:
             return
-        
+
         group_size = self._group_counter.get(legend_group, 0)
 
         if plot_name is not None and len(plot_name) > 0:
