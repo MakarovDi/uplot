@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 import numpy as np
-from typing import Literal
+from typing import Literal, cast
 from numpy import ndarray
 from numpy.typing import ArrayLike
 
@@ -38,7 +38,6 @@ class PlotlyFigure5(IFigure):
         self._fig: Figure = engine.go.Figure()
         self._is_3d = None
         self._colorbar_x_pos = 1.0
-        self._scale: dict[str, AxisScale] = { 'x': 'linear', 'y': 'linear' }
         self._show_grid = True
 
         self._group_counter: dict[str | None, int] = { None: 0 }
@@ -340,8 +339,8 @@ class PlotlyFigure5(IFigure):
         return self
 
     def grid(self, show: bool = True) -> IFigure:
-        show_minor_x = show and self._scale['x'] == 'log'
-        show_minor_y = show and self._scale['y'] == 'log'
+        show_minor_x = show and self._get_scale('xaxis') == 'log'
+        show_minor_y = show and self._get_scale('yaxis') == 'log'
         if self.is_3d:
             Scene = self.engine.go.layout.Scene
             XAxis = self.engine.go.layout.scene.XAxis
@@ -385,8 +384,14 @@ class PlotlyFigure5(IFigure):
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='x', mode='min')
+        elif self._get_scale('xaxis') == 'log':
+            min_value = np.log10(min_value)
+
         if max_value is None:
             max_value = estimate_axis_range(self._fig, axis='x', mode='max')
+        elif self._get_scale('xaxis') == 'log':
+            max_value = np.log10(max_value)
+
         if self.is_3d:
             self._fig.update_layout(scene=dict(xaxis=dict(range=[min_value, max_value])))
         else:
@@ -395,13 +400,17 @@ class PlotlyFigure5(IFigure):
 
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None) -> IFigure:
+        from uplot.engine.plotly.axis_range import estimate_axis_range
+
         if min_value is None:
-            from uplot.engine.plotly.axis_range import estimate_axis_range
             min_value = estimate_axis_range(self._fig, axis='y', mode='min')
+        elif self._get_scale('yaxis') == 'log':
+            min_value = np.log10(min_value)
 
         if max_value is None:
-            from uplot.engine.plotly.axis_range import estimate_axis_range
             max_value = estimate_axis_range(self._fig, axis='y', mode='max')
+        elif self._get_scale('yaxis') == 'log':
+            max_value = np.log10(max_value)
 
         if self.is_3d:
             self._fig.update_layout(scene=dict(yaxis=dict(range=[min_value, max_value])))
@@ -482,6 +491,11 @@ class PlotlyFigure5(IFigure):
 
     ## Protected ##
 
+    def _get_scale(self, axis: Literal['xaxis', 'yaxis']) -> AxisScale:
+        axis_type = getattr(getattr(self._fig.layout, axis), 'type', 'linear')
+        axis_type = cast(AxisScale, axis_type)
+        return axis_type
+
     def _set_scale(self, axis: Literal['x', 'y'], scale: AxisScale, base: float):
         if axis == 'x':
             update_axes = self._fig.update_xaxes
@@ -497,8 +511,6 @@ class PlotlyFigure5(IFigure):
             update_axes(dtick=None)
         else:
             raise ValueError(f'unsupported scale: {scale}')
-
-        self._scale[axis] = scale
 
     def _update_group_counter(self, plot_name: str | None, legend_group: str | None):
         """
