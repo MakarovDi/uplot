@@ -340,8 +340,8 @@ class PlotlyFigure5(IFigure):
     def grid(self, show: bool = True) -> IFigure:
         from uplot.engine.plotly.scale import get_scale
 
-        show_minor_x = show and get_scale(self._fig, 'xaxis') == 'log'
-        show_minor_y = show and get_scale(self._fig, 'yaxis') == 'log'
+        show_minor_x = show and get_scale(self._fig, 'x') == 'log'
+        show_minor_y = show and get_scale(self._fig, 'y') == 'log'
         if self.is_3d:
             Scene = self.engine.go.layout.Scene
             XAxis = self.engine.go.layout.scene.XAxis
@@ -386,12 +386,14 @@ class PlotlyFigure5(IFigure):
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='x', mode='min')
-        elif get_scale(self._fig, 'xaxis') == 'log':
+
+        if get_scale(self._fig, 'x') == 'log':
             min_value = np.log10(min_value)
 
         if max_value is None:
             max_value = estimate_axis_range(self._fig, axis='x', mode='max')
-        elif get_scale(self._fig, 'xaxis') == 'log':
+
+        if get_scale(self._fig, 'x') == 'log':
             max_value = np.log10(max_value)
 
         if self.is_3d:
@@ -407,12 +409,14 @@ class PlotlyFigure5(IFigure):
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='y', mode='min')
-        elif get_scale(self._fig, 'yaxis') == 'log':
+
+        if get_scale(self._fig, 'y') == 'log':
             min_value = np.log10(min_value)
 
         if max_value is None:
             max_value = estimate_axis_range(self._fig, axis='y', mode='max')
-        elif get_scale(self._fig, 'yaxis') == 'log':
+
+        if get_scale(self._fig, 'y') == 'log':
             max_value = np.log10(max_value)
 
         if self.is_3d:

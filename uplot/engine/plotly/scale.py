@@ -4,8 +4,9 @@ from typing import Literal, cast
 from uplot.interface import AxisScale
 
 
-def get_scale(figure, axis: Literal['xaxis', 'yaxis']) -> AxisScale:
-    axis_type = getattr(getattr(figure.layout, axis), 'type', 'linear')
+def get_scale(figure, axis: Literal['x', 'y', 'z']) -> AxisScale:
+    axis_key = { 'x': 'xaxis', 'y': 'yaxis' }[axis]
+    axis_type = getattr(getattr(figure.layout, axis_key), 'type', 'linear')
     axis_type = cast(AxisScale, axis_type)
     return axis_type
 

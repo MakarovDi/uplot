@@ -1,6 +1,8 @@
 import numpy as np
 from typing import Literal
 
+from uplot.engine.plotly.scale import get_scale
+
 
 def estimate_axis_range(figure,
                         axis: Literal['x', 'y', 'z'],
@@ -39,6 +41,8 @@ def estimate_axis_range(figure,
 
     axis_range = figure.layout[axis_name]['range']
     if axis_range is not None:
+        if get_scale(figure, axis) == 'log':
+            axis_range = 10**np.asarray(axis_range)
         minmax = minmax_estimate([ minmax, *axis_range ])
 
     return minmax
