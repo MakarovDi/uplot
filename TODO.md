@@ -2,7 +2,7 @@
 
 ## Next Release
 
-- [ ] **API**: switching log vs normal scale: `xscale()`, `yscale()`
+- [x] **API**: switching log vs normal scale: `xscale()`, `yscale()`
 
 ## Backlog
 - [ ] **API**: `line_width` parameter for `fig.plot(...)`
