@@ -120,7 +120,7 @@ pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main
 ## Functions
 
 | Function                                                            | Description                                                                                                                                                   |
-|:--------------------------------------------------------------------|:--------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| :------------------------------------------------------------------ | :------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `plot(x, y, z)` <br/> `plot(obj)`                                   | Plot 2D or 3D line. <br/>Line plot for custom class (supported by a plugin).                                                                                  |
 | `scatter(x, y, z)` <br/> `scatter(obj)`                             | Scatter plot for 2D or 3D data points. <br/> Scatter plot for custom class (supported by a plugin).                                                           |
 | `surface3d(x, y, z)`                                                | Plot a surface in 3D space where the color scale corresponds to the z-values.                                                                                 |
@@ -132,9 +132,10 @@ pip install "uplot[matplotlib] @ git+https://github.com/makarovdi/uplot.git@main
 | `grid(show)`                                                        | Show or hide the grid on the figure.                                                                                                                          |
 | `xlabel(text)` <br/> `ylabel(text)` <br/> `zlabel(text)`            | Set the label for the x, y, z-axis.                                                                                                                           |
 | `xlim(min, max)` <br/> `ylim(min, max)` <br/> `zlim(min, max)`      | Set limits for the x, y, z-axis.                                                                                                                              |
+| `xscale()` <br/> `yscale()`                                         | Set scale for the x, y-axis: 'linear' or 'log'.                                                                                                                              |
 | `current_color()` <br/> `scroll_color(count)` <br/> `reset_color()` | Get the color which will be used for the next plot. <br/> Scroll a list of predefined colors for plots. <br/> Set the current color to the start of the list. |
 | `axis_aspect(mode)`                                                 | Set the aspect ratio of the axis.                                                                                                                             |
-| `as_image()`                                                        | Get the figure as a numpy array.                                                                                                                              |
+| `as_image()`                                                        | Get the figure as a NumPy array.                                                                                                                              |
 | `save(filename)`                                                    | Save the figure to a file.                                                                                                                                    |
 | `close()`                                                           | Close the figure. Free allocated resources.                                                                                                                   |
 | `show(block)`                                                       | Display the figure.                                                                                                                                           |
@@ -216,8 +217,8 @@ fig.show()
 ## Dependencies
 
 - `Python` ≥ 3.10 
-- `numpy` ≥ 1.21 `v2.0 supported`
-- `pillow` ≥ 10.2
+- `NumPy` ≥ 1.21 `v2.0 supported`
+- `pillow` ≥ 10.3
 
 ### Optional
 - `matplotlib` ≥ 3.7
