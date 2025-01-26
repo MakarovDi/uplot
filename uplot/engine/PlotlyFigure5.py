@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import numpy as np
-from typing import Literal, cast
 from numpy import ndarray
 from numpy.typing import ArrayLike
 
@@ -339,8 +338,10 @@ class PlotlyFigure5(IFigure):
         return self
 
     def grid(self, show: bool = True) -> IFigure:
-        show_minor_x = show and self._get_scale('xaxis') == 'log'
-        show_minor_y = show and self._get_scale('yaxis') == 'log'
+        from uplot.engine.plotly.scale import get_scale
+
+        show_minor_x = show and get_scale(self._fig, 'xaxis') == 'log'
+        show_minor_y = show and get_scale(self._fig, 'yaxis') == 'log'
         if self.is_3d:
             Scene = self.engine.go.layout.Scene
             XAxis = self.engine.go.layout.scene.XAxis
@@ -381,15 +382,16 @@ class PlotlyFigure5(IFigure):
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None) -> IFigure:
         from uplot.engine.plotly.axis_range import estimate_axis_range
+        from uplot.engine.plotly.scale import get_scale
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='x', mode='min')
-        elif self._get_scale('xaxis') == 'log':
+        elif get_scale(self._fig, 'xaxis') == 'log':
             min_value = np.log10(min_value)
 
         if max_value is None:
             max_value = estimate_axis_range(self._fig, axis='x', mode='max')
-        elif self._get_scale('xaxis') == 'log':
+        elif get_scale(self._fig, 'xaxis') == 'log':
             max_value = np.log10(max_value)
 
         if self.is_3d:
@@ -401,15 +403,16 @@ class PlotlyFigure5(IFigure):
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None) -> IFigure:
         from uplot.engine.plotly.axis_range import estimate_axis_range
+        from uplot.engine.plotly.scale import get_scale
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='y', mode='min')
-        elif self._get_scale('yaxis') == 'log':
+        elif get_scale(self._fig, 'yaxis') == 'log':
             min_value = np.log10(min_value)
 
         if max_value is None:
             max_value = estimate_axis_range(self._fig, axis='y', mode='max')
-        elif self._get_scale('yaxis') == 'log':
+        elif get_scale(self._fig, 'yaxis') == 'log':
             max_value = np.log10(max_value)
 
         if self.is_3d:
@@ -435,12 +438,16 @@ class PlotlyFigure5(IFigure):
         return self
 
     def xscale(self, scale: AxisScale, base: float = 10) -> IFigure:
-        self._set_scale('x', scale=scale, base=base)
+        from uplot.engine.plotly.scale import set_scale
+
+        set_scale(self._fig, 'x', scale=scale, base=base)
         self.grid(self._show_grid) # update grid if visible
         return self
 
     def yscale(self, scale: AxisScale, base: float = 10) -> IFigure:
-        self._set_scale('y', scale=scale, base=base)
+        from uplot.engine.plotly.scale import set_scale
+
+        set_scale(self._fig, 'y', scale=scale, base=base)
         self.grid(self._show_grid) # update grid if visible
         return self
 
@@ -490,27 +497,6 @@ class PlotlyFigure5(IFigure):
         self.engine.pio.show(self._fig)
 
     ## Protected ##
-
-    def _get_scale(self, axis: Literal['xaxis', 'yaxis']) -> AxisScale:
-        axis_type = getattr(getattr(self._fig.layout, axis), 'type', 'linear')
-        axis_type = cast(AxisScale, axis_type)
-        return axis_type
-
-    def _set_scale(self, axis: Literal['x', 'y'], scale: AxisScale, base: float):
-        if axis == 'x':
-            update_axes = self._fig.update_xaxes
-        elif axis == 'y':
-            update_axes = self._fig.update_yaxes
-        else:
-            raise ValueError(f'unsupported axis: {axis}')
-
-        update_axes(type=scale)
-        if scale == 'log':
-            update_axes(dtick=np.log10(base))
-        elif scale == 'linear':
-            update_axes(dtick=None)
-        else:
-            raise ValueError(f'unsupported scale: {scale}')
 
     def _update_group_counter(self, plot_name: str | None, legend_group: str | None):
         """
