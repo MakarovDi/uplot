@@ -1,5 +1,20 @@
 # Changelog
 
+
+## `[v0.8.0]` - 26.01.2025
+
+#### New
+* `[interface]` add `xscale()` and `yscale()` methods.
+* `[color]` add 'o' shortcut for orange color.
+
+#### Changed
+* `[interface]` change `marker_size` type from `int` to `float`.
+
+#### Fixed
+* `[engine.matplot]` replace deprecated `tostring_rgb()` with `buffer_rgba()`.
+
+
+
 ## `[v0.7.0]` - 15.12.2024
 
 #### New

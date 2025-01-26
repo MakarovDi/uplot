@@ -1,5 +1,6 @@
 import numpy as np
-from typing import OrderedDict
+from typing import overload
+from typing import OrderedDict, Sequence
 
 
 color_long_name = OrderedDict[str, str]([
@@ -26,8 +27,17 @@ color_short_name = {
     'y': color_long_name['yellow'],
     'k': color_long_name['black'],
     'w': color_long_name['white'],
+    'o': color_long_name['orange'],
 }
 
+
+@overload
+def name_to_hex(name: None) -> None:
+    ...
+
+@overload
+def name_to_hex(name: str) -> str:
+    ...
 
 def name_to_hex(name: str | None) -> str | None:
     """
@@ -92,7 +102,6 @@ class ColorScroller:
     """
     Class for maintaining automatic color switching for plotting.
     """
-
     DEFAULT_COLOR_LIST = (
         name_to_hex('orange'),
         name_to_hex('green'),
@@ -106,7 +115,8 @@ class ColorScroller:
         name_to_hex('cyan'),
     )
 
-    def __init__(self, color_list: list[str] = DEFAULT_COLOR_LIST):
+
+    def __init__(self, color_list: Sequence[str] = DEFAULT_COLOR_LIST):
         """
         Parameters
         ----------
@@ -115,6 +125,7 @@ class ColorScroller:
         """
         self._color_list = color_list
         self._color_index = 0
+
 
     def scroll_color(self, count: int = 1) -> str:
         """
@@ -135,11 +146,13 @@ class ColorScroller:
         self._color_index %= len(self._color_list)
         return current
 
+
     def current_color(self) -> str:
         """
         Return the current color.
         """
         return self._color_list[self._color_index]
+
 
     def reset(self):
         """

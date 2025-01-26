@@ -18,7 +18,7 @@ def plot_line_marker(figure      : Figure,
                      line_style  : LineStyle | None = None,
                      line_width  : float = 2,
                      marker_style: MarkerStyle | None = None,
-                     marker_size : int | None = None,
+                     marker_size : float | None = None,
                      opacity     : float = 1.0,
                      legend_group: str | None = None,
                      legend_group_title: str | None = None,
@@ -61,25 +61,25 @@ def plot_line_marker(figure      : Figure,
         color = [ ucolor.name_to_hex(c) for c in color ]
 
     from uplot.engine.plotly.mapping import LINE_STYLE_MAPPING, MARKER_STYLE_MAPPING
-    line_style = LINE_STYLE_MAPPING[line_style]
-    marker_style = MARKER_STYLE_MAPPING[marker_style]
+    line_style_str = LINE_STYLE_MAPPING[line_style]
+    marker_style_str = MARKER_STYLE_MAPPING[marker_style]
 
     line = kwargs.pop('line', {})
     marker = kwargs.pop('marker', {})
 
-    mode = 'lines' if marker_style is None else 'lines+markers'
-    if line_style == ' ': # no lines = scatter mode
+    mode = 'lines' if marker_style_str is None else 'lines+markers'
+    if line_style_str == ' ': # no lines = scatter mode
         mode = 'markers'
         line['dash'] = None
     else:
         line.setdefault('color', color)
         line.setdefault('width', line_width)
-        line['dash'] = line_style
+        line['dash'] = line_style_str
 
     marker.setdefault('color', color)
     marker.setdefault('line_color', color)
     marker.setdefault('line_width', line_width)
-    marker['symbol'] = marker_style
+    marker['symbol'] = marker_style_str
     marker['size'] = marker_size
 
     hoverlabel = kwargs.pop('hoverlabel', {})

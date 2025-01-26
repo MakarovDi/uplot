@@ -8,7 +8,8 @@ import uplot.color as ucolor
 import uplot.utool as utool
 import uplot.plugin as plugin
 
-from uplot.interface import IFigure, LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.interface import IFigure
+from uplot.interface import LineStyle, MarkerStyle, AspectMode, AxisScale, Colormap
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
 from uplot.utool import Interpolator
 
@@ -28,12 +29,15 @@ class PlotlyFigure5(IFigure):
         return self._is_3d
 
     def __init__(self, engine: PlotlyEngine5):
+        from plotly.graph_objs import Figure
+
         self._engine = engine
         self._color_scroller = ucolor.ColorScroller()
 
-        self._fig: engine.go.Figure = engine.go.Figure()
+        self._fig: Figure = engine.go.Figure()
         self._is_3d = None
         self._colorbar_x_pos = 1.0
+        self._show_grid = True
 
         self._group_counter: dict[str | None, int] = { None: 0 }
 
@@ -45,7 +49,7 @@ class PlotlyFigure5(IFigure):
                    color       : str | None = None,
                    line_style  : LineStyle | None = None,
                    marker_style: MarkerStyle | None = None,
-                   marker_size : int | None = None,
+                   marker_size : float | None = None,
                    opacity     : float = 1.0,
                    legend_group: str | None = None,
                    **kwargs) -> IFigure:
@@ -91,7 +95,7 @@ class PlotlyFigure5(IFigure):
                       name        : str | None = None,
                       color       : str | list[str] | None = None,
                       marker_style: MarkerStyle | None = None,
-                      marker_size : int | None = None,
+                      marker_size : float | None = None,
                       opacity     : float = 1.0,
                       legend_group: str | None = None,
                       **kwargs) -> IFigure:
@@ -265,8 +269,8 @@ class PlotlyFigure5(IFigure):
             y = x
             x = np.arange(len(y))
         else:
-            assert len(x) == len(y), 'the length of the input arrays must be the same'
             y = np.asarray(y)
+            assert len(x) == len(y), 'the length of the input arrays must be the same'
 
         if color is None:
             color = self.scroll_color()
@@ -334,6 +338,10 @@ class PlotlyFigure5(IFigure):
         return self
 
     def grid(self, show: bool = True) -> IFigure:
+        from uplot.engine.plotly.scale import get_scale
+
+        show_minor_x = show and get_scale(self._fig, 'x') == 'log'
+        show_minor_y = show and get_scale(self._fig, 'y') == 'log'
         if self.is_3d:
             Scene = self.engine.go.layout.Scene
             XAxis = self.engine.go.layout.scene.XAxis
@@ -341,11 +349,15 @@ class PlotlyFigure5(IFigure):
             ZAxis = self.engine.go.layout.scene.ZAxis
             self._fig.update_layout(scene=Scene(xaxis=XAxis(showgrid=show),
                                                 yaxis=YAxis(showgrid=show),
-                                                zaxis=ZAxis(showgrid=show))
-            )
+                                                zaxis=ZAxis(showgrid=show)))
         else:
             self._fig.update_xaxes(showgrid=show)
+            self._fig.update_xaxes(minor=dict(ticks='inside' if show_minor_x else '',
+                                              showgrid=show_minor_x))
             self._fig.update_yaxes(showgrid=show)
+            self._fig.update_yaxes(minor=dict(ticks='inside' if show_minor_y else '',
+                                              showgrid=show_minor_y))
+        self._show_grid = show
         return self
 
     def xlabel(self, text: str) -> IFigure:
@@ -370,11 +382,20 @@ class PlotlyFigure5(IFigure):
     def xlim(self, min_value: float | None = None,
                    max_value: float | None = None) -> IFigure:
         from uplot.engine.plotly.axis_range import estimate_axis_range
+        from uplot.engine.plotly.scale import get_scale
 
         if min_value is None:
             min_value = estimate_axis_range(self._fig, axis='x', mode='min')
+
+        if get_scale(self._fig, 'x') == 'log':
+            min_value = np.log10(min_value)
+
         if max_value is None:
             max_value = estimate_axis_range(self._fig, axis='x', mode='max')
+
+        if get_scale(self._fig, 'x') == 'log':
+            max_value = np.log10(max_value)
+
         if self.is_3d:
             self._fig.update_layout(scene=dict(xaxis=dict(range=[min_value, max_value])))
         else:
@@ -383,13 +404,20 @@ class PlotlyFigure5(IFigure):
 
     def ylim(self, min_value: float | None = None,
                    max_value: float | None = None) -> IFigure:
+        from uplot.engine.plotly.axis_range import estimate_axis_range
+        from uplot.engine.plotly.scale import get_scale
+
         if min_value is None:
-            from uplot.engine.plotly.axis_range import estimate_axis_range
             min_value = estimate_axis_range(self._fig, axis='y', mode='min')
 
+        if get_scale(self._fig, 'y') == 'log':
+            min_value = np.log10(min_value)
+
         if max_value is None:
-            from uplot.engine.plotly.axis_range import estimate_axis_range
             max_value = estimate_axis_range(self._fig, axis='y', mode='max')
+
+        if get_scale(self._fig, 'y') == 'log':
+            max_value = np.log10(max_value)
 
         if self.is_3d:
             self._fig.update_layout(scene=dict(yaxis=dict(range=[min_value, max_value])))
@@ -411,7 +439,20 @@ class PlotlyFigure5(IFigure):
             max_value = estimate_axis_range(self._fig, axis='z', mode='max')
 
         self._fig.update_layout(scene=dict(zaxis=dict(range=[min_value, max_value])))
+        return self
 
+    def xscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        from uplot.engine.plotly.scale import set_scale
+
+        set_scale(self._fig, 'x', scale=scale, base=base)
+        self.grid(self._show_grid) # update grid if visible
+        return self
+
+    def yscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        from uplot.engine.plotly.scale import set_scale
+
+        set_scale(self._fig, 'y', scale=scale, base=base)
+        self.grid(self._show_grid) # update grid if visible
         return self
 
     def current_color(self) -> str:
@@ -426,11 +467,10 @@ class PlotlyFigure5(IFigure):
 
     def axis_aspect(self, mode: AspectMode) -> IFigure:
         if self.is_3d:
-            if mode == AspectMode.EQUAL:
-                aspectmode = 'cube' if mode == AspectMode.EQUAL else 'auto'
-                self._fig.update_scenes(aspectmode=aspectmode)
+            aspectmode = 'cube' if mode == 'equal' else 'auto'
+            self._fig.update_scenes(aspectmode=aspectmode)
         else:
-            scaleanchor = 'x' if mode == AspectMode.EQUAL else None
+            scaleanchor = 'x' if mode == 'equal' else None
             self._fig.update_yaxes(scaleanchor=scaleanchor)
         return self
 
@@ -454,17 +494,21 @@ class PlotlyFigure5(IFigure):
             self._fig.write_image(filename)
 
     def close(self):
-        self._fig = None
+        self._fig.data = []
+        self._fig.layout = {}
 
     def show(self, block: bool=True):
         self.engine.pio.show(self._fig)
 
+    ## Protected ##
 
     def _update_group_counter(self, plot_name: str | None, legend_group: str | None):
         """
         Count visible legend's items for the same group
         """
-        if legend_group is None or len(legend_group) == 0: return
+        if legend_group is None or len(legend_group) == 0:
+            return
+
         group_size = self._group_counter.get(legend_group, 0)
 
         if plot_name is not None and len(plot_name) > 0:

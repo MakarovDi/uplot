@@ -1,13 +1,13 @@
 from uplot.interface import IFigure, IPlotEngine
-from uplot import engine as e
+from uplot import engine as uengine
 from uplot.default import DEFAULT
 
-
+# cache variable to store last used engine
 CURRENT_ENGINE: IPlotEngine | None = None
 
 
 def figure(engine      : str | IPlotEngine | None = None,
-           width       : int | None = DEFAULT.figure_width,
+           width       : int = DEFAULT.figure_width,
            aspect_ratio: float = DEFAULT.figure_aspect_ratio) -> IFigure:
     """
     Create a new figure using the specified plotting engine or the default engine.
@@ -15,13 +15,14 @@ def figure(engine      : str | IPlotEngine | None = None,
     Parameters
     ----------
     engine : str, IPlotEngine, or None, optional
-        The plotting engine object, name, or None. If None, the function uses the previous or default engine.
+        The plotting engine object, name, or None. 
+        If None, the function uses the previous or default engine.
 
     width : int or None, optional
         The width of the figure in pixels.
 
     aspect_ratio : float, optional
-        The aspect ratio for the new figure.
+        The aspect ratio for the new figure. The value in the range (0, 1].
 
     Returns
     -------
@@ -40,11 +41,23 @@ def figure(engine      : str | IPlotEngine | None = None,
     """
     global CURRENT_ENGINE
 
+    if not 0 < aspect_ratio <= 1:
+        raise ValueError('Aspect ratio must be in the range (0, 1].')
+
     if engine is None:
-        engine = CURRENT_ENGINE
+        if CURRENT_ENGINE is not None:
+            # use the previously used engine
+            engine = CURRENT_ENGINE
+        else:
+            # use the first available engine
+            engine = uengine.get()
+            if engine is None:
+                raise RuntimeError('No plotting engines are registered.')
 
-    if isinstance(engine, IPlotEngine):
-        return engine.figure(width=width, aspect_ratio=aspect_ratio)
+    elif isinstance(engine, str):
+        # get the engine object by name
+        engine = uengine.get(engine)
+        if engine is None:
+            raise RuntimeError(f'Plotting engine "{engine}" is not registered.')
 
-    CURRENT_ENGINE = e.get(engine)
-    return CURRENT_ENGINE.figure(width=width, aspect_ratio=aspect_ratio)
+    return engine.figure(width=width, aspect_ratio=aspect_ratio)

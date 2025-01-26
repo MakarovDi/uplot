@@ -1,3 +1,4 @@
+import importlib.util
 from uplot.interface import IPlotEngine, IFigure
 from uplot.default import DEFAULT
 
@@ -13,11 +14,7 @@ class PlotlyEngine5(IPlotEngine):
 
     @classmethod
     def is_available(cls) -> bool:
-        try:
-            import plotly
-            return True
-        except ImportError:
-            return False
+        return importlib.util.find_spec("plotly") is not None
 
     @property
     def go(self):

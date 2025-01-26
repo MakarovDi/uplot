@@ -1,8 +1,25 @@
 from uplot.engine.MatplotEngine import MatplotEngine
 from uplot.engine.PlotlyEngine5 import PlotlyEngine5
-from uplot.engine.manage import available, register, get
+from uplot.engine.manage import register, get, available
+
+
+__all__ = [
+
+    # classes
+
+    'MatplotEngine',
+    'PlotlyEngine5',
+
+    # functions
+
+    'register',
+    'get',
+    'available'
+]
+
 
 # register available engines
+
 
 if MatplotEngine.is_available():
     # matplotlib GUI

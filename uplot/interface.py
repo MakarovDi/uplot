@@ -5,7 +5,7 @@ from typing import Any, Protocol, runtime_checkable
 from abc import abstractmethod as abstract
 from numpy.typing import ArrayLike
 
-from uplot.utype import LineStyle, MarkerStyle, AspectMode, Colormap
+from uplot.utype import LineStyle, MarkerStyle, AspectMode, AxisScale, Colormap
 from uplot.utool import Interpolator
 
 
@@ -32,7 +32,6 @@ class IFigure(Protocol):
         IPlotEngine
             The plotting engine.
         """
-        ...
 
     @property
     @abstract
@@ -47,7 +46,6 @@ class IFigure(Protocol):
         Any
             An engine-specific figure object.
         """
-        ...
 
     @property
     @abstract
@@ -60,7 +58,6 @@ class IFigure(Protocol):
         bool
             True if the figure is in 3D mode, False otherwise.
         """
-        ...
 
     @abstract
     def plot(self, x           : ArrayLike | Any,
@@ -70,7 +67,7 @@ class IFigure(Protocol):
                    color       : str | None = None,
                    line_style  : LineStyle | None = None,
                    marker_style: MarkerStyle | None = None,
-                   marker_size : int | None = None,
+                   marker_size : float | None = None,
                    opacity     : float = 1.0,
                    legend_group: str | None = None,
                    **kwargs) -> IFigure:
@@ -95,7 +92,7 @@ class IFigure(Protocol):
         marker_style : MarkerStyle or None, optional
             The marker style.
 
-        marker_size : int or None, optional
+        marker_size : float or None, optional
             The size of the marker.
 
         opacity : float, optional
@@ -113,7 +110,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def scatter(self, x           : ArrayLike | Any,
@@ -122,7 +118,7 @@ class IFigure(Protocol):
                       name        : str | None = None,
                       color       : str | list[str] | None = None,
                       marker_style: MarkerStyle | None = None,
-                      marker_size : int | None = None,
+                      marker_size : float | None = None,
                       opacity     : float = 1.0,
                       legend_group: str | None = None,
                       **kwargs) -> IFigure:
@@ -143,7 +139,7 @@ class IFigure(Protocol):
         marker_style : MarkerStyle or None, optional
             The marker style.
 
-        marker_size : int or None, optional
+        marker_size : float or None, optional
             The size of the markers.
 
         opacity : float, optional
@@ -160,7 +156,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def hline(self, y           : float,
@@ -208,7 +203,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def vline(self, x           : float,
@@ -256,7 +250,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def surface3d(self, x            : ArrayLike | Any,
@@ -311,7 +304,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def bar(self, x           : ArrayLike,
@@ -353,7 +345,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def imshow(self, image: ArrayLike, **kwargs) -> IFigure:
@@ -373,7 +364,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def title(self, text: str) -> IFigure:
@@ -390,7 +380,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def legend(self, show: bool = True,
@@ -415,7 +404,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def grid(self, show: bool = True) -> IFigure:
@@ -432,7 +420,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def xlabel(self, text: str) -> IFigure:
@@ -449,7 +436,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def ylabel(self, text: str) -> IFigure:
@@ -466,7 +452,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def zlabel(self, text: str) -> IFigure:
@@ -483,7 +468,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def xlim(self, min_value: float | None = None,
@@ -504,7 +488,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def ylim(self, min_value: float | None = None,
@@ -525,7 +508,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def zlim(self, min_value: float | None = None,
@@ -546,8 +528,45 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
+    @abstract
+    def xscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        """
+        Set the scale for the x-axis.
+
+        Parameters
+        ----------
+        scale : AxisScale
+            The scale for the x-axis: 'linear' or 'log'.
+
+        base : float, optional
+            The base for the logarithmic scale, default is 10.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
+        """
+
+    @abstract
+    def yscale(self, scale: AxisScale, base: float = 10) -> IFigure:
+        """
+        Set the scale for the y-axis.
+
+        Parameters
+        ----------
+        scale : AxisScale
+            The scale for the y-axis: 'linear' or 'log'.
+
+        base : float, optional
+            The base for the logarithmic scale, default is 10.
+
+        Returns
+        -------
+        IFigure
+            The figure object representing the plot.
+        """
+        
     @abstract
     def current_color(self) -> str:
         """
@@ -558,7 +577,6 @@ class IFigure(Protocol):
         str
             The current color.
         """
-        ...
 
     @abstract
     def scroll_color(self, count: int = 1) -> str:
@@ -575,7 +593,6 @@ class IFigure(Protocol):
         str
             The current color before scrolling.
         """
-        ...
 
     @abstract
     def reset_color(self) -> IFigure:
@@ -587,7 +604,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def axis_aspect(self, mode: AspectMode) -> IFigure:
@@ -604,7 +620,6 @@ class IFigure(Protocol):
         IFigure
             The figure object representing the plot.
         """
-        ...
 
     @abstract
     def as_image(self) -> ndarray:
@@ -616,7 +631,6 @@ class IFigure(Protocol):
         ndarray
             The figure as an image.
         """
-        ...
 
     @abstract
     def save(self, filename: str):
@@ -628,14 +642,12 @@ class IFigure(Protocol):
         filename : str
             The filename for saving the figure.
         """
-        ...
 
     @abstract
     def close(self):
         """
         Close the figure. Free allocated resources.
         """
-        ...
 
     @abstract
     def show(self, block: bool = True):
@@ -647,7 +659,6 @@ class IFigure(Protocol):
         block : bool, optional
             Whether to block further execution until the figure window is closed.
         """
-        ...
 
 
 @runtime_checkable
@@ -667,7 +678,6 @@ class IPlotEngine(Protocol):
         str
             The name of the plotting engine.
         """
-        ...
 
     @classmethod
     @abstract
@@ -680,7 +690,6 @@ class IPlotEngine(Protocol):
         bool
             True if the plotting engine is available, False otherwise.
         """
-        ...
 
     @abstract
     def figure(self, width: int, aspect_ratio: float) -> IFigure:
@@ -700,4 +709,4 @@ class IPlotEngine(Protocol):
         IFigure
             A new figure instance.
         """
-        ...
+        
