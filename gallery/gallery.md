@@ -1,8 +1,8 @@
 # Gallery
 
-1. [plot](#plot)  
+1. [plot](#plot)
 1. [scatter](#scatter)
-1. [surface3d](#surface3d)  
+1. [surface3d](#surface3d)
 
 
 > See also jupyter notebook: `gallery.ipynb`.
@@ -157,6 +157,27 @@ fig.show()
 ```
 
 <img src='asset/surface3d.png' width='700'>
+
+# Log-scale
+
+```python
+x = np.linspace(0, 100000, num=1000)
+y = np.sqrt(x)
+
+fig = uplot.figure(engine)
+fig.plot(x, y, name='sqrt(x)')
+fig.xscale('log', base=10)
+fig.yscale('log', base=10)
+fig.hline(y=100, line_style='--', color='r')
+fig.vline(x=10000, line_style='--', color='r')
+fig.xlim(100)
+fig.ylim(10)
+fig.legend()
+fig.show()
+```
+
+<img src='asset/log_scale.png' width='700'>
+
 
 # Legend
 
