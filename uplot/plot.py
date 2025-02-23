@@ -15,14 +15,14 @@ def figure(engine      : str | IPlotEngine | None = None,
     Parameters
     ----------
     engine : str, IPlotEngine, or None, optional
-        The plotting engine object, name, or None. 
+        The plotting engine object, name, or None.
         If None, the function uses the previous or default engine.
 
     width : int or None, optional
         The width of the figure in pixels.
 
     aspect_ratio : float, optional
-        The aspect ratio for the new figure. The value in the range (0, 1].
+        The aspect ratio for the new figure. The value in the range (0, 4].
 
     Returns
     -------
@@ -41,8 +41,8 @@ def figure(engine      : str | IPlotEngine | None = None,
     """
     global CURRENT_ENGINE
 
-    if not 0 < aspect_ratio <= 1:
-        raise ValueError('Aspect ratio must be in the range (0, 1].')
+    if not 0 < aspect_ratio <= 4:
+        raise ValueError('Aspect ratio must be in the range (0, 4].')
 
     if engine is None:
         if CURRENT_ENGINE is not None:
