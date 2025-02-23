@@ -1,6 +1,13 @@
 # Changelog
 
 
+## `[v0.8.1]` - 23.02.2025
+
+#### Fixed
+* `[engine]` extend range for `aspect_ratio` from `(0, 1]` to `(0, 4]`.
+
+
+
 ## `[v0.8.0]` - 26.01.2025
 
 #### New
